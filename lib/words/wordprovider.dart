@@ -33,12 +33,14 @@ class WordProvider {
       if (i == correct) {
         quizOptions.add(new QuizOption(words[w].meaning, true));
       }
-      int o = random.nextInt(optionsCount);
-      while(o == correct || optionIndices.contains(o)) {
-        o = random.nextInt(optionsCount);
+      else {
+        int o = random.nextInt(words.length);
+        while (o == correct || optionIndices.contains(o)) {
+          o = random.nextInt(words.length);
+        }
+        optionIndices.add(o);
+        quizOptions.add(new QuizOption(words[o].meaning, false));
       }
-      optionIndices.add(o);
-      quizOptions.add(new QuizOption(words[o].meaning, true));
     }
 
     return new QuizWord(words[w].word, quizOptions);
