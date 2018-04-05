@@ -12,7 +12,7 @@ class WordStudyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new WordStudy(title: 'Flutter Demo Home Page'),
+      home: new WordStudy(),
     );
   }
 }
