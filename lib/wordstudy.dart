@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/quizword.dart';
+import 'package:word_study/worddisplay.dart';
 
 class WordStudy extends StatefulWidget {
   @override
@@ -11,9 +12,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   QuizWord _quizWord;
 
   final WordProvider wordProvider = new WordProvider();
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-
-  AnimationController animationController;
+  final List<WordDisplay> _words = <WordDisplay>[];
 
   @override
   void initState() {
@@ -21,11 +20,12 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
     setState(() {
       _quizWord = wordProvider.getWord(4);
     });
+  }
 
-    animationController =  new AnimationController(
-      duration: new Duration(milliseconds: 700),
-      vsync: this,
-    );
+  void _handleWordTapped(int wordIndex) {
+    setState(() {
+      _quizWord.options[wordIndex].isSelected = true;
+    });
   }
 
   @override
@@ -47,43 +47,27 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   }
 
   Widget _buildRow(int i) {
-    return
-
-    new Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: new Stack(
-          children: [
-            new Row(
-              children: <Widget>[
-                new Expanded(
-                  child: new SizeTransition(
-                    sizeFactor: new CurvedAnimation(
-                      parent: animationController, curve: Curves.easeOut),
-                      axisAlignment: 0.0,
-                      child: new Container(
-                      constraints: new BoxConstraints.expand(
-                          height: 60.0),
-                      decoration: new BoxDecoration(color:
-                      _quizWord.options[i].isSelected ? Colors.red : Colors.yellow)
-                    )
-                  ),
-                )
-              ],
-            ),
-            new ListTile(title: new Text("${_quizWord.options[i].meaning}", style: _biggerFont),
-              onTap: () {
-                setState(() {
-                  _quizWord.options[i].isSelected = true;
-                });
-              }
-          )]
+    WordDisplay wordDisplay =  new WordDisplay(_quizWord.options[i].meaning,
+        _quizWord.options[i].isCorrect, _quizWord.options[i].isSelected,
+        i, _handleWordTapped,
+        new AnimationController(
+          duration: new Duration(milliseconds: 700),
+          vsync: this,
         )
     );
+
+    if (_quizWord.options[i].isSelected) {
+      wordDisplay.animationController.forward();
+    }
+
+    return wordDisplay;
   }
 
   @override
   void dispose() {
-    animationController.dispose();
+    for(WordDisplay word in _words) {
+      word.animationController.dispose();
+    }
     super.dispose();
   }
 }
