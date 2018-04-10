@@ -40,20 +40,33 @@ class WordStudyState extends State<WordStudy> {
   }
 
   Widget _buildRow(int i) {
-    return new Container(
-        decoration: new BoxDecoration(color:
-          _quizWord.options[i].isSelected ? Colors.red : Colors.transparent),
-        child: new Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: new ListTile(
-              title: new Text("${_quizWord.options[i].meaning}", style: _biggerFont),
+    return
+
+    new Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: new Stack(
+          children: [
+            new Row(
+              children: <Widget>[
+                new Expanded(
+                  child: new Container(
+                      constraints: new BoxConstraints.expand(
+                          height: 60.0),
+                      decoration: new BoxDecoration(color:
+                      _quizWord.options[i].isSelected ? Colors.red : Colors.transparent)
+                  ),
+                )
+              ],
+            ),
+            new ListTile(title: new Text("${_quizWord.options[i].meaning}", style: _biggerFont),
               onTap: () {
                 setState(() {
                   _quizWord.options[i].isSelected = true;
                 });
               }
-            )
+          )]
         )
     );
+
   }
 }

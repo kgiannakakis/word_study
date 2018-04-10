@@ -4,7 +4,7 @@ import 'package:word_study/words/quizword.dart';
 import 'package:word_study/words/quizoption.dart';
 
 class WordProvider {
-  var random = new Random();
+  var random = new Random(new DateTime.now().millisecondsSinceEpoch);
 
   var words = [new Word('Shangri-la','a faraway haven or hideaway of idyllic beauty and tranquility'),
                new Word('mythoclast','a destroyer or debunker of myths'),
