@@ -7,11 +7,13 @@ class WordStudy extends StatefulWidget {
   WordStudyState createState() => new WordStudyState();
 }
 
-class WordStudyState extends State<WordStudy> {
+class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   QuizWord _quizWord;
 
   final WordProvider wordProvider = new WordProvider();
   final _biggerFont = const TextStyle(fontSize: 18.0);
+
+  AnimationController animationController;
 
   @override
   void initState() {
@@ -19,6 +21,11 @@ class WordStudyState extends State<WordStudy> {
     setState(() {
       _quizWord = wordProvider.getWord(4);
     });
+
+    animationController =  new AnimationController(
+      duration: new Duration(milliseconds: 700),
+      vsync: this,
+    );
   }
 
   @override
@@ -49,11 +56,16 @@ class WordStudyState extends State<WordStudy> {
             new Row(
               children: <Widget>[
                 new Expanded(
-                  child: new Container(
+                  child: new SizeTransition(
+                    sizeFactor: new CurvedAnimation(
+                      parent: animationController, curve: Curves.easeOut),
+                      axisAlignment: 0.0,
+                      child: new Container(
                       constraints: new BoxConstraints.expand(
                           height: 60.0),
                       decoration: new BoxDecoration(color:
-                      _quizWord.options[i].isSelected ? Colors.red : Colors.transparent)
+                      _quizWord.options[i].isSelected ? Colors.red : Colors.yellow)
+                    )
                   ),
                 )
               ],
@@ -67,6 +79,11 @@ class WordStudyState extends State<WordStudy> {
           )]
         )
     );
+  }
 
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 }
