@@ -14,38 +14,76 @@ class Option extends StatelessWidget {
 
   Option({this.quizOption, this.onTap, this.optionIndex, this.animationController});
 
-  @override
-  Widget build(BuildContext context) {
+  Color _getColor() {
+    if (quizOption.isSelected && quizOption.isCorrect) {
+      return Colors.green;
+    }
+    else if (quizOption.isSelected && !quizOption.isCorrect) {
+      return Colors.red;
+    }
+    return Colors.transparent;
+  }
+
+  Widget _buildEnabled() {
     return new Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: new Stack(
+        padding: const EdgeInsets.all(8.0),
+        child: new GestureDetector(
+          child: new Stack(
             children: [
-              new Row(
-                children: <Widget>[
-                  new Expanded(
-                    child: new SizeTransition(
-                        sizeFactor: new CurvedAnimation(
-                            parent: animationController, curve: Curves.easeOut),
-                        axis: Axis.vertical,
-                        axisAlignment: 0.0,
-                        child: new Container(
-                            decoration: new BoxDecoration(color:
-                                quizOption.isSelected ? Colors.red : Colors.yellow),
-                            child: new Center(
-                              child: new Text(quizOption.meaning, style: _biggerInvisibleFont)
-                            ),
-                        )
+              new SizeTransition(
+                  sizeFactor: new CurvedAnimation(
+                      parent: animationController, curve: Curves.easeOut),
+                  axis: Axis.vertical,
+                  axisAlignment: 0.0,
+                  child: new Container(
+                    decoration: new BoxDecoration(color: _getColor()),
+                    child: new Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: new Text(quizOption.meaning, style: _biggerInvisibleFont)
                     ),
                   )
-                ],
               ),
-              new GestureDetector(
-                child: new Text(quizOption.meaning, style: _biggerFont),
-                onTap: () {
-                  onTap(optionIndex);
-                })
-              ]
+              new Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new Text(quizOption.meaning, style: _biggerFont)
+              )
+            ]
+          ),
+          onTap: () {
+            onTap(optionIndex);
+          }
         )
     );
+  }
+
+  Widget _buildDisabled() {
+    return new Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: new Stack(
+            children: [
+              new Container(
+                decoration: new BoxDecoration(color: _getColor()),
+                child: new Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Text(quizOption.meaning, style: _biggerInvisibleFont)
+                ),
+              ),
+              new Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new Text(quizOption.meaning, style: _biggerFont)
+              )
+            ]
+        )
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (quizOption.isEnabled) {
+      return _buildEnabled();
+    }
+    else {
+      return _buildDisabled();
+    }
   }
 }

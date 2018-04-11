@@ -2,6 +2,7 @@ class QuizOption {
   final String meaning;
   final bool isCorrect;
   bool isSelected;
+  bool isEnabled;
 
   QuizOption(this.meaning, this.isCorrect) {
     if (meaning == null) {
@@ -9,5 +10,6 @@ class QuizOption {
           "Received: '$meaning'");
     }
     isSelected = false;
+    isEnabled = true;
   }
 }

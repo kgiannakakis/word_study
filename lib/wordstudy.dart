@@ -60,8 +60,11 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
     );
 
     if (_quizWord.options[i].isSelected && _quizWord.options[i].isEnabled) {
+      wordDisplay.animationController.addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed)
+          _quizWord.options[i].isEnabled = false;
+      });
       wordDisplay.animationController.forward();
-      _quizWord.options[i].isEnabled = false;
     }
 
     return wordDisplay;
