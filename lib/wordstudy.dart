@@ -4,7 +4,6 @@ import 'package:word_study/words/quizword.dart';
 import 'package:word_study/option.dart';
 
 class WordStudy extends StatefulWidget {
-
   final WordProvider wordProvider;
 
   WordStudy({this.wordProvider});
@@ -17,6 +16,9 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   final WordProvider wordProvider;
   final List<Option> _words = <Option>[];
   QuizWord _quizWord;
+  int currentWord = 0;
+  int wordsCount = 4;
+  int optionsCount = 4;
 
   WordStudyState(this.wordProvider);
 
@@ -24,7 +26,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     setState(() {
-      _quizWord = wordProvider.getWord(4);
+      _quizWord = wordProvider.getWord(optionsCount);
     });
   }
 
@@ -36,13 +38,28 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
     }
   }
 
+  VoidCallback _getPreviousCallback() {
+    if (currentWord > 0) {
+      return () { setState(() { currentWord--;}); };
+    }
+    return null;
+  }
+
+  VoidCallback _getNextCallback() {
+    if (currentWord < wordsCount - 1) {
+      return () { setState(() { currentWord++;}); };
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold (
+    return new Scaffold(
       appBar: new AppBar(
         title: new Text(_quizWord.word),
       ),
-      body: new ListView.builder(
+      body: new Stack(
+        children: <Widget>[new ListView.builder(
           itemCount: _quizWord.options.length * 2,
           itemBuilder: (BuildContext context, int position) {
             if (position.isOdd) return new Divider();
@@ -51,22 +68,39 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
 
             return _buildRow(index);
           }),
+          new Align(
+            alignment: new Alignment(0.0, 1.0),
+            child: new Container(
+                decoration: new BoxDecoration(color: Colors.white),
+                child: new Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: new Row(
+                    children: <Widget>[
+                      new FlatButton(onPressed: _getPreviousCallback(), child: new Text("Previous")),
+                      new Expanded( child:  new Text("")),
+                      new FlatButton(onPressed: _getNextCallback(), child: new Text("Next"))
+                    ],
+                  )
+                )
+              )
+          )]
+      ),
     );
   }
 
   Widget _buildRow(int i) {
-    Option wordDisplay =  new Option(
+    Option wordDisplay = new Option(
         quizOption: _quizWord.options[i],
         optionIndex: i,
         onTap: _handleWordTapped,
         animationController: new AnimationController(
           duration: new Duration(milliseconds: 200),
           vsync: this,
-        )
-    );
+        ));
 
     if (_quizWord.options[i].isSelected && _quizWord.options[i].isEnabled) {
-      wordDisplay.animationController.addStatusListener((AnimationStatus status) {
+      wordDisplay.animationController
+          .addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed)
           _quizWord.options[i].isEnabled = false;
       });
@@ -78,7 +112,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    for(Option word in _words) {
+    for (Option word in _words) {
       word.animationController.dispose();
     }
     super.dispose();

@@ -48,11 +48,11 @@ class Option extends StatelessWidget {
               new Row(
                   children: [new Expanded (
                       child: new Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: new Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: new Container(
                         //decoration: new BoxDecoration(color: Colors.yellow),
-                        child: new Text(quizOption.meaning, style: _biggerFont)
-                    )
+                          child: new Text(quizOption.meaning, style: _biggerFont)
+                      )
                 ))]
               )
             ]
