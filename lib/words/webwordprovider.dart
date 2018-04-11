@@ -31,24 +31,20 @@ class WebWordProvider extends WordProvider {
     var request = await httpClient.getUrl(uri);
     var response = await request.close();
 
-    response.fold(new BytesBuilder(), (builder, data) => builder..add(data))
-        .then((builder) {
-      var data = builder.takeBytes();
-      var decoder = new SpreadsheetDecoder.decodeBytes(data);
-      var table = decoder.tables[decoder.tables.keys.first];
-      for(int i=0; i<table.rows.length; i++) {
-        var values = table.rows[i];
-        _words.add(new Word(values[0].toString(), values[1].toString()));
-        print(values);
-      }
-    });
-    print("--------------------");
+    var builder = await response.fold(new BytesBuilder(), (builder, data) => builder..add(data));
+    var data = builder.takeBytes();
+    var decoder = new SpreadsheetDecoder.decodeBytes(data);
+    var table = decoder.tables[decoder.tables.keys.first];
+    for(int i=0; i<table.rows.length; i++) {
+      var values = table.rows[i];
+      _words.add(new Word(values[0].toString(), values[1].toString()));
+    }
+
     return true;
   }
 
   @override
   QuizWord getWord(int optionsCount) {
-    print("Getting word");
     return super.getWordFromList(_words, optionsCount);
   }
 }

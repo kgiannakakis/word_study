@@ -31,7 +31,6 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
 
   void _loadState() async {
     bool ok = await wordProvider.init();
-    print(ok.toString());
     if (ok) {
       setState(() {
         _quizWord = wordProvider.getWord(optionsCount);
@@ -44,7 +43,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
 
   void _handleWordTapped(int wordIndex) {
     if (_quizWord.options[wordIndex].isEnabled) {
-      setState(() async {
+      setState(() {
         _quizWord.options[wordIndex].isSelected = true;
       });
     }
