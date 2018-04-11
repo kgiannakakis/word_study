@@ -52,7 +52,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
         optionIndex: i,
         onTap: _handleWordTapped,
         animationController: new AnimationController(
-          duration: new Duration(milliseconds: 700),
+          duration: new Duration(milliseconds: 200),
           vsync: this,
         )
     );
