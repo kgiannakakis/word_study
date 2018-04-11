@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'wordstudy.dart';
+import 'package:word_study/wordstudy.dart';
 
 void main() => runApp(new WordStudyApp());
 

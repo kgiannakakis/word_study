@@ -47,10 +47,11 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   }
 
   Widget _buildRow(int i) {
-    WordDisplay wordDisplay =  new WordDisplay(_quizWord.options[i].meaning,
-        _quizWord.options[i].isCorrect, _quizWord.options[i].isSelected,
-        i, _handleWordTapped,
-        new AnimationController(
+    WordDisplay wordDisplay =  new WordDisplay(
+        quizOption: _quizWord.options[i],
+        optionIndex: i,
+        onTap: _handleWordTapped,
+        animationController: new AnimationController(
           duration: new Duration(milliseconds: 700),
           vsync: this,
         )

@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:word_study/words/quizoption.dart';
 
 typedef void WordTapped(int index);
 
 class WordDisplay extends StatelessWidget {
+  final QuizOption quizOption;
+  final  WordTapped onTap;
   final AnimationController animationController;
-  final String meaning;
-  final bool isCorrect;
-  final bool isSelected;
-  final int wordIndex;
-  final WordTapped wordTapped;
+  final int optionIndex;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  WordDisplay(this.meaning, this.isCorrect, this.isSelected,
-              this.wordIndex, this.wordTapped,
-              this.animationController) {
-
-  }
+  WordDisplay({this.quizOption, this.onTap, this.optionIndex, this.animationController});
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +30,15 @@ class WordDisplay extends StatelessWidget {
                             constraints: new BoxConstraints.expand(
                                 height: 60.0),
                             decoration: new BoxDecoration(color:
-                            isSelected ? Colors.red : Colors.yellow)
+                            quizOption.isSelected ? Colors.red : Colors.yellow)
                         )
                     ),
                   )
                 ],
               ),
-              new ListTile(title: new Text("${meaning}", style: _biggerFont),
+              new ListTile(title: new Text(quizOption.meaning, style: _biggerFont),
                   onTap: () {
-                    wordTapped(wordIndex);
+                    onTap(optionIndex);
                   }
               )]
         )
