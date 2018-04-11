@@ -23,6 +23,11 @@ class WordProvider {
                new Word('aberration','the act of departing from the right, normal, or usual course')];
 
   QuizWord getWord(int optionsCount) {
+
+    if (optionsCount > words.length) {
+      throw new ArgumentError("Available words less than options count");
+    }
+
     int w = random.nextInt(words.length);
     int correct = random.nextInt(optionsCount);
 
