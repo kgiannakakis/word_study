@@ -45,9 +45,15 @@ class Option extends StatelessWidget {
                     ),
                   )
               ),
-              new Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: new Text(quizOption.meaning, style: _biggerFont)
+              new Row(
+                  children: [new Expanded (
+                      child: new Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Container(
+                        //decoration: new BoxDecoration(color: Colors.yellow),
+                        child: new Text(quizOption.meaning, style: _biggerFont)
+                    )
+                ))]
               )
             ]
           ),
