@@ -14,25 +14,37 @@ class WordStudy extends StatefulWidget {
 
 class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   final WordProvider wordProvider;
-  final List<Option> _words = <Option>[];
-  QuizWord _quizWord;
   int currentWord = 0;
   int wordsCount = 4;
   int optionsCount = 4;
+
+  final List<Option> _options = <Option>[];
+  QuizWord _quizWord = new QuizWord("", []);
 
   WordStudyState(this.wordProvider);
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _quizWord = wordProvider.getWord(optionsCount);
-    });
+    _loadState();
+  }
+
+  void _loadState() async {
+    bool ok = await wordProvider.init();
+    print(ok.toString());
+    if (ok) {
+      setState(() {
+        _quizWord = wordProvider.getWord(optionsCount);
+      });
+    }
+    else {
+      print("Init failed");
+    }
   }
 
   void _handleWordTapped(int wordIndex) {
     if (_quizWord.options[wordIndex].isEnabled) {
-      setState(() {
+      setState(() async {
         _quizWord.options[wordIndex].isSelected = true;
       });
     }
@@ -89,7 +101,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   }
 
   Widget _buildRow(int i) {
-    Option wordDisplay = new Option(
+    Option option = new Option(
         quizOption: _quizWord.options[i],
         optionIndex: i,
         onTap: _handleWordTapped,
@@ -99,20 +111,22 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
         ));
 
     if (_quizWord.options[i].isSelected && _quizWord.options[i].isEnabled) {
-      wordDisplay.animationController
+      option.animationController
           .addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed)
           _quizWord.options[i].isEnabled = false;
       });
-      wordDisplay.animationController.forward();
+      option.animationController.forward();
     }
 
-    return wordDisplay;
+    _options.add(option);
+
+    return option;
   }
 
   @override
   void dispose() {
-    for (Option word in _words) {
+    for (Option word in _options) {
       word.animationController.dispose();
     }
     super.dispose();

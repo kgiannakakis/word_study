@@ -1,12 +1,13 @@
 import 'dart:math';
+import 'dart:async';
 import 'package:word_study/words/word.dart';
 import 'package:word_study/words/quizword.dart';
 import 'package:word_study/words/quizoption.dart';
 
 class WordProvider {
-  var random = new Random(new DateTime.now().millisecondsSinceEpoch);
+  var _random = new Random(new DateTime.now().millisecondsSinceEpoch);
 
-  var words = [new Word('Shangri-la','a faraway haven or hideaway of idyllic beauty and tranquility'),
+  List<Word> _words = [new Word('Shangri-la','a faraway haven or hideaway of idyllic beauty and tranquility'),
                new Word('mythoclast','a destroyer or debunker of myths'),
                new Word('inscape','the unique essence or inner nature of a person, place, thing, or event, especially depicted in poetry or a work of art'),
                new Word('kismet','fate; destiny'),
@@ -22,26 +23,30 @@ class WordProvider {
                new Word('peculate','to steal or take dishonestly (money, especially public funds, or property entrusted to one\'s care)'),
                new Word('aberration','the act of departing from the right, normal, or usual course')];
 
-  QuizWord getWord(int optionsCount) {
+  Future<bool> init() async {
+    return true;
+  }
+
+  QuizWord getWordFromList(List<Word> words, int optionsCount) {
 
     if (optionsCount > words.length) {
       throw new ArgumentError("Available words less than options count");
     }
 
-    int w = random.nextInt(words.length);
-    int correct = random.nextInt(optionsCount);
+    int w = _random.nextInt(words.length);
+    int correct = _random.nextInt(optionsCount);
 
     List<QuizOption> quizOptions = new List<QuizOption>();
     List<int> optionIndices = new List<int>();
-    
+
     for(int i=0; i<optionsCount; i++) {
       if (i == correct) {
         quizOptions.add(new QuizOption(words[w].meaning, true));
       }
       else {
-        int o = random.nextInt(words.length);
+        int o = _random.nextInt(words.length);
         while (o == w || optionIndices.contains(o)) {
-          o = random.nextInt(words.length);
+          o = _random.nextInt(words.length);
         }
         optionIndices.add(o);
         quizOptions.add(new QuizOption(words[o].meaning, false));
@@ -50,5 +55,11 @@ class WordProvider {
 
     return new QuizWord(words[w].word, quizOptions);
   }
+
+  QuizWord getWord(int optionsCount) {
+    return getWordFromList(_words, optionsCount);
+  }
+
+
 
 }
