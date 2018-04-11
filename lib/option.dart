@@ -39,7 +39,9 @@ class Option extends StatelessWidget {
                     decoration: new BoxDecoration(color: _getColor()),
                     child: new Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: new Text(quizOption.meaning, style: _biggerInvisibleFont)
+                        child: new Center(
+                            child: new Text(quizOption.meaning, style: _biggerInvisibleFont)
+                        )
                     ),
                   )
               ),
@@ -65,7 +67,9 @@ class Option extends StatelessWidget {
                 decoration: new BoxDecoration(color: _getColor()),
                 child: new Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: new Text(quizOption.meaning, style: _biggerInvisibleFont)
+                    child: new Center(
+                      child: new Text(quizOption.meaning, style: _biggerInvisibleFont)
+                    )
                 ),
               ),
               new Padding(

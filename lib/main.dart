@@ -12,7 +12,7 @@ class WordStudyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: new WordStudy(),
+      home: new WordStudy()
     );
   }
 }
