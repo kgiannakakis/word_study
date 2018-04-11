@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/quizword.dart';
-import 'package:word_study/worddisplay.dart';
+import 'package:word_study/option.dart';
 
 class WordStudy extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   QuizWord _quizWord;
 
   final WordProvider wordProvider = new WordProvider();
-  final List<WordDisplay> _words = <WordDisplay>[];
+  final List<Option> _words = <Option>[];
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   }
 
   Widget _buildRow(int i) {
-    WordDisplay wordDisplay =  new WordDisplay(
+    Option wordDisplay =  new Option(
         quizOption: _quizWord.options[i],
         optionIndex: i,
         onTap: _handleWordTapped,
@@ -66,7 +66,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    for(WordDisplay word in _words) {
+    for(Option word in _words) {
       word.animationController.dispose();
     }
     super.dispose();

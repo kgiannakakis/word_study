@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:word_study/words/quizoption.dart';
 
-typedef void WordTapped(int index);
+typedef void OptionTapped(int index);
 
-class WordDisplay extends StatelessWidget {
+class Option extends StatelessWidget {
   final QuizOption quizOption;
-  final  WordTapped onTap;
+  final  OptionTapped onTap;
   final AnimationController animationController;
   final int optionIndex;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  WordDisplay({this.quizOption, this.onTap, this.optionIndex, this.animationController});
+  Option({this.quizOption, this.onTap, this.optionIndex, this.animationController});
 
   @override
   Widget build(BuildContext context) {
