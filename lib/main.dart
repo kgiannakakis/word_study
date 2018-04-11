@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/wordstudy.dart';
 
 void main() => runApp(new WordStudyApp());
@@ -12,7 +13,9 @@ class WordStudyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: new WordStudy()
+      home: new WordStudy(
+        wordProvider: new WordProvider(),
+      )
     );
   }
 }

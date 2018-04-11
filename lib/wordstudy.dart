@@ -4,15 +4,21 @@ import 'package:word_study/words/quizword.dart';
 import 'package:word_study/option.dart';
 
 class WordStudy extends StatefulWidget {
+
+  final WordProvider wordProvider;
+
+  WordStudy({this.wordProvider});
+
   @override
-  WordStudyState createState() => new WordStudyState();
+  WordStudyState createState() => new WordStudyState(wordProvider);
 }
 
 class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
+  final WordProvider wordProvider;
+  final List<Option> _words = <Option>[];
   QuizWord _quizWord;
 
-  final WordProvider wordProvider = new WordProvider();
-  final List<Option> _words = <Option>[];
+  WordStudyState(this.wordProvider);
 
   @override
   void initState() {
