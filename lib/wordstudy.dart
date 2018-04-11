@@ -23,9 +23,11 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   }
 
   void _handleWordTapped(int wordIndex) {
-    setState(() {
-      _quizWord.options[wordIndex].isSelected = true;
-    });
+    if (_quizWord.options[wordIndex].isEnabled) {
+      setState(() {
+        _quizWord.options[wordIndex].isSelected = true;
+      });
+    }
   }
 
   @override
@@ -57,8 +59,9 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
         )
     );
 
-    if (_quizWord.options[i].isSelected) {
+    if (_quizWord.options[i].isSelected && _quizWord.options[i].isEnabled) {
       wordDisplay.animationController.forward();
+      _quizWord.options[i].isEnabled = false;
     }
 
     return wordDisplay;
