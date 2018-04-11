@@ -32,6 +32,7 @@ class WordProvider {
     for(int i=0; i<optionsCount; i++) {
       if (i == correct) {
         quizOptions.add(new QuizOption(words[w].meaning, true));
+        optionIndices.add(i);
       }
       else {
         int o = random.nextInt(words.length);
