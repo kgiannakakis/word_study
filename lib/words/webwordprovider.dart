@@ -47,4 +47,9 @@ class WebWordProvider extends WordProvider {
   QuizWord getWord(int optionsCount) {
     return super.getWordFromList(_words, optionsCount);
   }
+
+  @override
+  List<QuizWord> getWords(int wordsCount, int optionsCount) {
+    return super.getWords(wordsCount, optionsCount);
+  }
 }

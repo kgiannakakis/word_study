@@ -7,21 +7,21 @@ import 'package:word_study/words/quizoption.dart';
 class WordProvider {
   var _random = new Random(new DateTime.now().millisecondsSinceEpoch);
 
-  List<Word> _words = [new Word('Shangri-la','a faraway haven or hideaway of idyllic beauty and tranquility'),
-               new Word('mythoclast','a destroyer or debunker of myths'),
-               new Word('inscape','the unique essence or inner nature of a person, place, thing, or event, especially depicted in poetry or a work of art'),
-               new Word('kismet','fate; destiny'),
-               new Word('ariose','characterized by melody; songlike'),
-               new Word('deracinate','to isolate or alienate (a person) from a native or customary culture or environment'),
-               new Word('pullulate','to increase rapidly; multiply'),
-               new Word('dornick','a small stone that is easy to throw'),
-               new Word('craic','mischievous fun; laughs'),
-               new Word('bunglesome','clumsy or awkward'),
-               new Word('paseo','a slow, idle, or leisurely walk or stroll'),
-               new Word('krummholz','a forest of stunted trees near the timber line on a mountain'),
-               new Word('ergophobia','an abnormal fear of work; an aversion to work'),
-               new Word('peculate','to steal or take dishonestly (money, especially public funds, or property entrusted to one\'s care)'),
-               new Word('aberration','the act of departing from the right, normal, or usual course')];
+  List<Word> _words = [new Word('_Shangri-la','a faraway haven or hideaway of idyllic beauty and tranquility'),
+               new Word('_mythoclast','a destroyer or debunker of myths'),
+               new Word('_inscape','the unique essence or inner nature of a person, place, thing, or event, especially depicted in poetry or a work of art'),
+               new Word('_kismet','fate; destiny'),
+               new Word('_ariose','characterized by melody; songlike'),
+               new Word('_deracinate','to isolate or alienate (a person) from a native or customary culture or environment'),
+               new Word('_pullulate','to increase rapidly; multiply'),
+               new Word('_dornick','a small stone that is easy to throw'),
+               new Word('_craic','mischievous fun; laughs'),
+               new Word('_bunglesome','clumsy or awkward'),
+               new Word('_paseo','a slow, idle, or leisurely walk or stroll'),
+               new Word('_krummholz','a forest of stunted trees near the timber line on a mountain'),
+               new Word('_ergophobia','an abnormal fear of work; an aversion to work'),
+               new Word('_peculate','to steal or take dishonestly (money, especially public funds, or property entrusted to one\'s care)'),
+               new Word('_aberration','the act of departing from the right, normal, or usual course')];
 
   Future<bool> init() async {
     return true;
@@ -60,6 +60,22 @@ class WordProvider {
     return getWordFromList(_words, optionsCount);
   }
 
+  List<QuizWord> getWords(int wordsCount, int optionsCount) {
+    if (wordsCount > _words.length) {
+      throw new ArgumentError("Available words less than words count");
+    }
+    List<QuizWord> quizWords = [];
+    List<String> words = [];
+    for(int i=0; i<wordsCount; i++) {
+      QuizWord quizWord = getWord(optionsCount);
+      while(words.contains(quizWord.word)) {
+        quizWord = getWord(optionsCount);
+      }
+      words.add(quizWord.word);
+      quizWords.add(quizWord);
+    }
 
+    return quizWords;
+  }
 
 }

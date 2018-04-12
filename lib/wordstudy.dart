@@ -1,53 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:word_study/words/wordprovider.dart';
+import 'package:word_study/words/quiz.dart';
 import 'package:word_study/words/quizword.dart';
 import 'package:word_study/option.dart';
 
 class WordStudy extends StatefulWidget {
-  final WordProvider wordProvider;
+  final Quiz quiz;
   final int currentWord;
   final int wordsCount;
 
-  WordStudy({this.wordProvider, this.currentWord, this.wordsCount});
+  WordStudy({this.quiz, this.currentWord, this.wordsCount});
 
   @override
-  WordStudyState createState() => new WordStudyState(wordProvider, currentWord, wordsCount);
+  WordStudyState createState() => new WordStudyState(quiz, currentWord, wordsCount);
 }
 
 class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
-  final WordProvider wordProvider;
   final int currentWord;
   final int wordsCount;
-  int optionsCount = 4;
+  final Quiz quiz;
+  QuizWord _quizWord;
 
   final List<Option> _options = <Option>[];
-  QuizWord _quizWord = new QuizWord("", []);
 
-  WordStudyState(this.wordProvider, this.currentWord, this.wordsCount);
+  WordStudyState(this.quiz, this.currentWord, this.wordsCount);
 
   @override
   void initState() {
     super.initState();
-    if (currentWord == 0) {
-      _loadState();
-    }
-    else {
-      setState(() {
-        _quizWord = wordProvider.getWord(optionsCount);
-      });
-    }
-  }
-
-  void _loadState() async {
-    bool ok = await wordProvider.init();
-    if (ok) {
-      setState(() {
-        _quizWord = wordProvider.getWord(optionsCount);
-      });
-    }
-    else {
-      print("Init failed");
-    }
+    setState(() {
+      _quizWord = quiz.getQuizWord(currentWord);
+    });
   }
 
   void _handleWordTapped(int wordIndex) {
@@ -72,7 +54,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
       return () {
         Navigator.of(context).push(
             new MaterialPageRoute(
-                builder: (context) => new WordStudy(wordProvider: wordProvider,
+                builder: (context) => new WordStudy(quiz: quiz,
                   currentWord: currentWord + 1,
                   wordsCount: wordsCount,)
             )
