@@ -5,28 +5,37 @@ import 'package:word_study/option.dart';
 
 class WordStudy extends StatefulWidget {
   final WordProvider wordProvider;
+  final int currentWord;
+  final int wordsCount;
 
-  WordStudy({this.wordProvider});
+  WordStudy({this.wordProvider, this.currentWord, this.wordsCount});
 
   @override
-  WordStudyState createState() => new WordStudyState(wordProvider);
+  WordStudyState createState() => new WordStudyState(wordProvider, currentWord, wordsCount);
 }
 
 class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   final WordProvider wordProvider;
-  int currentWord = 0;
-  int wordsCount = 4;
+  final int currentWord;
+  final int wordsCount;
   int optionsCount = 4;
 
   final List<Option> _options = <Option>[];
   QuizWord _quizWord = new QuizWord("", []);
 
-  WordStudyState(this.wordProvider);
+  WordStudyState(this.wordProvider, this.currentWord, this.wordsCount);
 
   @override
   void initState() {
     super.initState();
-    _loadState();
+    if (currentWord == 0) {
+      _loadState();
+    }
+    else {
+      setState(() {
+        _quizWord = wordProvider.getWord(optionsCount);
+      });
+    }
   }
 
   void _loadState() async {
@@ -51,14 +60,24 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
 
   VoidCallback _getPreviousCallback() {
     if (currentWord > 0) {
-      return () { setState(() { currentWord--;}); };
+      return () {
+        Navigator.of(context).pop();
+      };
     }
     return null;
   }
 
   VoidCallback _getNextCallback() {
     if (currentWord < wordsCount - 1) {
-      return () { setState(() { currentWord++;}); };
+      return () {
+        Navigator.of(context).push(
+            new MaterialPageRoute(
+                builder: (context) => new WordStudy(wordProvider: wordProvider,
+                  currentWord: currentWord + 1,
+                  wordsCount: wordsCount,)
+            )
+        );
+      };
     }
     return null;
   }

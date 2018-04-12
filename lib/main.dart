@@ -16,6 +16,8 @@ class WordStudyApp extends StatelessWidget {
       ),
       home: new WordStudy(
         wordProvider: new WebWordProvider("https://dl.dropboxusercontent.com/s/rwjl6apmu0xilyq/test.xlsx?dl=0"),
+        currentWord: 0,
+        wordsCount: 10,
       )
     );
   }
