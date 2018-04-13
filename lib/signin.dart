@@ -13,6 +13,7 @@ GoogleSignIn _googleSignIn = new GoogleSignIn(
   scopes: <String>[
     'email',
     'https://www.googleapis.com/auth/contacts.readonly',
+    'https://www.googleapis.com/auth/drive.readonly'
   ],
 );
 
@@ -53,8 +54,9 @@ class SignInDemoState extends State<SignInDemo> {
       _contactText = "Loading contact info...";
     });
     final http.Response response = await http.get(
-      'https://people.googleapis.com/v1/people/me/connections'
-          '?requestMask.includeField=person.names',
+      'https://www.googleapis.com/drive/v3/files',
+      //'https://people.googleapis.com/v1/people/me/connections'
+      //    '?requestMask.includeField=person.names',
       headers: await _currentUser.authHeaders,
     );
     if (response.statusCode != 200) {
@@ -66,7 +68,7 @@ class SignInDemoState extends State<SignInDemo> {
       return;
     }
     final Map<String, dynamic> data = json.decode(response.body);
-    final String namedContact = _pickFirstNamedContact(data);
+    final String namedContact = _pickFirstFile(data);
     setState(() {
       if (namedContact != null) {
         _contactText = "I see you know $namedContact!";
@@ -74,6 +76,20 @@ class SignInDemoState extends State<SignInDemo> {
         _contactText = "No contacts to display.";
       }
     });
+  }
+
+  String _pickFirstFile(Map<String, dynamic> data) {
+    final List<dynamic> files = data['files'];
+    final Map<String, dynamic> file = files?.firstWhere(
+          (dynamic contact) => contact['name'] != null,
+      orElse: () => null,
+    );
+    if (file != null) {
+      if (file != null) {
+        return file['name'];
+      }
+    }
+    return null;
   }
 
   String _pickFirstNamedContact(Map<String, dynamic> data) {
