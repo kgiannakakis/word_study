@@ -4,10 +4,12 @@
 
 import 'dart:async';
 import 'dart:convert' show json;
+import 'dart:io';
 
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 
 GoogleSignIn _googleSignIn = new GoogleSignIn(
   scopes: <String>[
@@ -53,8 +55,11 @@ class SignInDemoState extends State<SignInDemo> {
     setState(() {
       _contactText = "Loading contact info...";
     });
+    final String q = Uri.encodeComponent('mimeType=\'application/vnd.google-apps.folder\' and name=\'Word Study\'');
+    print(q);
     final http.Response response = await http.get(
-      'https://www.googleapis.com/drive/v3/files',
+      'https://www.googleapis.com/drive/v3/files?q=' + q,
+      //'?q=mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+name=%27Word+Study%27',
       //'https://people.googleapis.com/v1/people/me/connections'
       //    '?requestMask.includeField=person.names',
       headers: await _currentUser.authHeaders,
@@ -67,7 +72,9 @@ class SignInDemoState extends State<SignInDemo> {
       print('People API ${response.statusCode} response: ${response.body}');
       return;
     }
+    print(response.body);
     final Map<String, dynamic> data = json.decode(response.body);
+    print(data['files'].length);
     final String namedContact = _pickFirstFile(data);
     setState(() {
       if (namedContact != null) {
@@ -76,6 +83,38 @@ class SignInDemoState extends State<SignInDemo> {
         _contactText = "No contacts to display.";
       }
     });
+
+    final Map<String, dynamic> folder0 = data['files'][0];
+    final String q2 = Uri.encodeComponent('\'${folder0['id']}\' in parents and '
+    'mimeType = \'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\'');
+    final http.Response response2 = await http.get(
+      'https://www.googleapis.com/drive/v3/files?q=' + q2,
+      headers: await _currentUser.authHeaders,
+    );
+    print('----------------');
+    print(response2.body);
+    final Map<String, dynamic> data2 = json.decode(response2.body);
+    final Map<String, dynamic> file0 = data2['files'][0];
+
+    print(file0['id']);
+
+    var httpClient = new HttpClient();
+    var uri = Uri.parse( 'https://www.googleapis.com/drive/v3/files/${file0['id']}/export');
+    var request = await httpClient.getUrl(uri);
+    var headers = await _currentUser.authHeaders;
+    headers.forEach((name, value) =>
+        request.headers.add(name, value)
+    );
+    var response3 = await request.close();
+
+    var builder = await response3.fold(new BytesBuilder(), (builder, data) => builder..add(data));
+    var bytes = builder.takeBytes();
+    var decoder = new SpreadsheetDecoder.decodeBytes(bytes);
+    var table = decoder.tables[decoder.tables.keys.first];
+    for(int i=0; i<table.rows.length; i++) {
+      var values = table.rows[i];
+      print(values[0] + ' = ' + values[1]);
+    }
   }
 
   String _pickFirstFile(Map<String, dynamic> data) {
