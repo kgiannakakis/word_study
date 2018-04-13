@@ -23,6 +23,12 @@ class Home extends StatelessWidget {
           )
       );
     }
+    else {
+      Scaffold.of(context).showSnackBar(new SnackBar(
+          content: new Text('Failed to start quiz'),
+          backgroundColor: Colors.red
+      ));
+    }
   }
 
   Future<bool> _initQuiz() async {
@@ -38,20 +44,23 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-        title: new Text("Word Study"),
-    ),
-    body: new Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        new Expanded(
-          child: new Center(
-            child: new RaisedButton(
-              onPressed: () {_start(context);},
-              child: new Text("Start"),)
-          )
-        )
-      ],
-    )
+          title: new Text("Word Study"),
+        ),
+        body: new Builder(
+            builder: (BuildContext context) {
+              return new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Expanded(
+                      child: new Center(
+                          child: new RaisedButton(
+                            onPressed: () {_start(context);},
+                            child: new Text("Start"),)
+                      )
+                  )
+                ],
+              );
+            })
     );
   }
 }
