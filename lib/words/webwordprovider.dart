@@ -52,4 +52,12 @@ class WebWordProvider extends WordProvider {
   List<QuizWord> getWords(int wordsCount, int optionsCount) {
     return super.getWords(wordsCount, optionsCount);
   }
+
+  int get length {
+    return _words.length;
+  }
+
+  void store (String filename) async {
+    storeWords(_words, filename);
+  }
 }

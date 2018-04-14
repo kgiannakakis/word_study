@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:word_study/words/word.dart';
 import 'package:word_study/words/quizword.dart';
 import 'package:word_study/words/quizoption.dart';
@@ -76,6 +78,28 @@ class WordProvider {
     }
 
     return quizWords;
+  }
+
+  int get length {
+    return _words.length;
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  void storeWords (List<Word> words, String filename) async {
+    final path = await _localPath;
+    File file =  new File('$path/$filename');
+    words.forEach((word) {
+      file.writeAsString('${word.word}\t${word.meaning}');
+    });
+  }
+
+  void store (String filename) async {
+    storeWords(_words, filename);
   }
 
 }
