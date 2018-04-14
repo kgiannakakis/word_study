@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:word_study/signin.dart';
 import 'package:word_study/wordstudy.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/webwordprovider.dart';
@@ -31,6 +32,14 @@ class Home extends StatelessWidget {
     }
   }
 
+  void _goToGoogleDrive(BuildContext context) {
+    Navigator.of(context).push(
+        new MaterialPageRoute(
+            builder: (context) => new SignInDemo()
+        )
+    );
+  }
+
   Future<bool> _initQuiz() async {
     WordProvider wordProvider =
       new WebWordProvider("https://dl.dropboxusercontent.com/s/rwjl6apmu0xilyq/test.xlsx?dl=0");
@@ -49,18 +58,28 @@ class Home extends StatelessWidget {
         body: new Builder(
             builder: (BuildContext context) {
               return new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Expanded(
-                      child: new Center(
-                          child: new RaisedButton(
-                            onPressed: () {_start(context);},
-                            child: new Text("Start"),)
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Expanded(
+                      child: new Column(
+                        children: <Widget>[
+                          new Expanded(child: new Center(
+                              child: new RaisedButton(
+                                  onPressed: () {_start(context);},
+                                  child: new Text("Start"))
+                          )),
+                          new Expanded(child: new Center(
+                              child: new RaisedButton(
+                                onPressed: () {_goToGoogleDrive(context);},
+                                child: new Text("Google Drive"),)
+                          ))
+                        ],
                       )
-                  )
-                ],
-              );
-            })
+                    )
+                  ]);
+            }
+        )
     );
   }
+
 }
