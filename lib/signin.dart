@@ -98,17 +98,24 @@ class SignInDemoState extends State<SignInDemo> {
 
     print(file0['id']);
 
-    var httpClient = new HttpClient();
-    var uri = Uri.parse( 'https://www.googleapis.com/drive/v3/files/${file0['id']}/export');
-    var request = await httpClient.getUrl(uri);
+    var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file0['id']}?alt=media';
     var headers = await _currentUser.authHeaders;
-    headers.forEach((name, value) =>
-        request.headers.add(name, value)
-    );
-    var response3 = await request.close();
+    final http.Response response3 = await http.get(fileUrl,
+      headers: headers);
+    var bytes = response3.bodyBytes;
 
-    var builder = await response3.fold(new BytesBuilder(), (builder, data) => builder..add(data));
-    var bytes = builder.takeBytes();
+//    var httpClient = new HttpClient();
+//    var uri = Uri.parse(fileUrl);
+//    var request = await httpClient.getUrl(uri);
+//    headers.forEach((name, value) =>
+//        request.headers.add(name, value)
+//    );
+//    var response3 = await request.close();
+//
+//    var builder = await response3.fold(new BytesBuilder(), (builder, data) => builder..add(data));
+//    var bytes = builder.takeBytes();
+
+
     var decoder = new SpreadsheetDecoder.decodeBytes(bytes);
     var table = decoder.tables[decoder.tables.keys.first];
     for(int i=0; i<table.rows.length; i++) {
