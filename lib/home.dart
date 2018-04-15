@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:word_study/signin.dart';
 import 'package:word_study/wordstudy.dart';
 import 'package:word_study/words/wordprovider.dart';
@@ -41,9 +43,17 @@ class Home extends StatelessWidget {
   }
 
   Future<bool> _initQuiz() async {
-    WordProvider wordProvider =
-      new WebWordProvider("https://dl.dropboxusercontent.com/s/rwjl6apmu0xilyq/test.xlsx?dl=0");
-    await wordProvider.store('test.xlsx');
+    final directory = await getApplicationDocumentsDirectory();
+    File file = new File('${directory.path}/test.xlsx');
+    bool exists = await file.exists();
+    print(exists);
+    if (!exists) {
+      print('Loading from web');
+      WordProvider wordProvider = new WebWordProvider(
+          "https://dl.dropboxusercontent.com/s/rwjl6apmu0xilyq/test.xlsx?dl=0");
+      await wordProvider.init();
+      await wordProvider.store('test.xlsx');
+    }
     QuizSettings quizSettings = new QuizSettings(wordsCount: wordsCount, optionsCount: optionsCount);
     _quiz = new Quiz(settings: quizSettings, filenames: <String>['test.xlsx']);
     bool ok = await _quiz.init();

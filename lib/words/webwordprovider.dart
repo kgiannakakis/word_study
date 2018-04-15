@@ -57,7 +57,7 @@ class WebWordProvider extends WordProvider {
     return _words.length;
   }
 
-  void store (String filename) async {
+  Future<void> store (String filename) async {
     storeWords(_words, filename);
   }
 }

@@ -90,15 +90,18 @@ class WordProvider {
     return directory.path;
   }
 
-  void storeWords (List<Word> words, String filename) async {
+  Future<void> storeWords (List<Word> words, String filename) async {
     final path = await _localPath;
     File file =  new File('$path/$filename');
+    String content = '';
     words.forEach((word) {
-      file.writeAsString('${word.word}\t${word.meaning}');
+      String line = '${word.word}\t${word.meaning}\n';
+      content = content + line;
     });
+    await file.writeAsString(content.trim());
   }
 
-  void store (String filename) async {
+  Future<void> store (String filename) async {
     storeWords(_words, filename);
   }
 

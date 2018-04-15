@@ -25,6 +25,11 @@ class FileWordProvider extends WordProvider {
     try {
       final path = await _localPath;
       File file =  new File('$path/$filename');
+      bool exists = await file.exists();
+      if (!exists) {
+        return false;
+      }
+
       String contents = await file.readAsString();
       List<String> lines = contents.split('\n');
       lines.forEach((line) {
@@ -53,7 +58,7 @@ class FileWordProvider extends WordProvider {
     return _words.length;
   }
 
-  void store (String filename) async {
+  Future<void> store (String filename) async {
     storeWords(_words, filename);
   }
 }
