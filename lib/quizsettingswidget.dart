@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:word_study/words/quizsettings.dart';
+import 'package:word_study/words/filewordprovider.dart';
 
 class QuizSettingsWidget extends StatefulWidget {
 
@@ -19,12 +18,22 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
   final List<String> files;
 
   QuizSettings _quizSettings = new QuizSettings();
-  int _totalWordsCount = 10;
+  int _totalWordsCount = 0;
 
   QuizSettingsWidgetState(this.files);
 
   @override void initState() {
     super.initState();
+
+    _loadState();
+  }
+
+  Future<void> _loadState() async {
+    var wordProvider = new FileWordProvider(files[0]);
+    await wordProvider.init();
+    setState(() {
+      _totalWordsCount = wordProvider.length;
+    });
   }
 
   @override
