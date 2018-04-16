@@ -5,12 +5,13 @@ import 'package:word_study/words/filewordprovider.dart';
 import 'package:word_study/words/quizword.dart';
 
 class Quiz {
+  final String name;
   final QuizSettings settings;
   final List<String> filenames;
 
   List<QuizWord> _quizWords;
 
-  Quiz({this.settings, this.filenames});
+  Quiz({this.name, this.settings, this.filenames});
 
   Future<bool> init() async {
     WordProvider wordProvider = new FileWordProvider(filenames[0]);

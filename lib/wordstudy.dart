@@ -6,23 +6,21 @@ import 'package:word_study/option.dart';
 class WordStudy extends StatefulWidget {
   final Quiz quiz;
   final int currentWord;
-  final int wordsCount;
 
-  WordStudy({this.quiz, this.currentWord, this.wordsCount});
+  WordStudy({this.quiz, this.currentWord});
 
   @override
-  WordStudyState createState() => new WordStudyState(quiz, currentWord, wordsCount);
+  WordStudyState createState() => new WordStudyState(quiz, currentWord);
 }
 
 class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   final int currentWord;
-  final int wordsCount;
   final Quiz quiz;
   QuizWord _quizWord;
 
   final List<Option> _options = <Option>[];
 
-  WordStudyState(this.quiz, this.currentWord, this.wordsCount);
+  WordStudyState(this.quiz, this.currentWord);
 
   @override
   void initState() {
@@ -50,13 +48,14 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   }
 
   VoidCallback _getNextCallback() {
+    int wordsCount = quiz.settings.wordsCount;
+
     if (currentWord < wordsCount - 1) {
       return () {
         Navigator.of(context).push(
             new MaterialPageRoute(
                 builder: (context) => new WordStudy(quiz: quiz,
-                  currentWord: currentWord + 1,
-                  wordsCount: wordsCount,)
+                  currentWord: currentWord + 1)
             )
         );
       };
