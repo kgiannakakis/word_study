@@ -9,7 +9,7 @@ import 'package:word_study/words/quizoption.dart';
 class WordProvider {
   var _random = new Random(new DateTime.now().millisecondsSinceEpoch);
 
-  List<Word> _words = [new Word('_Shangri-la','a faraway haven or hideaway of idyllic beauty and tranquility'),
+  List<Word> _words = [new Word('Shangri-la','a faraway haven or hideaway of idyllic beauty and tranquility'),
                new Word('mythoclast','a destroyer or debunker of myths'),
                new Word('inscape','the unique essence or inner nature of a person, place, thing, or event, especially depicted in poetry or a work of art'),
                new Word('kismet','fate; destiny'),
