@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:word_study/wordstudy.dart';
+import 'package:word_study/fileslist.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/quiz.dart';
 import 'package:word_study/words/quizsettings.dart';
@@ -67,6 +68,14 @@ class HomeState extends State<Home> {
     }
   }
 
+  void _gotoFilesList() {
+    Navigator.of(context).push(
+        new MaterialPageRoute(
+            builder: (context) => new FilesList()
+        )
+    );
+  }
+
 //  void _goToGoogleDrive(BuildContext context) {
 //    Navigator.of(context).push(
 //        new MaterialPageRoute(
@@ -111,7 +120,7 @@ class HomeState extends State<Home> {
         ),
       body: new ListView.builder(
           padding: const EdgeInsets.all(16.0),
-          itemCount: _quizzes.length,
+          itemCount: 2*_quizzes.length,
           itemBuilder: (BuildContext context, int position) {
             if (position.isOdd) return new Divider();
 
@@ -119,6 +128,8 @@ class HomeState extends State<Home> {
 
             return _buildRow(index);
           }),
+      floatingActionButton: new FloatingActionButton(onPressed: _gotoFilesList,
+                                                     child: new Icon(Icons.add)),
     );
   }
 
