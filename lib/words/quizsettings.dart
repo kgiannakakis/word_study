@@ -1,8 +1,8 @@
 
 class QuizSettings {
 
-  final int wordsCount;
-  final int optionsCount;
+  int wordsCount;
+  int optionsCount;
 
   QuizSettings({this.wordsCount, this.optionsCount});
 
