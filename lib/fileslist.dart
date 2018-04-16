@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:word_study/quizsettingswidget.dart';
 
 class FilesList extends StatefulWidget {
 
@@ -55,6 +56,11 @@ class FilesListState extends State<FilesList> {
   }
 
   void _create(int i) {
+    Navigator.of(context).push(
+        new MaterialPageRoute(
+            builder: (context) => new QuizSettingsWidget(<String> [_files[i]])
+        )
+    );
   }
 
   Widget _buildRow(int i) {
