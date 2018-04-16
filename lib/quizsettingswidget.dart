@@ -57,7 +57,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
               new ListTile(
                 leading: const Icon(Icons.apps),
                 title: new TextFormField(
-                  keyboardType: TextInputType.numberWithOptions(),
+                  keyboardType: TextInputType.number,
                   decoration: new InputDecoration(
                     labelText: "Word Count",
                     hintText: "Word Count",
@@ -80,7 +80,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
               new ListTile(
                 leading: const Icon(Icons.grain),
                 title: new TextFormField(
-                  keyboardType: TextInputType.numberWithOptions(),
+                  keyboardType: TextInputType.number,
                   initialValue: '4',
                   decoration: new InputDecoration(
                     labelText: "Options Count",
