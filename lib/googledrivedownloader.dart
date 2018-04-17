@@ -109,7 +109,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
       var table = decoder.tables[decoder.tables.keys.first];
       for(int i=0; i<table.rows.length; i++) {
         var values = table.rows[i];
-        print(values[0] + ' = ' + values[1]);
+        print(values[0].toString() + ' = ' + values[1].toString());
       }
     }
   }

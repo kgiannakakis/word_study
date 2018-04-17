@@ -8,7 +8,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.0
-  spreadsheet_decoder: ^0.3.2
+  spreadsheet_decoder:
+    git:
+      https://github.com/kgiannakakis/spreadsheet_decoder
   google_sign_in: ^3.0.1
   http: ^0.11.3
   path_provider: ^0.4.0

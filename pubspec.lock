@@ -348,10 +348,12 @@ packages:
   spreadsheet_decoder:
     dependency: "direct main"
     description:
-      name: spreadsheet_decoder
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.2"
+      path: "."
+      ref: HEAD
+      resolved-ref: f4c433d455240dfb0c155b5820a5204709eb5f5a
+      url: "https://github.com/kgiannakakis/spreadsheet_decoder"
+    source: git
+    version: "0.4.3-alpha"
   stack_trace:
     dependency: transitive
     description:
@@ -428,7 +430,7 @@ packages:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.0"
+    version: "3.0.0"
   yaml:
     dependency: transitive
     description:
