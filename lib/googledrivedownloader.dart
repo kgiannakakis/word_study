@@ -6,12 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 
-GoogleSignIn _googleSignIn = new GoogleSignIn(
-  scopes: <String>[
-    'email',
-    'https://www.googleapis.com/auth/drive.readonly'
-  ],
-);
 
 const String googleDriveAppFolderName = 'Word Study';
 
@@ -21,12 +15,25 @@ class GoogleDriveDownloader extends StatefulWidget {
 }
 
 class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
+  GoogleSignIn _googleSignIn;
   GoogleSignInAccount _currentUser;
+
   String _messageText;
+  List<String> _files = [];
+
+  final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
   void initState() {
     super.initState();
+
+    _googleSignIn = new GoogleSignIn(
+      scopes: <String>[
+        'email',
+        'https://www.googleapis.com/auth/drive.readonly'
+      ],
+    );
+
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
       setState(() {
         _currentUser = account;
@@ -41,9 +48,9 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   Future<Null> _initGetFiles() async {
     setState(() {
       _messageText = 'Loading files...';
+      _files = [];
     });
     final String q = Uri.encodeComponent('mimeType=\'application/vnd.google-apps.folder\' and name=\'Word Study\'');
-    print(q);
     final http.Response response = await http.get(
       'https://www.googleapis.com/drive/v3/files?q=' + q,
       headers: await _currentUser.authHeaders,
@@ -95,6 +102,14 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
       });
     }
     else {
+      var files = <String>[];
+      for(int i=0; i<filesData['files'].length; i++) {
+        files.add(filesData['files'][i]['name']);
+      }
+      setState(() {
+        _files = files;
+      });
+
       final Map<String, dynamic> file0 = filesData['files'][0];
 
       print(file0['id']);
@@ -141,7 +156,8 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   }
 
   Widget _buildBody() {
-    if (_currentUser != null) {
+
+    if (_currentUser != null && _files.length == 0) {
       return new Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -164,7 +180,41 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
           ),
         ],
       );
-    } else {
+    }
+    else if (_currentUser != null && _files.length > 0) {
+      return
+        new Stack(
+          children: <Widget>[
+            new ListView.builder(
+                padding: const EdgeInsets.all(16.0),
+                itemCount: 2*_files.length,
+                itemBuilder: (BuildContext context, int position) {
+                  if (position.isOdd) return new Divider();
+
+                  final index = position ~/ 2;
+
+                  return _buildRow(index);
+                }),
+            new Align(
+                alignment: new Alignment(0.0, 1.0),
+                child: new Container(
+                    decoration: new BoxDecoration(color: Colors.white),
+                    child: new Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: new Row(
+                          children: <Widget>[
+                            new RaisedButton(onPressed: _handleSignOut, child: new Text('SIGN OUT')),
+                            new Expanded( child:  new Text("")),
+                            new RaisedButton(onPressed: _initGetFiles, child: new Text('REFRESH'))
+                          ],
+                        )
+                    )
+                )
+            )
+          ],
+        );
+    }
+    else {
       return new Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -191,5 +241,15 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
         constraints: const BoxConstraints.expand(),
         child: _buildBody(),
       );
+  }
+
+  Widget _buildRow(int i) {
+    return new Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: new ListTile(
+            title: new Text(_files[i], style: _biggerFont),
+            onTap: () {  }
+        )
+    );
   }
 }
