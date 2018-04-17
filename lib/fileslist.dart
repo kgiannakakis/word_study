@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:word_study/quizsettingswidget.dart';
+import 'package:word_study/filedownloader.dart';
 
 class FilesList extends StatefulWidget {
 
@@ -89,7 +90,14 @@ class FilesListState extends State<FilesList> {
 
             return _buildRow(index);
           }),
-      floatingActionButton: new FloatingActionButton(onPressed: null,
+      floatingActionButton: new FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+                new MaterialPageRoute(
+                    builder: (context) => new FileDownloader()
+                )
+            );
+          },
           child: new Icon(Icons.add)),
     );
   }
