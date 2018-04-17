@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:word_study/googledrivedownloader.dart';
 
 class FileDownloader extends StatelessWidget {
 
@@ -19,7 +20,7 @@ class FileDownloader extends StatelessWidget {
         ),
         body: new TabBarView(
           children: [
-            new Icon(FontAwesomeIcons.googleDrive),
+            new GoogleDriveDownloader(),
             new Icon(FontAwesomeIcons.globe),
           ],
         ),
