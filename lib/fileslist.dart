@@ -41,6 +41,15 @@ class FilesListState extends State<FilesList> {
     );
   }
 
+  void _addNewFile() async {
+    await Navigator.of(context).push(
+        new MaterialPageRoute(
+            builder: (context) => new FileDownloader()
+        )
+    );
+    await _loadFiles();
+  }
+
   Widget _buildRow(int i) {
     return new Padding(
         padding: const EdgeInsets.all(16.0),
@@ -69,13 +78,7 @@ class FilesListState extends State<FilesList> {
             return _buildRow(index);
           }),
       floatingActionButton: new FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-                new MaterialPageRoute(
-                    builder: (context) => new FileDownloader()
-                )
-            );
-          },
+          onPressed: () { _addNewFile(); },
           child: new Icon(Icons.add)),
     );
   }

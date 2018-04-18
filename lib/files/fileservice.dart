@@ -40,4 +40,27 @@ class FileService {
     }
     return files;
   }
+
+  Future<String> getNewFilename(String name) async {
+    final directory = await localPath;
+    File file = new File('$directory/$name');
+    if (!(await file.exists())) {
+      return name;
+    }
+
+    var allFiles = await listFiles();
+    var allFilenames = allFiles.map<String>((wordFile) => wordFile.name);
+    var files = allFilenames.where((f) => f.startsWith(name));
+
+    RegExp regexp = new RegExp('-(\\d)+\$');
+    int max = 0;
+    files.forEach((f) {
+      if (regexp.hasMatch(f)) {
+        var match = regexp.firstMatch(f);
+        max = int.parse(match[1]);
+      }
+    });
+
+    return '$name-${max + 1}';
+  }
 }

@@ -5,7 +5,7 @@ import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:word_study/words/webwordprovider.dart';
-
+import 'package:word_study/files/fileservice.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
 
@@ -29,6 +29,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   List<GoogleDriveFile> _files = <GoogleDriveFile>[];
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  final FileService _fileService = new FileService();
 
   @override
   void initState() {
@@ -69,7 +70,6 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
       print('Google Drive API ${response.statusCode} response: ${response.body}');
       return;
     }
-    print(response.body);
     final Map<String, dynamic> data = json.decode(response.body);
 
     if (data['files'].length == 0) {
@@ -100,7 +100,6 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
       'https://www.googleapis.com/drive/v3/files?q=' + q2,
       headers: await _currentUser.authHeaders,
     );
-    print(response.body);
     final Map<String, dynamic> filesData = json.decode(response.body);
 
     if (filesData['files'].length == 0) {
@@ -143,7 +142,9 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
 
     var webWordProvider = new WebWordProvider(fileUrl, headers);
     await webWordProvider.init();
-    print(webWordProvider.length);
+    String filename = await _fileService.getNewFilename(file.name);
+    await webWordProvider.store(filename);
+    Navigator.of(context).pop();
   }
 
   Future<Null> _handleSignIn() async {
