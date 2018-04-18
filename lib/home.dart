@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:word_study/wordstudy.dart';
 import 'package:word_study/fileslist.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/quiz.dart';
 import 'package:word_study/words/quizsettings.dart';
+import 'package:word_study/files/fileservice.dart';
 
 class Home extends StatefulWidget {
 
@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
 
   List<Quiz> _quizzes = <Quiz>[];
-
+  final FileService _fileService = new FileService();
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
@@ -30,8 +30,8 @@ class HomeState extends State<Home> {
   Future<void> _loadQuizzes() async {
     const builtinFilename = '__builtin';
 
-    final directory = await getApplicationDocumentsDirectory();
-    File file = new File('${directory.path}/$builtinFilename');
+    final directory = _fileService.localPath;
+    File file = new File('$directory/$builtinFilename');
     bool exists = await file.exists();
 
     if (!exists) {

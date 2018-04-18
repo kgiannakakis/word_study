@@ -1,13 +1,14 @@
 import 'dart:math';
 import 'dart:async';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'package:word_study/words/word.dart';
 import 'package:word_study/words/quizword.dart';
 import 'package:word_study/words/quizoption.dart';
+import 'package:word_study/files/fileservice.dart';
 
 class WordProvider {
   var _random = new Random(new DateTime.now().millisecondsSinceEpoch);
+  final FileService _fileService = new FileService();
 
   List<Word> _words = [new Word('Shangri-la','a faraway haven or hideaway of idyllic beauty and tranquility'),
                new Word('mythoclast','a destroyer or debunker of myths'),
@@ -84,14 +85,8 @@ class WordProvider {
     return _words.length;
   }
 
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
   Future<void> storeWords (List<Word> words, String filename) async {
-    final path = await _localPath;
+    final path = await _fileService.localPath;
     File file =  new File('$path/$filename');
     String content = '';
     words.forEach((word) {

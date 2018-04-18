@@ -5,6 +5,12 @@ import 'package:word_study/files/wordfile.dart';
 
 class FileService {
 
+  Future<String> get localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
   Future<List<FileSystemEntity>> _dirContents(Directory dir) {
     var files = <FileSystemEntity>[];
     var completer = new Completer<List<FileSystemEntity>>();
@@ -18,8 +24,8 @@ class FileService {
   }
 
   Future<List<WordFile>> listFiles() async {
-    final directory = await getApplicationDocumentsDirectory();
-    Directory dir = new Directory(directory.path);
+    final directory = await localPath;
+    Directory dir = new Directory(directory);
     var fileSystemEntities = await _dirContents(dir);
 
     RegExp regexp = new RegExp('[^\/]+\$');

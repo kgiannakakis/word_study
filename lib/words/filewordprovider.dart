@@ -1,29 +1,23 @@
 import 'dart:io';
 import 'dart:async';
 
-import 'package:path_provider/path_provider.dart';
-
 import 'package:word_study/words/word.dart';
 import 'package:word_study/words/quizword.dart';
 import 'package:word_study/words/wordprovider.dart';
+import 'package:word_study/files/fileservice.dart';
 
 class FileWordProvider extends WordProvider {
   final String filename;
+  final FileService _fileService = new FileService();
 
   List<Word> _words = [];
 
   FileWordProvider(this.filename);
 
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
   @override
   Future<bool> init() async {
     try {
-      final path = await _localPath;
+      final path = await _fileService.localPath;
       File file =  new File('$path/$filename');
       bool exists = await file.exists();
       if (!exists) {
