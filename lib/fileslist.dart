@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:word_study/quizsettingswidget.dart';
 import 'package:word_study/filedownloader.dart';
+import 'package:word_study/files/fileservice.dart';
+import 'package:word_study/files/wordfile.dart';
 
 class FilesList extends StatefulWidget {
 
@@ -12,8 +12,8 @@ class FilesList extends StatefulWidget {
 }
 
 class FilesListState extends State<FilesList> {
-
-  List<String> _files = <String>[];
+  final FileService _fileService = new FileService();
+  List<WordFile> _files = <WordFile>[];
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -24,32 +24,9 @@ class FilesListState extends State<FilesList> {
     _loadFiles();
   }
 
-  Future<List<FileSystemEntity>> _dirContents(Directory dir) {
-    var files = <FileSystemEntity>[];
-    var completer = new Completer<List<FileSystemEntity>>();
-    var lister = dir.list(recursive: false);
-    lister.listen (
-            (file) => files.add(file),
-        // should also register onError
-        onDone:   () => completer.complete(files)
-    );
-    return completer.future;
-  }
-
 
   Future<void> _loadFiles() async {
-    final directory = await getApplicationDocumentsDirectory();
-    Directory dir = new Directory(directory.path);
-    var fileSystemEntities = await _dirContents(dir);
-
-    RegExp regexp = new RegExp('[^\/]+\$');
-
-    List<String> files = <String>[];
-
-    fileSystemEntities.forEach((f) {
-      var match = regexp.firstMatch(f.path);
-      files.add(match[0]);
-    });
+    var files = await _fileService.listFiles();
 
     setState(() {
       _files = files;
@@ -59,7 +36,7 @@ class FilesListState extends State<FilesList> {
   void _create(int i) {
     Navigator.of(context).push(
         new MaterialPageRoute(
-            builder: (context) => new QuizSettingsWidget(<String> [_files[i]])
+            builder: (context) => new QuizSettingsWidget(<String> [_files[i].name])
         )
     );
   }
@@ -68,7 +45,8 @@ class FilesListState extends State<FilesList> {
     return new Padding(
         padding: const EdgeInsets.all(16.0),
         child: new ListTile(
-            title: new Text(_files[i], style: _biggerFont),
+            title: new Text(_files[i].name, style: _biggerFont),
+            subtitle: new Text(_files[i].created.toString()),
             onTap: () { _create(i); }
         )
     );
