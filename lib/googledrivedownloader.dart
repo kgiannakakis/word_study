@@ -9,6 +9,13 @@ import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
 
+class GoogleDriveFile {
+  final String name;
+  final String id;
+
+  GoogleDriveFile(this.name, this.id);
+}
+
 class GoogleDriveDownloader extends StatefulWidget {
   @override
   State createState() => new GoogleDriveDownloaderState();
@@ -19,7 +26,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   GoogleSignInAccount _currentUser;
 
   String _messageText;
-  List<String> _files = [];
+  List<GoogleDriveFile> _files = <GoogleDriveFile>[];
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -102,30 +109,14 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
       });
     }
     else {
-      var files = <String>[];
+      var files = <GoogleDriveFile>[];
       for(int i=0; i<filesData['files'].length; i++) {
-        files.add(filesData['files'][i]['name']);
+        files.add(new GoogleDriveFile(filesData['files'][i]['name'],
+                                      filesData['files'][i]['id']));
       }
       setState(() {
         _files = files;
       });
-
-      final Map<String, dynamic> file0 = filesData['files'][0];
-
-      print(file0['id']);
-
-      var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file0['id']}?alt=media';
-      var headers = await _currentUser.authHeaders;
-      final http.Response response3 = await http.get(fileUrl,
-          headers: headers);
-      var bytes = response3.bodyBytes;
-
-      var decoder = new SpreadsheetDecoder.decodeBytes(bytes);
-      var table = decoder.tables[decoder.tables.keys.first];
-      for(int i=0; i<table.rows.length; i++) {
-        var values = table.rows[i];
-        print(values[0].toString() + ' = ' + values[1].toString());
-      }
     }
   }
 
@@ -141,6 +132,24 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
       }
     }
     return null;
+  }
+
+  Future<void> _downloadFile(int i) async {
+    GoogleDriveFile file;
+    file = _files[i];
+
+    var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file.id}?alt=media';
+    var headers = await _currentUser.authHeaders;
+    final http.Response response3 = await http.get(fileUrl,
+        headers: headers);
+    var bytes = response3.bodyBytes;
+
+    var decoder = new SpreadsheetDecoder.decodeBytes(bytes);
+    var table = decoder.tables[decoder.tables.keys.first];
+    for(int i=0; i<table.rows.length; i++) {
+      var values = table.rows[i];
+      print(values[0].toString() + ' = ' + values[1].toString());
+    }
   }
 
   Future<Null> _handleSignIn() async {
@@ -247,8 +256,8 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
     return new Padding(
         padding: const EdgeInsets.all(16.0),
         child: new ListTile(
-            title: new Text(_files[i], style: _biggerFont),
-            onTap: () {  }
+            title: new Text(_files[i].name, style: _biggerFont),
+            onTap: () { _downloadFile(i); }
         )
     );
   }
