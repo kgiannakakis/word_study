@@ -4,7 +4,7 @@ import 'dart:convert' show json;
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
+import 'package:word_study/words/webwordprovider.dart';
 
 
 const String googleDriveAppFolderName = 'Word Study';
@@ -140,16 +140,10 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
 
     var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file.id}?alt=media';
     var headers = await _currentUser.authHeaders;
-    final http.Response response3 = await http.get(fileUrl,
-        headers: headers);
-    var bytes = response3.bodyBytes;
 
-    var decoder = new SpreadsheetDecoder.decodeBytes(bytes);
-    var table = decoder.tables[decoder.tables.keys.first];
-    for(int i=0; i<table.rows.length; i++) {
-      var values = table.rows[i];
-      print(values[0].toString() + ' = ' + values[1].toString());
-    }
+    var webWordProvider = new WebWordProvider(fileUrl, headers);
+    await webWordProvider.init();
+    print(webWordProvider.length);
   }
 
   Future<Null> _handleSignIn() async {

@@ -7,10 +7,11 @@ import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 
 class WebWordProvider extends WordProvider {
   final String url;
+  final Map<String, String> headers;
 
   List<Word> _words = [];
 
-  WebWordProvider(this.url);
+  WebWordProvider(this.url, this.headers);
 
   @override
   Future<bool> init() async {
@@ -29,6 +30,13 @@ class WebWordProvider extends WordProvider {
     var httpClient = new HttpClient();
     var uri = Uri.parse(url);
     var request = await httpClient.getUrl(uri);
+
+    if (headers != null) {
+      headers.forEach((name, value) {
+        request.headers.add(name, value);
+      });
+    }
+
     var response = await request.close();
 
     var builder = await response.fold(new BytesBuilder(), (builder, data) => builder..add(data));
