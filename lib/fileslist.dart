@@ -4,6 +4,7 @@ import 'package:word_study/quizsettingswidget.dart';
 import 'package:word_study/filedownloader.dart';
 import 'package:word_study/files/fileservice.dart';
 import 'package:word_study/files/wordfile.dart';
+import 'package:word_study/words/filewordprovider.dart';
 
 class FilesList extends StatefulWidget {
 
@@ -33,10 +34,13 @@ class FilesListState extends State<FilesList> {
     });
   }
 
-  void _create(int i) {
+  void _create(int i) async {
+    var wordProvider = new FileWordProvider(_files[i].name);
+    await wordProvider.init();
+
     Navigator.of(context).push(
         new MaterialPageRoute(
-            builder: (context) => new QuizSettingsWidget(<String> [_files[i].name])
+            builder: (context) => new QuizSettingsWidget(<String> [_files[i].name], wordProvider.length)
         )
     );
   }

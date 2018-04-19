@@ -1,40 +1,30 @@
-import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:word_study/words/quizsettings.dart';
-import 'package:word_study/words/filewordprovider.dart';
+import 'package:word_study/files/fileservice.dart';
 
 class QuizSettingsWidget extends StatefulWidget {
 
   final List<String> files;
+  final int totalWordsCount;
 
-  QuizSettingsWidget(this.files);
+  QuizSettingsWidget(this.files, this.totalWordsCount);
 
   @override
-  QuizSettingsWidgetState createState() => new QuizSettingsWidgetState(files);
+  QuizSettingsWidgetState createState() => new QuizSettingsWidgetState(files, totalWordsCount);
 }
 
 class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final List<String> files;
+  final int totalWordsCount;
 
   QuizSettings _quizSettings = new QuizSettings();
-  int _totalWordsCount = 0;
+  String _name;
 
-  QuizSettingsWidgetState(this.files);
+  final FileService _fileService = new FileService();
 
-  @override void initState() {
-    super.initState();
-
-    _loadState();
-  }
-
-  Future<void> _loadState() async {
-    var wordProvider = new FileWordProvider(files[0]);
-    await wordProvider.init();
-    setState(() {
-      _totalWordsCount = wordProvider.length;
-    });
-  }
+  QuizSettingsWidgetState(this.files, this.totalWordsCount);
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +45,27 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                 subtitle: new Text(files[0]),
               ),
               new ListTile(
+                leading: const Icon(Icons.assignment),
+                title: new TextFormField(
+                  keyboardType: TextInputType.text,
+                  initialValue: files[0],
+                  decoration: new InputDecoration(
+                    labelText: "Name",
+                    hintText: "Name",
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter the name of the quiz';
+                    }
+                  },
+                  onSaved: (value) => _name = value,
+                ),
+              ),
+              new ListTile(
                 leading: const Icon(Icons.apps),
                 title: new TextFormField(
                   keyboardType: TextInputType.number,
+                  initialValue: totalWordsCount > 0 ? '$totalWordsCount' : '',
                   decoration: new InputDecoration(
                     labelText: "Word Count",
                     hintText: "Word Count",
@@ -70,8 +78,8 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                     if (v < 1) {
                       return 'Please enter a number greater than 0';
                     }
-                    if (v > _totalWordsCount) {
-                      return 'Please enter a number less than $_totalWordsCount';
+                    if (v > totalWordsCount) {
+                      return 'Please enter a number less than $totalWordsCount';
                     }
                   },
                   onSaved: (value) => _quizSettings.wordsCount = int.parse(value, onError: (source) => 0),
@@ -94,8 +102,8 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                     if (v < 1) {
                       return 'Please enter a number greater than 0';
                     }
-                    if (v > _totalWordsCount) {
-                      return 'Please enter a number less than $_totalWordsCount';
+                    if (v > totalWordsCount) {
+                      return 'Please enter a number less than $totalWordsCount';
                     }
                   },
                   onSaved: (value) => _quizSettings.optionsCount = int.parse(value, onError: (source) => 0),
@@ -110,7 +118,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                   child: new Text(
                     'Create'
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
 
@@ -118,6 +126,15 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                         Scaffold.of(context).showSnackBar(
                             new SnackBar(
                                 content: new Text('Options count must be less than words count'),
+                                backgroundColor: Colors.red));
+                      }
+                      String path = await _fileService.localPath;
+                      File file = new File('$path/$_name');
+
+                      if (await file.exists()) {
+                        Scaffold.of(context).showSnackBar(
+                            new SnackBar(
+                                content: new Text('A quiz with this name already exists!'),
                                 backgroundColor: Colors.red));
                       }
 
