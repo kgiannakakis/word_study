@@ -5,8 +5,8 @@ import 'package:word_study/wordstudy.dart';
 import 'package:word_study/fileslist.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/quiz.dart';
-import 'package:word_study/words/quizsettings.dart';
 import 'package:word_study/files/fileservice.dart';
+import 'package:word_study/words/quizprovider.dart';
 
 class Home extends StatefulWidget {
 
@@ -18,6 +18,7 @@ class HomeState extends State<Home> {
 
   List<Quiz> _quizzes = <Quiz>[];
   final FileService _fileService = new FileService();
+  final QuizProvider _quizProvider = new QuizProvider();
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
@@ -28,25 +29,20 @@ class HomeState extends State<Home> {
   }
 
   Future<void> _loadQuizzes() async {
-    const builtinFilename = '__builtin';
+    await _quizProvider.init();
 
-    final directory = _fileService.localPath;
-    File file = new File('$directory/$builtinFilename');
+    final directory = await _fileService.localPath;
+    File file = new File('$directory/${_quizProvider.builtinFilename}');
     bool exists = await file.exists();
 
     if (!exists) {
       WordProvider wordProvider = new WordProvider();
       await wordProvider.init();
-      await wordProvider.store(builtinFilename);
+      await wordProvider.store(_quizProvider.builtinFilename);
     }
 
-    const int wordsCount = 10;
-    const int optionsCount = 4;
-    QuizSettings quizSettings = new QuizSettings(wordsCount: wordsCount, optionsCount: optionsCount);
-    Quiz builtin = new Quiz(name: "Demo", settings: quizSettings, filenames: [builtinFilename]);
-    List<Quiz> quizzes = <Quiz>[builtin];
     setState(() {
-      _quizzes = quizzes;
+      _quizzes = _quizProvider.allQuizzes;
     });
   }
 
@@ -68,12 +64,13 @@ class HomeState extends State<Home> {
     }
   }
 
-  void _gotoFilesList() {
-    Navigator.of(context).push(
+  void _gotoFilesList() async {
+    await Navigator.of(context).push(
         new MaterialPageRoute(
             builder: (context) => new FilesList()
         )
     );
+    await _loadQuizzes();
   }
 
 //  void _goToGoogleDrive(BuildContext context) {
