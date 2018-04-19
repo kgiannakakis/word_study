@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:word_study/words/quizsettings.dart';
 import 'package:word_study/words/quiz.dart';
 import 'package:word_study/files/fileservice.dart';
+import 'package:word_study/words/quizprovider.dart';
 
 class QuizSettingsWidget extends StatefulWidget {
 
@@ -25,6 +25,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
   String _name;
 
   final FileService _fileService = new FileService();
+  final QuizProvider _quizProvider = new QuizProvider();
 
   QuizSettingsWidgetState(this.files, this.totalWordsCount);
 
@@ -143,17 +144,8 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                         }
                         else {
                           Quiz quiz = new Quiz(name: _name, filenames: files, settings: _quizSettings);
-
-                          String quizJson = json.encode(quiz);
-
-                          print(quizJson);
-
-                          Quiz q = Quiz.fromJson(json.decode(quizJson));
-
-                          print(q.name);
-                          print(q.settings.toJson());
-                          print(q.filenames);
-                          
+                          await _quizProvider.init();
+                          await _quizProvider.addQuiz(quiz);
                         }
                       }
                     }
