@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:word_study/words/quizsettings.dart';
+import 'package:word_study/words/quiz.dart';
 import 'package:word_study/files/fileservice.dart';
 
 class QuizSettingsWidget extends StatefulWidget {
@@ -128,17 +130,32 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                                 content: new Text('Options count must be less than words count'),
                                 backgroundColor: Colors.red));
                       }
-                      String path = await _fileService.localPath;
-                      File file = new File('$path/$_name');
+                      else {
+                        String path = await _fileService.localPath;
+                        File file = new File('$path/$_name');
 
-                      if (await file.exists()) {
-                        Scaffold.of(context).showSnackBar(
-                            new SnackBar(
-                                content: new Text('A quiz with this name already exists!'),
-                                backgroundColor: Colors.red));
+                        if (await file.exists()) {
+                          Scaffold.of(context).showSnackBar(
+                              new SnackBar(
+                                  content: new Text(
+                                      'A quiz with this name already exists!'),
+                                  backgroundColor: Colors.red));
+                        }
+                        else {
+                          Quiz quiz = new Quiz(name: _name, filenames: files, settings: _quizSettings);
+
+                          String quizJson = json.encode(quiz);
+
+                          print(quizJson);
+
+                          Quiz q = Quiz.fromJson(json.decode(quizJson));
+
+                          print(q.name);
+                          print(q.settings.toJson());
+                          print(q.filenames);
+                          
+                        }
                       }
-
-                      print('${_quizSettings.wordsCount} ${_quizSettings.optionsCount}');
                     }
                   },
                 ),
