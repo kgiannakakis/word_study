@@ -5,6 +5,7 @@ import 'package:word_study/wordstudy.dart';
 import 'package:word_study/fileslist.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/quiz.dart';
+import 'package:word_study/words/quizinstance.dart';
 import 'package:word_study/files/fileservice.dart';
 import 'package:word_study/words/quizprovider.dart';
 
@@ -47,11 +48,12 @@ class HomeState extends State<Home> {
   }
 
   void _start(int i) async {
-    bool ok = await _quizzes[i].init();
+    QuizInstance quizInstance = new QuizInstance(_quizzes[i]);
+    bool ok = await quizInstance.init();
     if (ok) {
       Navigator.of(context).push(
           new MaterialPageRoute(
-              builder: (context) => new WordStudy(quiz: _quizzes[i],
+              builder: (context) => new WordStudy(quizInstance: quizInstance,
                 currentWord: 0)
           )
       );

@@ -30,7 +30,7 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Pods/.symlinks/flutter/ios`)
-  - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in-3.0.1/ios`)
+  - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in-3.0.2/ios`)
   - path_provider (from `Pods/.symlinks/plugins/path_provider-0.4.0/ios`)
   - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences-0.4.1/ios`)
 
@@ -38,7 +38,7 @@ EXTERNAL SOURCES:
   Flutter:
     :path: Pods/.symlinks/flutter/ios
   google_sign_in:
-    :path: Pods/.symlinks/plugins/google_sign_in-3.0.1/ios
+    :path: Pods/.symlinks/plugins/google_sign_in-3.0.2/ios
   path_provider:
     :path: Pods/.symlinks/plugins/path_provider-0.4.0/ios
   shared_preferences:
