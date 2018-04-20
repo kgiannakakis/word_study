@@ -82,7 +82,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                       return 'Please enter a number less than $totalWordsCount';
                     }
                   },
-                  onSaved: (value) => _quizSettings.wordsCount = int.parse(value, onError: (source) => 0),
+                  onSaved: (value) => _quizSettings = _quizSettings.copyWith(wordsCount: int.parse(value, onError: (source) => 0)),
                 ),
               ),
               new ListTile(
@@ -106,7 +106,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                       return 'Please enter a number less than $totalWordsCount';
                     }
                   },
-                  onSaved: (value) => _quizSettings.optionsCount = int.parse(value, onError: (source) => 0),
+                  onSaved: (value) => _quizSettings = _quizSettings.copyWith(optionsCount: int.parse(value, onError: (source) => 0)),
                 ),
               ),
               const Divider(

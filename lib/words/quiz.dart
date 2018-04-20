@@ -9,6 +9,27 @@ class Quiz {
 
   Quiz({this.name, this.settings, this.filenames});
 
+  Quiz copyWith({String name, QuizSettings settings, List<String> filenames}) {
+    return new Quiz(
+      name: name ?? this.name,
+      settings: settings ?? this.settings,
+      filenames: filenames ?? this.filenames,
+    );
+  }
+
+  @override
+  int get hashCode =>
+      name.hashCode ^ settings.hashCode ^ filenames.hashCode ;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Quiz &&
+              runtimeType == other.runtimeType &&
+              name == other.name &&
+              settings == other.settings &&
+              filenames == other.filenames;
+
   Quiz.fromJson(Map<String, dynamic> jsonObject)
       : name = jsonObject['name'],
         settings = QuizSettings.fromJson(jsonObject['settings']),

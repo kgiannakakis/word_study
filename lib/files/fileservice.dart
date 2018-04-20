@@ -36,7 +36,7 @@ class FileService {
       var f = fileSystemEntities[i];
       var stat = await f.stat();
       var match = regexp.firstMatch(f.path);
-      files.add(new WordFile(match[0], stat.changed));
+      files.add(new WordFile(name: match[0], created: stat.changed));
     }
     return files;
   }
