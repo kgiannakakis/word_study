@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:word_study/words/quiz.dart';
+import 'package:word_study/words/quizinstance.dart';
 import 'package:word_study/words/quizword.dart';
 import 'package:word_study/option.dart';
 
 class WordStudy extends StatefulWidget {
-  final Quiz quiz;
+  final QuizInstance quizInstance;
   final int currentWord;
 
-  WordStudy({this.quiz, this.currentWord});
+  WordStudy({this.quizInstance, this.currentWord});
 
   @override
-  WordStudyState createState() => new WordStudyState(quiz, currentWord);
+  WordStudyState createState() => new WordStudyState(quizInstance, currentWord);
 }
 
 class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   final int currentWord;
-  final Quiz quiz;
+  final QuizInstance quizInstance;
   QuizWord _quizWord;
 
   final List<Option> _options = <Option>[];
 
-  WordStudyState(this.quiz, this.currentWord);
+  WordStudyState(this.quizInstance, this.currentWord);
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      _quizWord = quiz.getQuizWord(currentWord);
+      _quizWord = quizInstance.getQuizWord(currentWord);
     });
   }
 
@@ -48,13 +48,13 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   }
 
   VoidCallback _getNextCallback() {
-    int wordsCount = quiz.settings.wordsCount;
+    int wordsCount = quizInstance.quiz.settings.wordsCount;
 
     if (currentWord < wordsCount - 1) {
       return () {
         Navigator.of(context).push(
             new MaterialPageRoute(
-                builder: (context) => new WordStudy(quiz: quiz,
+                builder: (context) => new WordStudy(quizInstance: quizInstance,
                   currentWord: currentWord + 1)
             )
         );
