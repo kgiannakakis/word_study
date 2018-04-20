@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:word_study/quizsettingswidget.dart';
 import 'package:word_study/filedownloader.dart';
 import 'package:word_study/files/fileservice.dart';
 import 'package:word_study/files/wordfile.dart';
@@ -25,7 +24,6 @@ class FilesListState extends State<FilesList> {
     _loadFiles();
   }
 
-
   Future<void> _loadFiles() async {
     var files = await _fileService.listFiles();
 
@@ -38,11 +36,7 @@ class FilesListState extends State<FilesList> {
     var wordProvider = new FileWordProvider(_files[i].name);
     await wordProvider.init();
 
-    Navigator.of(context).push(
-        new MaterialPageRoute(
-            builder: (context) => new QuizSettingsWidget(<String> [_files[i].name], wordProvider.length)
-        )
-    );
+    Navigator.of(context).pop(<dynamic>[[_files[i].name], wordProvider.length]);
   }
 
   void _addNewFile() async {

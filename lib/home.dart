@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:word_study/wordstudy.dart';
-import 'package:word_study/fileslist.dart';
+import 'package:word_study/quizsettingswidget.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/quiz.dart';
 import 'package:word_study/words/quizinstance.dart';
@@ -66,40 +66,14 @@ class HomeState extends State<Home> {
     }
   }
 
-  void _gotoFilesList() async {
+  void _gotoCreateQuiz() async {
     await Navigator.of(context).push(
         new MaterialPageRoute(
-            builder: (context) => new FilesList()
+            builder: (context) => new QuizSettingsWidget()
         )
     );
     await _loadQuizzes();
   }
-
-//  void _goToGoogleDrive(BuildContext context) {
-//    Navigator.of(context).push(
-//        new MaterialPageRoute(
-//            builder: (context) => new SignInDemo()
-//        )
-//    );
-//  }
-
-//  Future<bool> _initQuiz() async {
-//    final directory = await getApplicationDocumentsDirectory();
-//    File file = new File('${directory.path}/test.xlsx');
-//    bool exists = await file.exists();
-//    print(exists);
-//    if (!exists) {
-//      print('Loading from web');
-//      WordProvider wordProvider = new WebWordProvider(
-//          "https://dl.dropboxusercontent.com/s/rwjl6apmu0xilyq/test.xlsx?dl=0");
-//      await wordProvider.init();
-//      await wordProvider.store('test.xlsx');
-//    }
-//    QuizSettings quizSettings = new QuizSettings(wordsCount: wordsCount, optionsCount: optionsCount);
-//    _quiz = new Quiz(settings: quizSettings, filenames: <String>['test.xlsx']);
-//    bool ok = await _quiz.init();
-//    return ok;
-//  }
 
   Widget _buildRow(int i) {
     return new Padding(
@@ -127,7 +101,7 @@ class HomeState extends State<Home> {
 
             return _buildRow(index);
           }),
-      floatingActionButton: new FloatingActionButton(onPressed: _gotoFilesList,
+      floatingActionButton: new FloatingActionButton(onPressed: _gotoCreateQuiz,
                                                      child: new Icon(Icons.add)),
     );
   }
