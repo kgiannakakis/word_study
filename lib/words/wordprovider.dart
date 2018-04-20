@@ -64,17 +64,21 @@ class WordProvider {
   }
 
   List<QuizWord> getWords(int wordsCount, int optionsCount) {
-    if (wordsCount > _words.length) {
+    return getWordsFromList(_words, wordsCount, optionsCount);
+  }
+
+  List<QuizWord> getWordsFromList(List<Word> words, int wordsCount, int optionsCount) {
+    if (wordsCount > words.length) {
       throw new ArgumentError("Available words less than words count");
     }
     List<QuizWord> quizWords = [];
-    List<String> words = [];
+    List<String> wordsLabels = [];
     for(int i=0; i<wordsCount; i++) {
       QuizWord quizWord = getWord(optionsCount);
-      while(words.contains(quizWord.word)) {
+      while(wordsLabels.contains(quizWord.word)) {
         quizWord = getWord(optionsCount);
       }
-      words.add(quizWord.word);
+      wordsLabels.add(quizWord.word);
       quizWords.add(quizWord);
     }
 

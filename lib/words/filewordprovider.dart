@@ -45,7 +45,7 @@ class FileWordProvider extends WordProvider {
 
   @override
   List<QuizWord> getWords(int wordsCount, int optionsCount) {
-    return super.getWords(wordsCount, optionsCount);
+    return super.getWordsFromList(_words, wordsCount, optionsCount);
   }
 
   int get length {
