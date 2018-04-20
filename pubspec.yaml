@@ -16,6 +16,10 @@ dependencies:
   path_provider: ^0.4.0
   font_awesome_flutter: ^6.0.0
   shared_preferences: ^0.4.1
+  redux: ^2.0.2
+  flutter_redux: ^0.4.0
+
+
 
 dev_dependencies:
   flutter_test:

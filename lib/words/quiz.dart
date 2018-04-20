@@ -1,9 +1,11 @@
+import 'package:meta/meta.dart';
 import 'dart:async';
 import 'package:word_study/words/quizsettings.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/filewordprovider.dart';
 import 'package:word_study/words/quizword.dart';
 
+@immutable
 class Quiz {
   final String name;
   final QuizSettings settings;
