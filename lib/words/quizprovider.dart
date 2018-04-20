@@ -15,7 +15,7 @@ class QuizProvider {
     return _allQuizzes;
   }
 
-  Future<void> init() async {
+  Future<Null> init() async {
     _prefs = await SharedPreferences.getInstance();
     String storedQuizzesStr = _prefs.getString(_quizzesKey);
 
