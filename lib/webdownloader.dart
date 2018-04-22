@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:validator/validator.dart';
+import 'package:word_study/words/webwordprovider.dart';
 
 class WebDownloader extends StatefulWidget {
   WebDownloader();
@@ -10,6 +11,16 @@ class WebDownloader extends StatefulWidget {
 
 class WebDownloaderState extends State<WebDownloader> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
+  String _fileUrl;
+
+  _download() async {
+    var webWordProvider = new WebWordProvider(_fileUrl, null);
+    bool ok = await webWordProvider.init();
+
+    print(webWordProvider.length);
+    return ok;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +36,7 @@ class WebDownloaderState extends State<WebDownloader> {
               leading: const Icon(Icons.web),
               title: new TextFormField(
                 keyboardType: TextInputType.url,
+                initialValue: 'https://',
                 decoration: new InputDecoration(
                   labelText: "Url",
                   hintText: "Url",
@@ -37,8 +49,8 @@ class WebDownloaderState extends State<WebDownloader> {
                     return 'Please enter a valid url';
                   }
                 },
-                onFieldSubmitted: (value) {},
-                onSaved: (value) {},
+                onFieldSubmitted: (value) => _fileUrl = value,
+                onSaved: (value) => _fileUrl = value,
               ),
             ),
             const Divider(
@@ -51,6 +63,18 @@ class WebDownloaderState extends State<WebDownloader> {
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
+
+                    bool ok = await _download();
+                    if (ok) {
+
+                    }
+                    else {
+                      Scaffold.of(context).showSnackBar(
+                          new SnackBar(
+                              content: new Text(
+                                  'Can\'t download file'),
+                              backgroundColor: Colors.redAccent));
+                    }
                   }
                 },
               ),

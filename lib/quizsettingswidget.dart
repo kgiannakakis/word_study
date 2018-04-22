@@ -175,7 +175,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                           Scaffold.of(context).showSnackBar(
                               new SnackBar(
                                   content: new Text('Options count must be less than words count'),
-                                  backgroundColor: Colors.red));
+                                  backgroundColor: Colors.redAccent));
                         }
                         else {
                           await _quizProvider.init();
@@ -184,7 +184,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                                 new SnackBar(
                                     content: new Text(
                                         'A quiz with this name already exists!'),
-                                    backgroundColor: Colors.red));
+                                    backgroundColor: Colors.redAccent));
                           }
                           else {
                             Quiz quiz = new Quiz(name: _name, filenames: _files, settings: _quizSettings);
@@ -197,7 +197,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                                   new SnackBar(
                                       content: new Text(
                                           'Failed to add quiz!'),
-                                      backgroundColor: Colors.red));
+                                      backgroundColor: Colors.redAccent));
                             }
                           }
                         }

@@ -61,7 +61,7 @@ class HomeState extends State<Home> {
     else {
       Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text('Failed to start quiz'),
-          backgroundColor: Colors.red
+          backgroundColor: Colors.redAccent
       ));
     }
   }
