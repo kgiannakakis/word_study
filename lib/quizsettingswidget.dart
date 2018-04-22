@@ -205,7 +205,7 @@ class QuizSettingsWidgetState extends State<QuizSettingsWidget> {
                     },
                   ),
                   margin: new EdgeInsets.only(
-                      top: 20.0
+                      top: 20.0, bottom: 20.0
                   ),
                 )
               ],),
