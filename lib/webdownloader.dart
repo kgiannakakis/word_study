@@ -15,6 +15,7 @@ class WebDownloaderState extends State<WebDownloader> {
 
   String _fileUrl;
   String _fileName;
+  bool _isLoading = false;
 
   _download() async {
     var webWordProvider = new WebWordProvider(_fileUrl, null);
@@ -23,8 +24,10 @@ class WebDownloaderState extends State<WebDownloader> {
       final FileService fileService = new FileService();
       String filename = await fileService.getNewFilename(_fileName);
       await webWordProvider.store(filename);
-      Navigator.of(context).pop();
     }
+    setState(() {
+      _isLoading = false;
+    });
     return ok;
   }
 
@@ -76,27 +79,28 @@ class WebDownloaderState extends State<WebDownloader> {
                 onSaved: (value) => _fileName = value,
               ),
             ),
-            const Divider(
-              height: 1.0,
-            ),
+            _isLoading ? new LinearProgressIndicator() : const Divider(height: 1.0),
             new Container(
               width: screenSize.width,
               child: new RaisedButton(
                 child: new Text('Download'),
-                onPressed: () async {
+                onPressed: _isLoading ? null : () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
 
+                    setState(() {
+                      _isLoading = true;
+                    });
                     bool ok = await _download();
-                    if (ok) {
-
-                    }
-                    else {
+                    if (!ok) {
                       Scaffold.of(context).showSnackBar(
                           new SnackBar(
                               content: new Text(
                                   'Can\'t download file'),
                               backgroundColor: Colors.redAccent));
+                    }
+                    else {
+                      Navigator.of(context).pop();
                     }
                   }
                 },
