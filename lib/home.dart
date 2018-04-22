@@ -78,7 +78,22 @@ class HomeState extends State<Home> {
   Widget _buildRow(int i, BuildContext context) {
     return
       new Dismissible(
-          background: new Container(color: Colors.red),
+          background: new Container(
+              color: Colors.redAccent,
+              padding: const EdgeInsets.all(12.0),
+              child:new Align(
+                child: new Icon(Icons.delete, color: Colors.white),
+                alignment: Alignment.centerLeft,
+              ),
+          ),
+          secondaryBackground: new Container(
+            color: Colors.redAccent,
+            padding: const EdgeInsets.all(12.0),
+            child: new Align(
+              child: new Icon(Icons.delete, color: Colors.white),
+              alignment: Alignment.centerRight,
+            ),
+          ),
           key: new ObjectKey('quiz_$i'),
           onDismissed: (direction) {
             List<Quiz> quizzes = new List<Quiz>();
@@ -89,7 +104,11 @@ class HomeState extends State<Home> {
             }
 
             Scaffold.of(context).showSnackBar(
-                new SnackBar(content: new Text("${_quizzes[i].name} dismissed")));
+                new SnackBar(
+                    content: new Text("${_quizzes[i].name} dismissed"),
+                    action: new SnackBarAction(label: 'Undo', onPressed: () {}),
+                )
+            );
             setState(() => _quizzes = quizzes);
           },
           child: new Padding(
