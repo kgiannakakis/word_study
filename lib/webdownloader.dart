@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:validator/validator.dart';
 import 'package:word_study/words/webwordprovider.dart';
+import 'package:word_study/files/fileservice.dart';
 
 class WebDownloader extends StatefulWidget {
   WebDownloader();
@@ -13,12 +14,17 @@ class WebDownloaderState extends State<WebDownloader> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   String _fileUrl;
+  String _fileName;
 
   _download() async {
     var webWordProvider = new WebWordProvider(_fileUrl, null);
     bool ok = await webWordProvider.init();
-
-    print(webWordProvider.length);
+    if (ok) {
+      final FileService fileService = new FileService();
+      String filename = await fileService.getNewFilename(_fileName);
+      await webWordProvider.store(filename);
+      Navigator.of(context).pop();
+    }
     return ok;
   }
 
@@ -51,6 +57,23 @@ class WebDownloaderState extends State<WebDownloader> {
                 },
                 onFieldSubmitted: (value) => _fileUrl = value,
                 onSaved: (value) => _fileUrl = value,
+              ),
+            ),
+            new ListTile(
+              leading: const Icon(Icons.web),
+              title: new TextFormField(
+                keyboardType: TextInputType.text,
+                decoration: new InputDecoration(
+                  labelText: "Name",
+                  hintText: "Name",
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter the file name';
+                  }
+                },
+                onFieldSubmitted: (value) => _fileName = value,
+                onSaved: (value) => _fileName = value,
               ),
             ),
             const Divider(
