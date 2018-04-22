@@ -75,14 +75,30 @@ class HomeState extends State<Home> {
     await _loadQuizzes();
   }
 
-  Widget _buildRow(int i) {
-    return new Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: new ListTile(
-            title: new Text(_quizzes[i].name, style: _biggerFont),
-            onTap: () { _start(i); }
-        )
-    );
+  Widget _buildRow(int i, BuildContext context) {
+    return
+      new Dismissible(
+          background: new Container(color: Colors.red),
+          key: new ObjectKey('quiz_$i'),
+          onDismissed: (direction) {
+            List<Quiz> quizzes = new List<Quiz>();
+            for(int ii=0; ii<_quizzes.length; ii++) {
+              if (ii != i) {
+                quizzes.add(_quizzes[ii]);
+              }
+            }
+
+            Scaffold.of(context).showSnackBar(
+                new SnackBar(content: new Text("${_quizzes[i].name} dismissed")));
+            setState(() => _quizzes = quizzes);
+          },
+          child: new Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: new ListTile(
+                  title: new Text(_quizzes[i].name, style: _biggerFont),
+                  onTap: () { _start(i); }
+              )
+          ));
   }
 
   @override
@@ -91,18 +107,23 @@ class HomeState extends State<Home> {
         appBar: new AppBar(
           title: new Text("Word Study"),
         ),
-      body: new ListView.builder(
-          padding: const EdgeInsets.all(16.0),
-          itemCount: 2*_quizzes.length,
-          itemBuilder: (BuildContext context, int position) {
-            if (position.isOdd) return new Divider();
+      body: new Builder(
+        builder: (BuildContext context) {
+          return new ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: 2*_quizzes.length,
+              itemBuilder: (BuildContext context, int position) {
+                if (position.isOdd) return new Divider();
 
-            final index = position ~/ 2;
+                final index = position ~/ 2;
 
-            return _buildRow(index);
-          }),
+                return _buildRow(index, context);
+              });
+
+        }
+      ),
       floatingActionButton: new FloatingActionButton(onPressed: _gotoCreateQuiz,
-                                                     child: new Icon(Icons.add)),
+          child: new Icon(Icons.add))
     );
   }
 
