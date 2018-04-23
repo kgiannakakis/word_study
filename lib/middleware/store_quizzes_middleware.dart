@@ -1,6 +1,6 @@
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/state/appstate.dart';
+import 'package:word_study/models/appstate.dart';
 import 'package:word_study/words/quizprovider.dart';
 
 List<Middleware<AppState>> createStoreQuizzesMiddleware() {

@@ -1,6 +1,6 @@
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/words/quiz.dart';
+import 'package:word_study/models/quiz.dart';
 
 final Reducer<List<Quiz>> quizzesReducer = combineReducers([
   new TypedReducer<List<Quiz>, AddQuizAction>(_addQuiz),

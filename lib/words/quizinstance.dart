@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:word_study/words/quiz.dart';
-import 'package:word_study/words/quizword.dart';
+import 'package:word_study/models/quiz.dart';
+import 'package:word_study/models/quizword.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/filewordprovider.dart';
 

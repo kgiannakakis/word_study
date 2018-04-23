@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_study/words/quizinstance.dart';
-import 'package:word_study/words/quizword.dart';
+import 'package:word_study/models/quizword.dart';
 import 'package:word_study/option.dart';
 
 class WordStudy extends StatefulWidget {

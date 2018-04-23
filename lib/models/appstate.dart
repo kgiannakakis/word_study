@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:word_study/words/quiz.dart';
+import 'package:word_study/models/quiz.dart';
 
 @immutable
 class AppState {

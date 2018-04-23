@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:word_study/files/fileservice.dart';
-import 'package:word_study/words/quiz.dart';
-import 'package:word_study/words/quizsettings.dart';
+import 'package:word_study/models/quiz.dart';
+import 'package:word_study/models/quizsettings.dart';
 import 'package:word_study/words/wordprovider.dart';
 
 class QuizProvider {

@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:word_study/words/quizsettings.dart';
+import 'package:word_study/models/quizsettings.dart';
 
 @immutable
 class Quiz {

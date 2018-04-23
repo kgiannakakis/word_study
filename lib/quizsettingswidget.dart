@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:word_study/fileslist.dart';
-import 'package:word_study/words/quizsettings.dart';
-import 'package:word_study/words/quiz.dart';
+import 'package:word_study/models/quizsettings.dart';
+import 'package:word_study/models/quiz.dart';
 import 'package:word_study/words/quizprovider.dart';
 
 class QuizSettingsWidget extends StatefulWidget {

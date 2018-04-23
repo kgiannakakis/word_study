@@ -2,11 +2,11 @@ import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:word_study/state/appstate.dart';
+import 'package:word_study/models/appstate.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/wordstudy.dart';
 import 'package:word_study/quizsettingswidget.dart';
-import 'package:word_study/words/quiz.dart';
+import 'package:word_study/models/quiz.dart';
 import 'package:word_study/words/quizinstance.dart';
 
 class Home extends StatelessWidget {
