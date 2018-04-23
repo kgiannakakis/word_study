@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:word_study/wordstudy.dart';
-import 'package:word_study/fileslist.dart';
+import 'package:word_study/quizsettingswidget.dart';
 import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/quiz.dart';
 import 'package:word_study/words/quizinstance.dart';
@@ -61,54 +61,63 @@ class HomeState extends State<Home> {
     else {
       Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text('Failed to start quiz'),
-          backgroundColor: Colors.red
+          backgroundColor: Colors.redAccent
       ));
     }
   }
 
-  void _gotoFilesList() async {
+  void _gotoCreateQuiz() async {
     await Navigator.of(context).push(
         new MaterialPageRoute(
-            builder: (context) => new FilesList()
+            builder: (context) => new QuizSettingsWidget()
         )
     );
     await _loadQuizzes();
   }
 
-//  void _goToGoogleDrive(BuildContext context) {
-//    Navigator.of(context).push(
-//        new MaterialPageRoute(
-//            builder: (context) => new SignInDemo()
-//        )
-//    );
-//  }
+  Widget _buildRow(int i, BuildContext context) {
+    return
+      new Dismissible(
+          background: new Container(
+              color: Colors.redAccent,
+              padding: const EdgeInsets.all(12.0),
+              child:new Align(
+                child: new Icon(Icons.delete, color: Colors.white),
+                alignment: Alignment.centerLeft,
+              ),
+          ),
+          secondaryBackground: new Container(
+            color: Colors.redAccent,
+            padding: const EdgeInsets.all(12.0),
+            child: new Align(
+              child: new Icon(Icons.delete, color: Colors.white),
+              alignment: Alignment.centerRight,
+            ),
+          ),
+          key: new ObjectKey('quiz_$i'),
+          onDismissed: (direction) {
+            List<Quiz> quizzes = new List<Quiz>();
+            for(int ii=0; ii<_quizzes.length; ii++) {
+              if (ii != i) {
+                quizzes.add(_quizzes[ii]);
+              }
+            }
 
-//  Future<bool> _initQuiz() async {
-//    final directory = await getApplicationDocumentsDirectory();
-//    File file = new File('${directory.path}/test.xlsx');
-//    bool exists = await file.exists();
-//    print(exists);
-//    if (!exists) {
-//      print('Loading from web');
-//      WordProvider wordProvider = new WebWordProvider(
-//          "https://dl.dropboxusercontent.com/s/rwjl6apmu0xilyq/test.xlsx?dl=0");
-//      await wordProvider.init();
-//      await wordProvider.store('test.xlsx');
-//    }
-//    QuizSettings quizSettings = new QuizSettings(wordsCount: wordsCount, optionsCount: optionsCount);
-//    _quiz = new Quiz(settings: quizSettings, filenames: <String>['test.xlsx']);
-//    bool ok = await _quiz.init();
-//    return ok;
-//  }
-
-  Widget _buildRow(int i) {
-    return new Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: new ListTile(
-            title: new Text(_quizzes[i].name, style: _biggerFont),
-            onTap: () { _start(i); }
-        )
-    );
+            Scaffold.of(context).showSnackBar(
+                new SnackBar(
+                    content: new Text("${_quizzes[i].name} dismissed"),
+                    action: new SnackBarAction(label: 'Undo', onPressed: () {}),
+                )
+            );
+            setState(() => _quizzes = quizzes);
+          },
+          child: new Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: new ListTile(
+                  title: new Text(_quizzes[i].name, style: _biggerFont),
+                  onTap: () { _start(i); }
+              )
+          ));
   }
 
   @override
@@ -117,18 +126,23 @@ class HomeState extends State<Home> {
         appBar: new AppBar(
           title: new Text("Word Study"),
         ),
-      body: new ListView.builder(
-          padding: const EdgeInsets.all(16.0),
-          itemCount: 2*_quizzes.length,
-          itemBuilder: (BuildContext context, int position) {
-            if (position.isOdd) return new Divider();
+      body: new Builder(
+        builder: (BuildContext context) {
+          return new ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: 2*_quizzes.length,
+              itemBuilder: (BuildContext context, int position) {
+                if (position.isOdd) return new Divider();
 
-            final index = position ~/ 2;
+                final index = position ~/ 2;
 
-            return _buildRow(index);
-          }),
-      floatingActionButton: new FloatingActionButton(onPressed: _gotoFilesList,
-                                                     child: new Icon(Icons.add)),
+                return _buildRow(index, context);
+              });
+
+        }
+      ),
+      floatingActionButton: new FloatingActionButton(onPressed: _gotoCreateQuiz,
+          child: new Icon(Icons.add))
     );
   }
 

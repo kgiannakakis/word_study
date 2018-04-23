@@ -16,10 +16,10 @@ class Option extends StatelessWidget {
 
   Color _getColor() {
     if (quizOption.isSelected && quizOption.isCorrect) {
-      return Colors.green;
+      return Colors.greenAccent;
     }
     else if (quizOption.isSelected && !quizOption.isCorrect) {
-      return Colors.red;
+      return Colors.redAccent;
     }
     return Colors.transparent;
   }
