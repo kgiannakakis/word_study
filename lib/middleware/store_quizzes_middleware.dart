@@ -7,11 +7,11 @@ List<Middleware<AppState>> createStoreQuizzesMiddleware() {
   final saveQuizzes = _createSaveQuizzes();
   final loadQuizzes = _createLoadQuizzes();
 
-  return combineTypedMiddleware([
-    new MiddlewareBinding<AppState, LoadQuizzesAction>(loadQuizzes),
-    new MiddlewareBinding<AppState, AddQuizAction>(saveQuizzes),
-    new MiddlewareBinding<AppState, QuizzesLoadedAction>(saveQuizzes),
-  ]);
+  return <Middleware<AppState>>[
+    new TypedMiddleware<AppState, LoadQuizzesAction>(loadQuizzes),
+    new TypedMiddleware<AppState, AddQuizAction>(saveQuizzes),
+    new TypedMiddleware<AppState, QuizzesLoadedAction>(saveQuizzes),
+  ];
 }
 
 Middleware<AppState> _createSaveQuizzes() {
@@ -29,7 +29,10 @@ Middleware<AppState> _createLoadQuizzes() {
         new QuizzesLoadedAction(repository.allQuizzes),
       );
     },)
-    .catchError((_) => store.dispatch(new QuizzesNotLoadedAction()));
+    .catchError((e) {
+        store.dispatch(new QuizzesNotLoadedAction());
+      }
+    );
 
     next(action);
   };

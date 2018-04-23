@@ -5,6 +5,7 @@ import 'package:word_study/home.dart';
 import 'package:word_study/state/appstate.dart';
 import 'package:word_study/reducers/app_state_reducer.dart';
 import 'package:word_study/middleware/store_quizzes_middleware.dart';
+import 'package:word_study/actions/actions.dart';
 
 void main() => runApp(new WordStudyApp());
 
@@ -25,7 +26,11 @@ class WordStudyApp extends StatelessWidget {
             theme: new ThemeData(
               primarySwatch: Colors.green,
             ),
-            home: new Home()
+            home: new StoreBuilder<AppState>(
+                onInit: (store) => store.dispatch(new LoadQuizzesAction()),
+                builder: (context, store) {
+                  return new Home();
+                })
         )
     );
   }

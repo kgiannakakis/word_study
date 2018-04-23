@@ -2,10 +2,10 @@ import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/words/quiz.dart';
 
-final quizzesReducer = combineTypedReducers<List<Quiz>>([
-  new ReducerBinding<List<Quiz>, AddQuizAction>(_addQuiz),
-  new ReducerBinding<List<Quiz>, QuizzesLoadedAction>(_setLoadedQuizzes),
-  new ReducerBinding<List<Quiz>, QuizzesNotLoadedAction>(_setNoQuizzes),
+final Reducer<List<Quiz>> quizzesReducer = combineReducers([
+  new TypedReducer<List<Quiz>, AddQuizAction>(_addQuiz),
+  new TypedReducer<List<Quiz>, QuizzesLoadedAction>(_setLoadedQuizzes),
+  new TypedReducer<List<Quiz>, QuizzesNotLoadedAction>(_setNoQuizzes),
 ]);
 
 List<Quiz> _addQuiz(List<Quiz> quizzes, AddQuizAction action) {

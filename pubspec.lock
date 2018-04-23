@@ -103,7 +103,7 @@ packages:
       name: flutter_redux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1"
+    version: "0.5.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -304,7 +304,7 @@ packages:
       name: redux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "3.0.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -369,12 +369,10 @@ packages:
   spreadsheet_decoder:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: f4c433d455240dfb0c155b5820a5204709eb5f5a
-      url: "https://github.com/kgiannakakis/spreadsheet_decoder"
-    source: git
-    version: "0.4.3-alpha"
+      name: spreadsheet_decoder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.3"
   stack_trace:
     dependency: transitive
     description:
