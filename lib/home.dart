@@ -1,54 +1,19 @@
-import 'dart:async';
-import 'dart:io';
+import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:word_study/state/appstate.dart';
 import 'package:word_study/wordstudy.dart';
 import 'package:word_study/quizsettingswidget.dart';
-import 'package:word_study/words/wordprovider.dart';
 import 'package:word_study/words/quiz.dart';
 import 'package:word_study/words/quizinstance.dart';
-import 'package:word_study/files/fileservice.dart';
-import 'package:word_study/words/quizprovider.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
 
-  @override
-  HomeState createState() => new HomeState();
-}
-
-class HomeState extends State<Home> {
-
-  List<Quiz> _quizzes = <Quiz>[];
-  final FileService _fileService = new FileService();
-  final QuizProvider _quizProvider = new QuizProvider();
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  @override
-  void initState() {
-    super.initState();
-
-    _loadQuizzes();
-  }
-
-  Future<void> _loadQuizzes() async {
-    await _quizProvider.init();
-
-    final directory = await _fileService.localPath;
-    File file = new File('$directory/${_quizProvider.builtinFilename}');
-    bool exists = await file.exists();
-
-    if (!exists) {
-      WordProvider wordProvider = new WordProvider();
-      await wordProvider.init();
-      await wordProvider.store(_quizProvider.builtinFilename);
-    }
-
-    setState(() {
-      _quizzes = _quizProvider.allQuizzes;
-    });
-  }
-
-  void _start(int i) async {
-    QuizInstance quizInstance = new QuizInstance(_quizzes[i]);
+  void _start(BuildContext context, Quiz quiz) async {
+    QuizInstance quizInstance = new QuizInstance(quiz);
     bool ok = await quizInstance.init();
     if (ok) {
       Navigator.of(context).push(
@@ -66,16 +31,15 @@ class HomeState extends State<Home> {
     }
   }
 
-  void _gotoCreateQuiz() async {
-    await Navigator.of(context).push(
+  void _gotoCreateQuiz(BuildContext context) async {
+    Navigator.of(context).push(
         new MaterialPageRoute(
             builder: (context) => new QuizSettingsWidget()
         )
     );
-    await _loadQuizzes();
   }
 
-  Widget _buildRow(int i, BuildContext context) {
+  Widget _buildRow(List<Quiz> quizzes, int i, BuildContext context) {
     return
       new Dismissible(
           background: new Container(
@@ -96,54 +60,82 @@ class HomeState extends State<Home> {
           ),
           key: new ObjectKey('quiz_$i'),
           onDismissed: (direction) {
-            List<Quiz> quizzes = new List<Quiz>();
-            for(int ii=0; ii<_quizzes.length; ii++) {
-              if (ii != i) {
-                quizzes.add(_quizzes[ii]);
-              }
-            }
+//            List<Quiz> quizzes = new List<Quiz>();
+//            for(int ii=0; ii<_quizzes.length; ii++) {
+//              if (ii != i) {
+//                quizzes.add(_quizzes[ii]);
+//              }
+//            }
 
-            Scaffold.of(context).showSnackBar(
-                new SnackBar(
-                    content: new Text("${_quizzes[i].name} dismissed"),
-                    action: new SnackBarAction(label: 'Undo', onPressed: () {}),
-                )
-            );
-            setState(() => _quizzes = quizzes);
+//            Scaffold.of(context).showSnackBar(
+//                new SnackBar(
+//                    content: new Text("${quizzes[i].name} dismissed"),
+//                    action: new SnackBarAction(label: 'Undo', onPressed: () {}),
+//                )
+//            );
           },
           child: new Padding(
               padding: const EdgeInsets.all(16.0),
               child: new ListTile(
-                  title: new Text(_quizzes[i].name, style: _biggerFont),
-                  onTap: () { _start(i); }
+                  title: new Text(quizzes[i].name, style: _biggerFont),
+                  onTap: () { _start(context, quizzes[i]); }
               )
           ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("Word Study"),
-        ),
-      body: new Builder(
-        builder: (BuildContext context) {
-          return new ListView.builder(
-              padding: const EdgeInsets.all(16.0),
-              itemCount: 2*_quizzes.length,
-              itemBuilder: (BuildContext context, int position) {
-                if (position.isOdd) return new Divider();
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: _ViewModel.fromStore,
+      builder: (context, vm) {
+        return new Scaffold(
+          appBar: new AppBar(
+            title: new Text("Word Study"),
+          ),
+          body: new Builder(
+            builder: (BuildContext context) {
+              return new ListView.builder(
+                padding: const EdgeInsets.all(16.0),
+                itemCount: 2 * vm.quizzes.length,
+                itemBuilder: (BuildContext context, int position) {
+                  if (position.isOdd) return new Divider();
 
-                final index = position ~/ 2;
+                  final index = position ~/ 2;
 
-                return _buildRow(index, context);
-              });
+                  return _buildRow(vm.quizzes, index, context);
+                });
+              }
+          ),
+          floatingActionButton: new FloatingActionButton(
+              onPressed: () => _gotoCreateQuiz(context),
+              child: new Icon(Icons.add))
+        );
+      }
+    );
 
-        }
-      ),
-      floatingActionButton: new FloatingActionButton(onPressed: _gotoCreateQuiz,
-          child: new Icon(Icons.add))
+  }
+}
+
+class _ViewModel {
+  final List<Quiz> quizzes;
+  //final Function(Quiz) onRemove;
+  //final Function(Quiz) onUndoRemove;
+
+  _ViewModel({
+    @required this.quizzes,
+    //@required this.onRemove,
+    //@required this.onUndoRemove,
+  });
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return new _ViewModel(
+      quizzes: store.state.quizzes,
+//      onRemove: (todo) {
+//        store.dispatch(new DeleteTodoAction(todo.id));
+//      },
+//      onUndoRemove: (todo) {
+//        store.dispatch(new AddTodoAction(todo));
+//      },
     );
   }
-
 }

@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:word_study/files/fileservice.dart';
 import 'package:word_study/words/quiz.dart';
 import 'package:word_study/words/quizsettings.dart';
+import 'package:word_study/words/wordprovider.dart';
 
 class QuizProvider {
   final String builtinFilename = '__builtin';
@@ -22,6 +25,17 @@ class QuizProvider {
     _allQuizzes = <Quiz>[];
     if (storedQuizzesStr == null) {
       _allQuizzes.add(_getDemoQuiz());
+
+      FileService fileService = new FileService();
+      final directory = await fileService.localPath;
+      File file = new File('$directory/$builtinFilename');
+      bool exists = await file.exists();
+
+      if (!exists) {
+        WordProvider wordProvider = new WordProvider();
+        await wordProvider.init();
+        await wordProvider.store(builtinFilename);
+      }
     }
     else {
       try {
