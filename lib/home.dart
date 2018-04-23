@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:word_study/state/appstate.dart';
+import 'package:word_study/actions/actions.dart';
 import 'package:word_study/wordstudy.dart';
 import 'package:word_study/quizsettingswidget.dart';
 import 'package:word_study/words/quiz.dart';
@@ -39,48 +40,48 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(List<Quiz> quizzes, int i, BuildContext context) {
+  Widget _buildRow(_ViewModel vm, int i, BuildContext context) {
     return
       new Dismissible(
-          background: new Container(
-              color: Colors.redAccent,
-              padding: const EdgeInsets.all(12.0),
-              child:new Align(
-                child: new Icon(Icons.delete, color: Colors.white),
-                alignment: Alignment.centerLeft,
-              ),
+        background: new Container(
+          color: Colors.redAccent,
+          padding: const EdgeInsets.all(12.0),
+          child:new Align(
+            child: new Icon(Icons.delete, color: Colors.white),
+            alignment: Alignment.centerLeft,
           ),
-          secondaryBackground: new Container(
-            color: Colors.redAccent,
-            padding: const EdgeInsets.all(12.0),
-            child: new Align(
-              child: new Icon(Icons.delete, color: Colors.white),
-              alignment: Alignment.centerRight,
-            ),
+        ),
+        secondaryBackground: new Container(
+          color: Colors.redAccent,
+          padding: const EdgeInsets.all(12.0),
+          child: new Align(
+            child: new Icon(Icons.delete, color: Colors.white),
+            alignment: Alignment.centerRight,
           ),
-          key: new ObjectKey('quiz_$i'),
-          onDismissed: (direction) {
-//            List<Quiz> quizzes = new List<Quiz>();
-//            for(int ii=0; ii<_quizzes.length; ii++) {
-//              if (ii != i) {
-//                quizzes.add(_quizzes[ii]);
-//              }
-//            }
+        ),
+        key: new ObjectKey('quiz_$i'),
+        onDismissed: (direction) {
+          vm.onRemove(vm.quizzes[i]);
 
-//            Scaffold.of(context).showSnackBar(
-//                new SnackBar(
-//                    content: new Text("${quizzes[i].name} dismissed"),
-//                    action: new SnackBarAction(label: 'Undo', onPressed: () {}),
-//                )
-//            );
-          },
-          child: new Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: new ListTile(
-                  title: new Text(quizzes[i].name, style: _biggerFont),
-                  onTap: () { _start(context, quizzes[i]); }
-              )
-          ));
+          Scaffold.of(context).showSnackBar(
+            new SnackBar(
+              content: new Text("${vm.quizzes[i].name} dismissed"),
+              duration: new Duration(seconds: 5),
+              action: new SnackBarAction(
+                  label: 'Undo',
+                  onPressed: () {
+                    vm.onUndoRemove(vm.quizzes[i]);
+                  }),
+            )
+          );
+        },
+        child: new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: new ListTile(
+                title: new Text(vm.quizzes[i].name, style: _biggerFont),
+                onTap: () { _start(context, vm.quizzes[i]); }
+            )
+        ));
   }
 
   @override
@@ -102,7 +103,7 @@ class Home extends StatelessWidget {
 
                   final index = position ~/ 2;
 
-                  return _buildRow(vm.quizzes, index, context);
+                  return _buildRow(vm, index, context);
                 });
               }
           ),
@@ -118,24 +119,24 @@ class Home extends StatelessWidget {
 
 class _ViewModel {
   final List<Quiz> quizzes;
-  //final Function(Quiz) onRemove;
-  //final Function(Quiz) onUndoRemove;
+  final Function(Quiz) onRemove;
+  final Function(Quiz) onUndoRemove;
 
   _ViewModel({
     @required this.quizzes,
-    //@required this.onRemove,
-    //@required this.onUndoRemove,
+    @required this.onRemove,
+    @required this.onUndoRemove,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return new _ViewModel(
       quizzes: store.state.quizzes,
-//      onRemove: (todo) {
-//        store.dispatch(new DeleteTodoAction(todo.id));
-//      },
-//      onUndoRemove: (todo) {
-//        store.dispatch(new AddTodoAction(todo));
-//      },
+      onRemove: (quiz) {
+        store.dispatch(new DeleteQuizAction(quiz.name));
+      },
+      onUndoRemove: (quiz) {
+        store.dispatch(new AddQuizAction(quiz));
+      },
     );
   }
 }

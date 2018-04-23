@@ -10,6 +10,12 @@ class QuizzesLoadedAction {
   QuizzesLoadedAction(this.quizzes);
 }
 
+class DeleteQuizAction {
+  final String name;
+
+  DeleteQuizAction(this.name);
+}
+
 class AddQuizAction {
   final Quiz quiz;
 

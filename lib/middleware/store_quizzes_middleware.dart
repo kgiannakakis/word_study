@@ -10,6 +10,7 @@ List<Middleware<AppState>> createStoreQuizzesMiddleware() {
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, LoadQuizzesAction>(loadQuizzes),
     new TypedMiddleware<AppState, AddQuizAction>(saveQuizzes),
+    new TypedMiddleware<AppState, DeleteQuizAction>(saveQuizzes),
     new TypedMiddleware<AppState, QuizzesLoadedAction>(saveQuizzes),
   ];
 }
