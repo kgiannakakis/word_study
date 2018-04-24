@@ -8,7 +8,7 @@ class FileService {
   Future<String> get localPath async {
     final directory = await getApplicationDocumentsDirectory();
 
-    return directory.path;
+    return '${directory.path}/wordfiles';
   }
 
   Future<List<FileSystemEntity>> _dirContents(Directory dir) {
