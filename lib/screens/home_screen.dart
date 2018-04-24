@@ -90,20 +90,7 @@ class HomeScreen extends StatelessWidget {
     return new StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (context, vm) {
-        if (vm.isLoading) {
-          return new Scaffold(
-              appBar: new AppBar(
-                title: new Text("Word Study"),
-              ),
-              body: new Column(children: <Widget>[
-                new Expanded(
-                    child: new Align(
-                      alignment: Alignment.center,
-                      child: new CircularProgressIndicator() ,
-                    ))
-              ],)
-          );
-        }
+
 
         return new Scaffold(
           appBar: new AppBar(
@@ -158,7 +145,7 @@ class _ViewModel {
       onUndoRemove: (quiz) {
         store.dispatch(new AddQuizAction(quiz));
       },
-        onClearSelectedFiles: () {
+      onClearSelectedFiles: () {
         store.dispatch(new ClearSelectedFilesAction());
       }
     );

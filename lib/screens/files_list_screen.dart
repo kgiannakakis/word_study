@@ -12,16 +12,50 @@ class FilesListScreen extends StatelessWidget {
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   Widget _buildRow(BuildContext context, _ViewModel vm, int i) {
-    return new Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: new ListTile(
-        title: new Text(vm.files[i].name, style: _biggerFont),
-        subtitle: new Text(vm.files[i].created.toString()),
-        onTap: () {
-          vm.onAddSelectedFile(vm.files[i].name);
-          Navigator.of(context).pop();
-        }
-      )
+    return new Dismissible(
+        background: new Container(
+          color: Colors.redAccent,
+          padding: const EdgeInsets.all(12.0),
+          child:new Align(
+            child: new Icon(Icons.delete, color: Colors.white),
+            alignment: Alignment.centerLeft,
+          ),
+        ),
+        secondaryBackground: new Container(
+          color: Colors.redAccent,
+          padding: const EdgeInsets.all(12.0),
+          child: new Align(
+            child: new Icon(Icons.delete, color: Colors.white),
+            alignment: Alignment.centerRight,
+          ),
+        ),
+        key: new ObjectKey('quiz_$i'),
+        onDismissed: (direction) {
+          vm.onRemove(vm.files[i]);
+
+          Scaffold.of(context).showSnackBar(
+              new SnackBar(
+                content: new Text("${vm.files[i].name} dismissed"),
+                duration: new Duration(seconds: 5),
+                action: new SnackBarAction(
+                    label: 'Undo',
+                    onPressed: () {
+                      vm.onUndoRemove(vm.files[i]);
+                    }),
+              )
+          );
+        },
+        child: new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: new ListTile(
+                title: new Text(vm.files[i].name, style: _biggerFont),
+                subtitle: new Text(vm.files[i].created.toString()),
+                onTap: () {
+                  vm.onAddSelectedFile(vm.files[i].name);
+                  Navigator.of(context).pop();
+                }
+            )
+        )
     );
   }
 
@@ -84,18 +118,28 @@ class _ViewModel {
   final List<StoredFile> files;
   final bool isLoading;
   final Function(String) onAddSelectedFile;
+  final Function(StoredFile) onRemove;
+  final Function(StoredFile) onUndoRemove;
 
   _ViewModel({
     @required this.files,
     @required this.isLoading,
-    @required this.onAddSelectedFile
+    @required this.onAddSelectedFile,
+    @required this.onRemove,
+    @required this.onUndoRemove,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return new _ViewModel(
       files: store.state.files,
       isLoading: store.state.isLoading,
-        onAddSelectedFile: (file) => store.dispatch(new AddSelectedFileAction(file))
+      onAddSelectedFile: (file) => store.dispatch(new AddSelectedFileAction(file)),
+      onRemove: (file) {
+        store.dispatch(new DeleteFileAction(file.name));
+      },
+      onUndoRemove: (file) {
+        store.dispatch(new AddFileAction(file));
+      },
     );
   }
 }
