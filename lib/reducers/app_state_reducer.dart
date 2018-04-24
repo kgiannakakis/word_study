@@ -9,6 +9,7 @@ AppState appReducer(AppState state, action) {
     isLoading: loadingReducer(state.isLoading, action),
     quizzes: quizzesReducer(state.quizzes, action),
     selectedFiles: selectedFilesReducer(state.selectedFiles, action),
-    files: filesReducer(state.files, action)
+    files: filesReducer(state.files, action),
+    totalWordsCount: totalWordsCountReducer(state.totalWordsCount, action),
   );
 }

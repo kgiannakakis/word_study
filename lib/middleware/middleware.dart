@@ -51,10 +51,10 @@ Middleware<AppState> _createLoadQuizzes() {
 Middleware<AppState> _createCalculateWordCount() {
   return (Store<AppState> store, action, NextDispatcher next) {
 
+    next(action);
+
     _calculateWordCount(store.state.selectedFiles)
         .then((totalWordCount) => store.dispatch(new UpdateTotalWordCountAction(totalWordCount)));
-
-    next(action);
   };
 }
 
@@ -67,6 +67,7 @@ Future<int> _calculateWordCount(List<String> files) async {
       totalWordCount += wordProvider.length;
     }
   }
+  print('Calculated $totalWordCount from ${files.length} files');
   return totalWordCount;
 }
 

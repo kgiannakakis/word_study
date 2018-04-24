@@ -32,7 +32,8 @@ class Home extends StatelessWidget {
     }
   }
 
-  void _gotoCreateQuiz(BuildContext context) async {
+  void _gotoCreateQuiz(BuildContext context, _ViewModel vm) async {
+    vm.onClearSelectedFiles();
     Navigator.of(context).push(
         new MaterialPageRoute(
             builder: (context) => new QuizSettingsWidget()
@@ -108,7 +109,7 @@ class Home extends StatelessWidget {
               }
           ),
           floatingActionButton: new FloatingActionButton(
-              onPressed: () => _gotoCreateQuiz(context),
+              onPressed: () => _gotoCreateQuiz(context, vm),
               child: new Icon(Icons.add))
         );
       }
@@ -121,11 +122,13 @@ class _ViewModel {
   final List<Quiz> quizzes;
   final Function(Quiz) onRemove;
   final Function(Quiz) onUndoRemove;
+  final Function onClearSelectedFiles;
 
   _ViewModel({
     @required this.quizzes,
     @required this.onRemove,
     @required this.onUndoRemove,
+    @required this.onClearSelectedFiles
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -137,6 +140,9 @@ class _ViewModel {
       onUndoRemove: (quiz) {
         store.dispatch(new AddQuizAction(quiz));
       },
+        onClearSelectedFiles: () {
+        store.dispatch(new ClearSelectedFilesAction());
+      }
     );
   }
 }

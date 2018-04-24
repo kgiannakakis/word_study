@@ -34,17 +34,26 @@ class QuizSettingsWidget extends StatelessWidget {
             ),
             body: new Builder(
               builder: (BuildContext context) {
+
+                String filenames = vm.files.join(',');
+                String name = vm.name;
+
+                print('------');
+                print('$filenames ${vm.totalWordsCount} ${vm.name}');
+                print('------');
+
                 return new SingleChildScrollView (
                   child: new Form(
                     key: _formKey,
                     child: new Column(children: <Widget>[
                       new ListTile(
+                        //key: _filesKey,
                         leading: const Icon(Icons.archive),
                         title: new FocusScope(
                           node: new FocusScopeNode(),
                           child: new TextFormField(
                             keyboardType: TextInputType.text,
-                            initialValue: vm.files.join(','),
+                            initialValue: filenames,
                             decoration: new InputDecoration(
                               hintText: 'Files',
                             ),
@@ -71,7 +80,7 @@ class QuizSettingsWidget extends StatelessWidget {
                         leading: const Icon(Icons.assignment),
                         title: new TextFormField(
                           keyboardType: TextInputType.text,
-                          initialValue: vm.name,
+                          initialValue: name,
                           decoration: new InputDecoration(
                             labelText: "Name",
                             hintText: "Name",
