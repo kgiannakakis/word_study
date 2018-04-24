@@ -35,3 +35,9 @@ class DeleteSelectedFileAction {
 }
 
 class ClearSelectedFilesAction {}
+
+class UpdateTotalWordCountAction {
+  final int totalWordCount;
+
+  UpdateTotalWordCountAction(this.totalWordCount);
+}
