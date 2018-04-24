@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert' show json;
-
+import 'package:word_study/models/stored_file.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -17,11 +17,17 @@ class GoogleDriveFileWidget {
 }
 
 class GoogleDriveDownloader extends StatefulWidget {
+  final Function(StoredFile) onAddFile;
+
+  GoogleDriveDownloader({this.onAddFile});
+
   @override
   State createState() => new GoogleDriveDownloaderState();
 }
 
 class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
+  final Function(StoredFile) onAddFile;
+
   GoogleSignIn _googleSignIn;
   GoogleSignInAccount _currentUser;
 
@@ -30,6 +36,8 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final FileService _fileService = new FileService();
+
+  GoogleDriveDownloaderState({this.onAddFile});
 
   @override
   void initState() {
@@ -133,7 +141,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
     return null;
   }
 
-  Future<void> _downloadFile(int i) async {
+  Future<bool> _downloadFile(int i) async {
     GoogleDriveFileWidget file;
     file = _files[i];
 
@@ -141,10 +149,12 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
     var headers = await _currentUser.authHeaders;
 
     var webWordProvider = new WebWordProvider(fileUrl, headers);
-    await webWordProvider.init();
-    String filename = await _fileService.getNewFilename(file.name);
-    await webWordProvider.store(filename);
-    Navigator.of(context).pop();
+    bool ok = await webWordProvider.init();
+    if (ok) {
+      String filename = await _fileService.getNewFilename(file.name);
+      await webWordProvider.store(filename);
+    }
+    return ok;
   }
 
   Future<Null> _handleSignIn() async {
@@ -252,7 +262,12 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
         padding: const EdgeInsets.all(16.0),
         child: new ListTile(
             title: new Text(_files[i].name, style: _biggerFont),
-            onTap: () { _downloadFile(i); }
+            onTap: () async {
+              if ((await _downloadFile(i))) {
+                onAddFile(new StoredFile(name: _files[i].name, created: DateTime.now()));
+                Navigator.of(context).pop();
+              }
+            }
         )
     );
   }

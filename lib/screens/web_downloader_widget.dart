@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:validator/validator.dart';
+import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/words/web_wordprovider.dart';
 import 'package:word_study/files/file_service.dart';
 
 class WebDownloaderWidget extends StatefulWidget {
-  WebDownloaderWidget();
+  final Function(StoredFile) onAddFile;
+
+  WebDownloaderWidget({this.onAddFile});
 
   @override
   WebDownloaderState createState() => new WebDownloaderState();
 }
 
 class WebDownloaderState extends State<WebDownloaderWidget> {
+  final Function(StoredFile) onAddFile;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   String _fileUrl;
   String _fileName;
   bool _isLoading = false;
+
+  WebDownloaderState({this.onAddFile});
 
   _download() async {
     var webWordProvider = new WebWordProvider(_fileUrl, null);
@@ -100,6 +106,7 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
                               backgroundColor: Colors.redAccent));
                     }
                     else {
+                      onAddFile(new StoredFile(name: _fileName, created: DateTime.now()));
                       Navigator.of(context).pop();
                     }
                   }

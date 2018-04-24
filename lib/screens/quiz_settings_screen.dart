@@ -52,7 +52,7 @@ class QuizSettingsScreen extends StatelessWidget {
                     child: new TextFormField(
                       key: _filesKey,
                       keyboardType: TextInputType.text,
-                      initialValue: filenames,
+                      controller: new TextEditingController(text: filenames),
                       decoration: new InputDecoration(
                         hintText: 'Files',
                       ),
@@ -79,7 +79,7 @@ class QuizSettingsScreen extends StatelessWidget {
                   title: new TextFormField(
                     key: _nameKey,
                     keyboardType: TextInputType.text,
-                    initialValue: name,
+                    controller: new TextEditingController(text: name),
                     decoration: new InputDecoration(
                       labelText: "Name",
                       hintText: "Name",
@@ -89,7 +89,6 @@ class QuizSettingsScreen extends StatelessWidget {
                         return 'Please enter the name of the quiz';
                       }
                     },
-                    //onSaved: (value) => _name = value,
                   ),
                 ),
                 new ListTile(
@@ -97,7 +96,7 @@ class QuizSettingsScreen extends StatelessWidget {
                   title: new TextFormField(
                     key: _wordsCountKey,
                     keyboardType: TextInputType.number,
-                    initialValue: '$totalWordsCount',
+                    controller: new TextEditingController(text: '$totalWordsCount'),
                     decoration: new InputDecoration(
                       labelText: "Word Count",
                       hintText: "Word Count",
@@ -115,7 +114,6 @@ class QuizSettingsScreen extends StatelessWidget {
                         return 'Please enter a number less than $totalWordsCount';
                       }
                     },
-                    //onSaved: (value) => _wordsCount = int.parse(value),
                   ),
                 ),
                 new ListTile(
