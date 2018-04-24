@@ -4,10 +4,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:word_study/models/appstate.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/filedownloader.dart';
+import 'package:word_study/screens/file_downloader_screen.dart';
 import 'package:word_study/models/storedfile.dart';
 
-class FilesList extends StatelessWidget {
+class FilesListScreen extends StatelessWidget {
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -69,7 +69,7 @@ class FilesList extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                   new MaterialPageRoute(
-                      builder: (context) => new FileDownloader()
+                      builder: (context) => new FileDownloaderScreen()
                   )
               );
             },

@@ -3,7 +3,7 @@ import 'package:word_study/models/quizoption.dart';
 
 typedef void OptionTapped(int index);
 
-class Option extends StatelessWidget {
+class OptionWidget extends StatelessWidget {
   final QuizOption quizOption;
   final OptionTapped onTap;
   final AnimationController animationController;
@@ -12,7 +12,7 @@ class Option extends StatelessWidget {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final _biggerInvisibleFont = const TextStyle(fontSize: 18.0, color: Colors.transparent);
 
-  Option({this.quizOption, this.onTap, this.optionIndex, this.animationController});
+  OptionWidget({this.quizOption, this.onTap, this.optionIndex, this.animationController});
 
   Color _getColor() {
     if (quizOption.isSelected && quizOption.isCorrect) {

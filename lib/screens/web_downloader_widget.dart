@@ -3,14 +3,14 @@ import 'package:validator/validator.dart';
 import 'package:word_study/words/webwordprovider.dart';
 import 'package:word_study/files/fileservice.dart';
 
-class WebDownloader extends StatefulWidget {
-  WebDownloader();
+class WebDownloaderWidget extends StatefulWidget {
+  WebDownloaderWidget();
 
   @override
   WebDownloaderState createState() => new WebDownloaderState();
 }
 
-class WebDownloaderState extends State<WebDownloader> {
+class WebDownloaderState extends State<WebDownloaderWidget> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   String _fileUrl;

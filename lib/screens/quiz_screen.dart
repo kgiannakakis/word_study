@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:word_study/words/quizinstance.dart';
 import 'package:word_study/models/quizword.dart';
-import 'package:word_study/option.dart';
+import 'package:word_study/screens/option_widget.dart';
 
-class WordStudy extends StatefulWidget {
+class QuizScreen extends StatefulWidget {
   final QuizInstance quizInstance;
   final int currentWord;
 
-  WordStudy({this.quizInstance, this.currentWord});
+  QuizScreen({this.quizInstance, this.currentWord});
 
   @override
   WordStudyState createState() => new WordStudyState(quizInstance, currentWord);
 }
 
-class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
+class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
   final int currentWord;
   final QuizInstance quizInstance;
   QuizWord _quizWord;
 
-  final List<Option> _options = <Option>[];
+  final List<OptionWidget> _options = <OptionWidget>[];
 
   WordStudyState(this.quizInstance, this.currentWord);
 
@@ -54,7 +54,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
       return () {
         Navigator.of(context).push(
             new MaterialPageRoute(
-                builder: (context) => new WordStudy(quizInstance: quizInstance,
+                builder: (context) => new QuizScreen(quizInstance: quizInstance,
                   currentWord: currentWord + 1)
             )
         );
@@ -100,7 +100,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
   }
 
   Widget _buildRow(int i) {
-    Option option = new Option(
+    OptionWidget option = new OptionWidget(
         quizOption: _quizWord.options[i],
         optionIndex: i,
         onTap: _handleWordTapped,
@@ -125,7 +125,7 @@ class WordStudyState extends State<WordStudy> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    for (Option word in _options) {
+    for (OptionWidget word in _options) {
       word.animationController.dispose();
     }
     super.dispose();

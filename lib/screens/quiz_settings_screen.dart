@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:word_study/models/appstate.dart';
-import 'package:word_study/fileslist.dart';
+import 'package:word_study/screens/files_list_screen.dart';
 import 'package:word_study/models/quizsettings.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/words/quizprovider.dart';
 
-class QuizSettingsWidget extends StatelessWidget {
+class QuizSettingsScreen extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   static final GlobalKey<FormFieldState<String>> _nameKey =
@@ -69,7 +69,7 @@ class QuizSettingsWidget extends StatelessWidget {
                           onPressed: () async {
                             Navigator.of(context).push(
                               new MaterialPageRoute(
-                                  builder: (context) => new FilesList()
+                                  builder: (context) => new FilesListScreen()
                               )
                             );
                           },

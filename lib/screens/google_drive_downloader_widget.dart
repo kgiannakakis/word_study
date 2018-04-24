@@ -9,11 +9,11 @@ import 'package:word_study/files/fileservice.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
 
-class GoogleDriveFile {
+class GoogleDriveFileWidget {
   final String name;
   final String id;
 
-  GoogleDriveFile(this.name, this.id);
+  GoogleDriveFileWidget(this.name, this.id);
 }
 
 class GoogleDriveDownloader extends StatefulWidget {
@@ -26,7 +26,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   GoogleSignInAccount _currentUser;
 
   String _messageText;
-  List<GoogleDriveFile> _files = <GoogleDriveFile>[];
+  List<GoogleDriveFileWidget> _files = <GoogleDriveFileWidget>[];
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final FileService _fileService = new FileService();
@@ -108,9 +108,9 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
       });
     }
     else {
-      var files = <GoogleDriveFile>[];
+      var files = <GoogleDriveFileWidget>[];
       for(int i=0; i<filesData['files'].length; i++) {
-        files.add(new GoogleDriveFile(filesData['files'][i]['name'],
+        files.add(new GoogleDriveFileWidget(filesData['files'][i]['name'],
                                       filesData['files'][i]['id']));
       }
       setState(() {
@@ -134,7 +134,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   }
 
   Future<void> _downloadFile(int i) async {
-    GoogleDriveFile file;
+    GoogleDriveFileWidget file;
     file = _files[i];
 
     var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file.id}?alt=media';

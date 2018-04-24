@@ -4,12 +4,12 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:word_study/models/appstate.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/wordstudy.dart';
-import 'package:word_study/quizsettingswidget.dart';
+import 'package:word_study/screens/quiz_screen.dart';
+import 'package:word_study/screens/quiz_settings_screen.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/words/quizinstance.dart';
 
-class Home extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
     if (ok) {
       Navigator.of(context).push(
           new MaterialPageRoute(
-              builder: (context) => new WordStudy(quizInstance: quizInstance,
+              builder: (context) => new QuizScreen(quizInstance: quizInstance,
                 currentWord: 0)
           )
       );
@@ -36,7 +36,7 @@ class Home extends StatelessWidget {
     vm.onClearSelectedFiles();
     Navigator.of(context).push(
         new MaterialPageRoute(
-            builder: (context) => new QuizSettingsWidget()
+            builder: (context) => new QuizSettingsScreen()
         )
     );
   }
