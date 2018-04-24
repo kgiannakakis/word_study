@@ -52,3 +52,15 @@ class FilesLoadedAction {
 
   FilesLoadedAction(this.files);
 }
+
+class DeleteFileAction {
+  final String name;
+
+  DeleteFileAction(this.name);
+}
+
+class AddFileAction {
+  final StoredFile file;
+
+  AddFileAction(this.file);
+}
