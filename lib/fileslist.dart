@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:word_study/filedownloader.dart';
 import 'package:word_study/files/fileservice.dart';
-import 'package:word_study/files/wordfile.dart';
+import 'package:word_study/models/wordfile.dart';
 import 'package:word_study/words/filewordprovider.dart';
 
 class FilesList extends StatefulWidget {
