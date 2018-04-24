@@ -67,7 +67,6 @@ Future<int> _calculateWordCount(List<String> files) async {
       totalWordCount += wordProvider.length;
     }
   }
-  print('Calculated $totalWordCount from ${files.length} files');
   return totalWordCount;
 }
 

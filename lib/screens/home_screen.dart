@@ -5,7 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/screens/quiz_screen.dart';
-import 'package:word_study/screens/quiz_settings_screen.dart';
+import 'package:word_study/containers/create_quiz.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/words/quiz_instance.dart';
 
@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
     vm.onClearSelectedFiles();
     Navigator.of(context).push(
         new MaterialPageRoute(
-            builder: (context) => new QuizSettingsScreen()
+            builder: (context) => new CreateQuiz()
         )
     );
   }
