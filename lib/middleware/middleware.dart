@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/models/appstate.dart';
-import 'package:word_study/words/quizprovider.dart';
-import 'package:word_study/words/filewordprovider.dart';
-import 'package:word_study/files/fileservice.dart';
+import 'package:word_study/models/app_state.dart';
+import 'package:word_study/words/quiz_provider.dart';
+import 'package:word_study/words/file_word_provider.dart';
+import 'package:word_study/files/file_service.dart';
 
 List<Middleware<AppState>> createMiddleware() {
   final saveQuizzes = _createSaveQuizzes();

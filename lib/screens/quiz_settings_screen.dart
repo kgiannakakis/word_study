@@ -2,11 +2,11 @@ import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:word_study/models/appstate.dart';
+import 'package:word_study/models/app_state.dart';
 import 'package:word_study/screens/files_list_screen.dart';
-import 'package:word_study/models/quizsettings.dart';
+import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/models/quiz.dart';
-import 'package:word_study/words/quizprovider.dart';
+import 'package:word_study/words/quiz_provider.dart';
 
 class QuizSettingsScreen extends StatelessWidget {
 

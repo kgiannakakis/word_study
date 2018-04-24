@@ -2,9 +2,9 @@ import 'dart:math';
 import 'dart:async';
 import 'dart:io';
 import 'package:word_study/models/word.dart';
-import 'package:word_study/models/quizword.dart';
-import 'package:word_study/models/quizoption.dart';
-import 'package:word_study/files/fileservice.dart';
+import 'package:word_study/models/quiz_word.dart';
+import 'package:word_study/models/quiz_option.dart';
+import 'package:word_study/files/file_service.dart';
 
 class WordProvider {
   var _random = new Random(new DateTime.now().millisecondsSinceEpoch);

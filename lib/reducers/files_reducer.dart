@@ -1,6 +1,6 @@
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/models/storedfile.dart';
+import 'package:word_study/models/stored_file.dart';
 
 final Reducer<List<StoredFile>> filesReducer = combineReducers([
   new TypedReducer<List<StoredFile>, FilesLoadedAction>(_setLoadedFiles),

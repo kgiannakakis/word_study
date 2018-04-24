@@ -1,4 +1,4 @@
-import 'package:word_study/models/appstate.dart';
+import 'package:word_study/models/app_state.dart';
 import 'package:word_study/reducers/loading_reducer.dart';
 import 'package:word_study/reducers/quizzes_reducer.dart';
 import 'package:word_study/reducers/selected_files_reducer.dart';

@@ -4,8 +4,8 @@ import 'dart:convert' show json;
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:word_study/words/webwordprovider.dart';
-import 'package:word_study/files/fileservice.dart';
+import 'package:word_study/words/web_wordprovider.dart';
+import 'package:word_study/files/file_service.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
 

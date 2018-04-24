@@ -1,4 +1,4 @@
-import 'package:word_study/models/quizoption.dart';
+import 'package:word_study/models/quiz_option.dart';
 
 class QuizWord {
   final String word;

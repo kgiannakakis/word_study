@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:word_study/words/quizinstance.dart';
-import 'package:word_study/models/quizword.dart';
+import 'package:word_study/words/quiz_instance.dart';
+import 'package:word_study/models/quiz_word.dart';
 import 'package:word_study/screens/option_widget.dart';
 
 class QuizScreen extends StatefulWidget {

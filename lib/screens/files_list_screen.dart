@@ -2,10 +2,10 @@ import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:word_study/models/appstate.dart';
+import 'package:word_study/models/app_state.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/screens/file_downloader_screen.dart';
-import 'package:word_study/models/storedfile.dart';
+import 'package:word_study/models/stored_file.dart';
 
 class FilesListScreen extends StatelessWidget {
 

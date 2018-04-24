@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:validator/validator.dart';
-import 'package:word_study/words/webwordprovider.dart';
-import 'package:word_study/files/fileservice.dart';
+import 'package:word_study/words/web_wordprovider.dart';
+import 'package:word_study/files/file_service.dart';
 
 class WebDownloaderWidget extends StatefulWidget {
   WebDownloaderWidget();

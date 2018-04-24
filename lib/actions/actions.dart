@@ -1,5 +1,5 @@
 import 'package:word_study/models/quiz.dart';
-import 'package:word_study/models/storedfile.dart';
+import 'package:word_study/models/stored_file.dart';
 
 class LoadQuizzesAction {}
 

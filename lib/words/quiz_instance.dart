@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:word_study/models/quiz.dart';
-import 'package:word_study/models/quizword.dart';
-import 'package:word_study/words/wordprovider.dart';
-import 'package:word_study/words/filewordprovider.dart';
+import 'package:word_study/models/quiz_word.dart';
+import 'package:word_study/words/word_provider.dart';
+import 'package:word_study/words/file_word_provider.dart';
 
 class QuizInstance {
   final Quiz quiz;

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:word_study/models/storedfile.dart';
+import 'package:word_study/models/stored_file.dart';
 
 class FileService {
 

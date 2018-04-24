@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:word_study/models/quizoption.dart';
+import 'package:word_study/models/quiz_option.dart';
 
 typedef void OptionTapped(int index);
 

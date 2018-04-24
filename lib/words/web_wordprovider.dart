@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:word_study/models/word.dart';
-import 'package:word_study/models/quizword.dart';
-import 'package:word_study/words/wordprovider.dart';
+import 'package:word_study/models/quiz_word.dart';
+import 'package:word_study/words/word_provider.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 
 class WebWordProvider extends WordProvider {
