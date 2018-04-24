@@ -184,21 +184,19 @@ class QuizSettingsScreen extends StatelessWidget {
                                 filenames: files,
                                 settings: new QuizSettings(wordsCount: wordsCount,
                                                            optionsCount: optionsCount));
-                            onSave(quiz);
 
-//                            bool added = await _quizProvider
-//                                .addQuiz(quiz);
-//                            if (added) {
-//                              Navigator.of(context).pop();
-//                            }
-//                            else {
-//                              Scaffold.of(context).showSnackBar(
-//                                  new SnackBar(
-//                                      content: new Text(
-//                                          'Failed to add quiz!'),
-//                                      backgroundColor: Colors
-//                                          .redAccent));
-//                            }
+                            bool saved = await _quizProvider.saveQuiz(quiz);
+                            if (saved) {
+                              onSave(quiz);
+                              Navigator.of(context).pop();
+                            }
+                            else {
+                              Scaffold.of(context).showSnackBar(
+                                  new SnackBar(
+                                      content: new Text(
+                                          'Failed to add quiz!'),
+                                      backgroundColor: Colors.redAccent));
+                            }
                           }
                         }
                       }

@@ -19,6 +19,7 @@ dependencies:
   validator: ">=0.0.4 <0.1.0"
 
 dev_dependencies:
+  mockito: ^2.2.3
   flutter_test:
     sdk: flutter
 

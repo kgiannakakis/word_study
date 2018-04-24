@@ -64,7 +64,7 @@ class QuizProvider {
     return _allQuizzes.where((q) => q.name == name).length > 0;
   }
 
-  Future<bool> addQuiz(Quiz quiz) async {
+  Future<bool> saveQuiz(Quiz quiz) async {
     List<Quiz> newAllQuizzes = <Quiz>[];
     _allQuizzes.forEach((q) => newAllQuizzes.add(q));
     newAllQuizzes.add(quiz);
