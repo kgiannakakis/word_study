@@ -33,6 +33,7 @@ Middleware<AppState> _createSaveQuizzes() {
         .then((ok) {
         if (!ok) {
           print('Failed to save quizzes!');
+          store.dispatch(LoadQuizzesAction);
         }
       }
     );
