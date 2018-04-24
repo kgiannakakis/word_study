@@ -16,6 +16,7 @@ class CreateQuiz extends StatelessWidget {
       builder: (BuildContext context, _ViewModel vm) {
         return new QuizSettingsScreen(
           onSave: vm.onSave,
+          quizExists: vm.quizExists,
           name: vm.name,
           files: vm.files,
           totalWordsCount: vm.totalWordsCount,
@@ -30,12 +31,14 @@ class _ViewModel {
   final String name;
   final int totalWordsCount;
   final OnSaveCallback onSave;
+  final QuizExists quizExists;
 
   _ViewModel({
     @required this.files,
     @required this.name,
     @required this.totalWordsCount,
-    @required this.onSave
+    @required this.onSave,
+    @required this.quizExists
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -46,6 +49,9 @@ class _ViewModel {
         onSave: (quiz) {
           store.dispatch(new AddQuizAction(quiz));
         },
+      quizExists: (name) {
+          return store.state.quizzes.where((q) => q.name == name).length > 0;
+      }
     );
   }
 }

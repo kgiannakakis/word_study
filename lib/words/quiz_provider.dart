@@ -11,21 +11,11 @@ class QuizProvider {
   final String builtinFilename = '__builtin';
   final String _quizzesKey = 'quizzes';
 
-  SharedPreferences _prefs;
+  Future<List<Quiz>> loadQuizzes() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String storedQuizzesStr = prefs.getString(_quizzesKey);
 
-  List<Quiz> _allQuizzes;
-  List<Quiz> get allQuizzes {
-    return _allQuizzes;
-  }
-
-  Future<Null> init() async {
-    _prefs = await SharedPreferences.getInstance();
-    String storedQuizzesStr = _prefs.getString(_quizzesKey);
-
-    _allQuizzes = <Quiz>[];
     if (storedQuizzesStr == null) {
-      _allQuizzes.add(_getDemoQuiz());
-
       FileService fileService = new FileService();
       final directory = await fileService.localPath;
       File file = new File('$directory/$builtinFilename');
@@ -36,17 +26,20 @@ class QuizProvider {
         await wordProvider.init();
         await wordProvider.store(builtinFilename);
       }
+
+      return <Quiz>[_getDemoQuiz()];
     }
     else {
+      List<Quiz> quizzes = new List<Quiz>();
       try {
         List<dynamic> ql = json.decode(storedQuizzesStr);
         ql.forEach((q) {
-          _allQuizzes.add(Quiz.fromJson(q));
+          quizzes.add(Quiz.fromJson(q));
         });
       } catch(error) {
-        _allQuizzes.add(_getDemoQuiz());
         print(error);
       }
+      return quizzes;
     }
   }
 
@@ -60,23 +53,11 @@ class QuizProvider {
     return builtin;
   }
 
-  bool quizExists(String name) {
-    return _allQuizzes.where((q) => q.name == name).length > 0;
-  }
+  Future<bool> saveQuizzes(List<Quiz> quizzes) async {
+    String allQuizzesStr = json.encode(quizzes);
 
-  Future<bool> saveQuiz(Quiz quiz) async {
-    List<Quiz> newAllQuizzes = <Quiz>[];
-    _allQuizzes.forEach((q) => newAllQuizzes.add(q));
-    newAllQuizzes.add(quiz);
-
-    String allQuizzesStr = json.encode(newAllQuizzes);
-
-    bool ok = await _prefs.setString(_quizzesKey, allQuizzesStr);
-
-    if (ok) {
-      _allQuizzes.add(quiz);
-    }
-
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool ok = await prefs.setString(_quizzesKey, allQuizzesStr);
     return ok;
   }
 

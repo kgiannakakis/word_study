@@ -27,6 +27,15 @@ List<Middleware<AppState>> createMiddleware() {
 Middleware<AppState> _createSaveQuizzes() {
   return (Store<AppState> store, action, NextDispatcher next) {
     next(action);
+
+    QuizProvider repository = new QuizProvider();
+    repository.saveQuizzes(store.state.quizzes)
+        .then((ok) {
+        if (!ok) {
+          print('Failed to save quizzes!');
+        }
+      }
+    );
   };
 }
 
@@ -34,9 +43,9 @@ Middleware<AppState> _createLoadQuizzes() {
   return (Store<AppState> store, action, NextDispatcher next) {
     QuizProvider repository = new QuizProvider();
 
-    repository.init().then((_) {
+    repository.loadQuizzes().then((quizzes) {
       store.dispatch(
-        new QuizzesLoadedAction(repository.allQuizzes),
+        new QuizzesLoadedAction(quizzes),
       );
     },)
     .catchError((e) {

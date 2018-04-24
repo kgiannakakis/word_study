@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:word_study/screens/files_list_screen.dart';
 import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/models/quiz.dart';
-import 'package:word_study/words/quiz_provider.dart';
 
 typedef OnSaveCallback = Function(Quiz quiz);
+typedef QuizExists = bool Function(String name);
 
 class QuizSettingsScreen extends StatelessWidget {
 
@@ -19,14 +19,14 @@ class QuizSettingsScreen extends StatelessWidget {
   static final GlobalKey<FormFieldState<String>> _optionsCountKey =
     new GlobalKey<FormFieldState<String>>();
 
-  final QuizProvider _quizProvider = new QuizProvider();
-
-  final Function(Quiz) onSave;
+  final OnSaveCallback onSave;
+  final QuizExists quizExists;
   final List<String> files;
   final int totalWordsCount;
   final String name;
 
-  QuizSettingsScreen({@required this.onSave, this.files, this.totalWordsCount, this.name});
+  QuizSettingsScreen({@required this.onSave, @required this.quizExists,
+                      this.files, this.totalWordsCount, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +153,7 @@ class QuizSettingsScreen extends StatelessWidget {
                     child: new Text(
                         'Create'
                     ),
-                    onPressed: () async {
+                    onPressed: () {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
 
@@ -170,8 +170,7 @@ class QuizSettingsScreen extends StatelessWidget {
                                   .redAccent));
                         }
                         else {
-                          await _quizProvider.init();
-                          if (_quizProvider.quizExists(_name)) {
+                          if (quizExists(_name)) {
                             Scaffold.of(context).showSnackBar(
                               new SnackBar(
                                 content: new Text(
@@ -184,19 +183,8 @@ class QuizSettingsScreen extends StatelessWidget {
                                 filenames: files,
                                 settings: new QuizSettings(wordsCount: wordsCount,
                                                            optionsCount: optionsCount));
-
-                            bool saved = await _quizProvider.saveQuiz(quiz);
-                            if (saved) {
-                              onSave(quiz);
-                              Navigator.of(context).pop();
-                            }
-                            else {
-                              Scaffold.of(context).showSnackBar(
-                                  new SnackBar(
-                                      content: new Text(
-                                          'Failed to add quiz!'),
-                                      backgroundColor: Colors.redAccent));
-                            }
+                            onSave(quiz);
+                            Navigator.of(context).pop();
                           }
                         }
                       }
