@@ -72,6 +72,7 @@ Future<int> _calculateWordCount(List<String> files) async {
 
 Middleware<AppState> _createLoadFiles() {
   return (Store<AppState> store, action, NextDispatcher next) {
+
     FileService fileService = new FileService();
 
     fileService.listFiles().then((files) {
