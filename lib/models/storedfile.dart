@@ -1,14 +1,14 @@
 import 'package:meta/meta.dart';
 
 @immutable
-class WordFile {
+class StoredFile {
   final String name;
   final DateTime created;
 
-  WordFile({this.name, this.created});
+  StoredFile({this.name, this.created});
 
-  WordFile copyWith({String name, DateTime created}) {
-    return new WordFile(
+  StoredFile copyWith({String name, DateTime created}) {
+    return new StoredFile(
       name: name ?? this.name,
       created: created ?? this.created,
     );
@@ -21,7 +21,7 @@ class WordFile {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is WordFile &&
+          other is StoredFile &&
               runtimeType == other.runtimeType &&
               name == other.name &&
               created == other.created;

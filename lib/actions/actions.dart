@@ -1,4 +1,5 @@
 import 'package:word_study/models/quiz.dart';
+import 'package:word_study/models/storedfile.dart';
 
 class LoadQuizzesAction {}
 
@@ -40,4 +41,14 @@ class UpdateTotalWordCountAction {
   final int totalWordCount;
 
   UpdateTotalWordCountAction(this.totalWordCount);
+}
+
+class LoadFilesAction {}
+
+class FilesNotLoadedAction {}
+
+class FilesLoadedAction {
+  final List<StoredFile> files;
+
+  FilesLoadedAction(this.files);
 }

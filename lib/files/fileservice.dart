@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:word_study/models/wordfile.dart';
+import 'package:word_study/models/storedfile.dart';
 
 class FileService {
 
@@ -23,20 +23,20 @@ class FileService {
     return completer.future;
   }
 
-  Future<List<WordFile>> listFiles() async {
+  Future<List<StoredFile>> listFiles() async {
     final directory = await localPath;
     Directory dir = new Directory(directory);
     var fileSystemEntities = await _dirContents(dir);
 
     RegExp regexp = new RegExp('[^\/]+\$');
 
-    List<WordFile> files = <WordFile>[];
+    List<StoredFile> files = <StoredFile>[];
 
     for(int i=0; i<fileSystemEntities.length; i++ ) {
       var f = fileSystemEntities[i];
       var stat = await f.stat();
       var match = regexp.firstMatch(f.path);
-      files.add(new WordFile(name: match[0], created: stat.changed));
+      files.add(new StoredFile(name: match[0], created: stat.changed));
     }
     return files;
   }

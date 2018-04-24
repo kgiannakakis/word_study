@@ -4,11 +4,13 @@ import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/appstate.dart';
 import 'package:word_study/words/quizprovider.dart';
 import 'package:word_study/words/filewordprovider.dart';
+import 'package:word_study/files/fileservice.dart';
 
-List<Middleware<AppState>> createStoreQuizzesMiddleware() {
+List<Middleware<AppState>> createMiddleware() {
   final saveQuizzes = _createSaveQuizzes();
   final loadQuizzes = _createLoadQuizzes();
   final calculateWordCount = _createCalculateWordCount();
+  final loadFiles = _createLoadFiles();
 
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, LoadQuizzesAction>(loadQuizzes),
@@ -17,7 +19,8 @@ List<Middleware<AppState>> createStoreQuizzesMiddleware() {
     new TypedMiddleware<AppState, QuizzesLoadedAction>(saveQuizzes),
     new TypedMiddleware<AppState, AddSelectedFileAction>(calculateWordCount),
     new TypedMiddleware<AppState, DeleteSelectedFileAction>(calculateWordCount),
-    new TypedMiddleware<AppState, ClearSelectedFilesAction>(calculateWordCount)
+    new TypedMiddleware<AppState, ClearSelectedFilesAction>(calculateWordCount),
+    new TypedMiddleware<AppState, LoadFilesAction>(loadFiles),
   ];
 }
 
@@ -65,4 +68,19 @@ Future<int> _calculateWordCount(List<String> files) async {
     }
   }
   return totalWordCount;
+}
+
+Middleware<AppState> _createLoadFiles() {
+  return (Store<AppState> store, action, NextDispatcher next) {
+    FileService fileService = new FileService();
+
+    fileService.listFiles().then((files) {
+      store.dispatch(new FilesLoadedAction(files));
+    }).catchError((e) {
+      print(e);
+      store.dispatch(new FilesNotLoadedAction());
+    });
+
+    next(action);
+  };
 }
