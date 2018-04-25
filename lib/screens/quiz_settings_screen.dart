@@ -25,13 +25,9 @@ class QuizSettingsScreen extends StatelessWidget {
   final QuizSettings quizSettings;
   final int totalWordsCount;
   final String name;
-  final Function(String) onNameUpdate;
-  final Function(int) onWordsCountUpdate;
-  final Function(int) onOptionsCountUpdate;
 
   QuizSettingsScreen({@required this.onSave, @required this.quizExists,
-                      this.files, this.quizSettings, this.totalWordsCount, this.name,
-                      this.onNameUpdate, this.onWordsCountUpdate, this.onOptionsCountUpdate});
+                      this.files, this.quizSettings, this.totalWordsCount, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -94,10 +90,6 @@ class QuizSettingsScreen extends StatelessWidget {
                         return 'Please enter the name of the quiz';
                       }
                     },
-                    onFieldSubmitted: (value) {
-                      print(value);
-                      onNameUpdate(value);
-                    },
                   ),
                 ),
                 new ListTile(
@@ -105,7 +97,7 @@ class QuizSettingsScreen extends StatelessWidget {
                   title: new TextFormField(
                     key: _wordsCountKey,
                     keyboardType: TextInputType.number,
-                    controller: new TextEditingController(text: '${quizSettings.wordsCount}'),
+                    controller: new TextEditingController(text: '$totalWordsCount'),
                     decoration: new InputDecoration(
                       labelText: "Word Count",
                       hintText: "Word Count",
@@ -114,18 +106,13 @@ class QuizSettingsScreen extends StatelessWidget {
                       if (value.isEmpty) {
                         return 'Please enter a number';
                       }
-                      var v = int.parse(value, onError: (source) => 0);
+                      var v = int.parse(
+                          value, onError: (source) => 0);
                       if (v < 1) {
                         return 'Please enter a number greater than 0';
                       }
                       if (v > totalWordsCount) {
                         return 'Please enter a number less than $totalWordsCount';
-                      }
-                    },
-                    onFieldSubmitted: (value) {
-                      if (value.isNotEmpty) {
-                        var v = int.parse(value, onError: (source) => 0);
-                        onWordsCountUpdate(v);
                       }
                     },
                   ),
@@ -153,12 +140,7 @@ class QuizSettingsScreen extends StatelessWidget {
                         return 'Please enter a number less than $totalWordsCount';
                       }
                     },
-                    onFieldSubmitted: (value) {
-                      if (value.isNotEmpty) {
-                        var v = int.parse(value, onError: (source) => 0);
-                        onOptionsCountUpdate(v);
-                      }
-                    }
+                    //onSaved: (value) => _optionsCount = int.parse(value),
                   ),
                 ),
                 const Divider(

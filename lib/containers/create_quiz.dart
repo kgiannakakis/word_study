@@ -22,10 +22,6 @@ class CreateQuiz extends StatelessWidget {
           files: vm.files,
           totalWordsCount: vm.totalWordsCount,
           quizSettings: vm.quizSettings,
-          onNameUpdate: vm.onNameUpdate,
-          onOptionsCountUpdate: vm.onOptionsCountUpdate,
-          onWordsCountUpdate: vm.onWordsCountUpdate,
-
         );
       },
     );
@@ -39,9 +35,6 @@ class _ViewModel {
   final QuizSettings quizSettings;
   final OnSaveCallback onSave;
   final QuizExists quizExists;
-  final Function(String) onNameUpdate;
-  final Function(int) onWordsCountUpdate;
-  final Function(int) onOptionsCountUpdate;
 
   _ViewModel({
     @required this.files,
@@ -49,28 +42,21 @@ class _ViewModel {
     @required this.totalWordsCount,
     @required this.quizSettings,
     @required this.onSave,
-    @required this.quizExists,
-    @required this.onNameUpdate,
-    @required this.onWordsCountUpdate,
-    @required this.onOptionsCountUpdate
+    @required this.quizExists
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return new _ViewModel(
-      files: store.state.selectedFiles,
-      name: store.state.quizName,
-      totalWordsCount: store.state.totalWordsCount,
-      quizSettings: store.state.quizSettings,
-      onSave: (quiz) => store.dispatch(new AddQuizAction(quiz)),
+        files: store.state.selectedFiles,
+        name: store.state.selectedFiles.length > 0 ? store.state.selectedFiles[0] : '',
+        totalWordsCount: store.state.totalWordsCount,
+        quizSettings: store.state.quizSettings,
+        onSave: (quiz) {
+          store.dispatch(new AddQuizAction(quiz));
+        },
       quizExists: (name) {
-        return store.state.quizzes.where((q) => q.name == name).length > 0;
-      },
-      onNameUpdate: (name) {
-        print('-- $name --');
-        store.dispatch(new UpdateQuizName(name));
-      },
-      onWordsCountUpdate: (count) => store.dispatch(new UpdateWordsCount(count)),
-      onOptionsCountUpdate: (count) => store.dispatch(new UpdateOptionsCount(count))
+          return store.state.quizzes.where((q) => q.name == name).length > 0;
+      }
     );
   }
 }

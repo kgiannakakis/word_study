@@ -64,10 +64,7 @@ Middleware<AppState> _createCalculateWordCount() {
     next(action);
 
     _calculateWordCount(store.state.selectedFiles)
-        .then((totalWordCount) {
-      store.dispatch(new UpdateTotalWordsCountAction(totalWordCount));
-      store.dispatch(new UpdateWordsCount(totalWordCount));
-    });
+        .then((totalWordCount) => store.dispatch(new UpdateTotalWordsCountAction(totalWordCount)));
   };
 }
 

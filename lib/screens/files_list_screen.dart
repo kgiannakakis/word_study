@@ -67,7 +67,6 @@ class FilesListScreen extends StatelessWidget {
         //TODO: Remove this, when multi-file select is supported
         store.dispatch(new ClearSelectedFilesAction());
 
-        // Load files
         store.dispatch(new LoadFilesAction());
       },
       builder: (context, vm) {
@@ -134,10 +133,7 @@ class _ViewModel {
     return new _ViewModel(
       files: store.state.files,
       isLoading: store.state.isLoading,
-      onAddSelectedFile: (file) {
-        store.dispatch(new AddSelectedFileAction(file));
-        store.dispatch(new UpdateQuizName(file));
-      },
+      onAddSelectedFile: (file) => store.dispatch(new AddSelectedFileAction(file)),
       onRemove: (file) {
         store.dispatch(new DeleteFileAction(file.name));
       },
