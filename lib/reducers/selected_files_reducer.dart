@@ -19,10 +19,3 @@ List<String> _setNoSelectedFiles(List<String> files, ClearSelectedFilesAction ac
   return [];
 }
 
-Reducer<int> totalWordsCountReducer = combineReducers([
-  new TypedReducer<int, UpdateTotalWordCountAction>(_updateTotalWordCount),
-]);
-
-int _updateTotalWordCount(int totalWordCount, UpdateTotalWordCountAction action) {
-  return action.totalWordCount;
-}

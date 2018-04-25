@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/stored_file.dart';
+import 'package:word_study/models/quiz_settings.dart';
 
 @immutable
 class AppState {
@@ -9,28 +10,39 @@ class AppState {
   final List<StoredFile> files;
   final List<String> selectedFiles;
   final int totalWordsCount;
+  final QuizSettings quizSettings;
+  final String quizName;
 
   AppState({this.isLoading = false,
         this.quizzes = const [],
         this.selectedFiles = const [],
         this.totalWordsCount = 0,
-        this.files = const []});
+        this.quizSettings = const QuizSettings(wordsCount: 0, optionsCount: 4),
+        this.files = const [],
+        this.quizName});
 
   factory AppState.loading() => new AppState(isLoading: true);
 
-  AppState copyWith({bool isLoading, List<Quiz> quizzes,
-    List<StoredFile> files, List<String> selectedFiles, int totalWordsCount}) {
+  AppState copyWith({bool isLoading,
+                     List<Quiz> quizzes,
+                     List<StoredFile> files,
+                     List<String> selectedFiles,
+                     int totalWordsCount,
+                     QuizSettings quizSettings,
+                     String quizName}) {
     return new AppState(
         isLoading: isLoading ?? this.isLoading,
         quizzes: quizzes ?? this.quizzes,
         files: files ?? this.files,
         selectedFiles: selectedFiles ?? this.selectedFiles,
-        totalWordsCount: totalWordsCount ?? this.totalWordsCount);
+        totalWordsCount: totalWordsCount ?? this.totalWordsCount,
+        quizSettings: quizSettings ?? this.quizSettings,
+        quizName: quizName ?? this.quizName);
   }
 
   @override
-  int get hashCode => isLoading.hashCode ^ quizzes.hashCode ^
-    selectedFiles.hashCode ^ totalWordsCount.hashCode ^ files.hashCode;
+  int get hashCode => isLoading.hashCode ^ quizzes.hashCode ^ totalWordsCount.hashCode ^
+    quizName.hashCode ^ selectedFiles.hashCode ^ quizSettings.hashCode ^ files.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -40,8 +52,10 @@ class AppState {
       isLoading == (other as AppState).isLoading &&
       quizzes == (other as AppState).quizzes &&
       files == (other as AppState).files &&
+      totalWordsCount == (other as AppState).totalWordsCount &&
       selectedFiles == (other as AppState).selectedFiles &&
-      totalWordsCount == (other as AppState).totalWordsCount ;
+      quizSettings == (other as AppState).quizSettings &&
+      quizName == (other as AppState).quizName;
 
   @override
   String toString() {

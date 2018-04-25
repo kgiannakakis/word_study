@@ -6,7 +6,7 @@ class QuizSettings {
   final int wordsCount;
   final int optionsCount;
 
-  QuizSettings({this.wordsCount, this.optionsCount});
+  const QuizSettings({this.wordsCount, this.optionsCount});
 
   QuizSettings copyWith({int wordsCount, int optionsCount}) {
     return new QuizSettings(

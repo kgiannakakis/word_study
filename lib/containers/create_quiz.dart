@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/app_state.dart';
+import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/screens/quiz_settings_screen.dart';
 
 class CreateQuiz extends StatelessWidget {
@@ -20,6 +21,7 @@ class CreateQuiz extends StatelessWidget {
           name: vm.name,
           files: vm.files,
           totalWordsCount: vm.totalWordsCount,
+          quizSettings: vm.quizSettings,
         );
       },
     );
@@ -30,6 +32,7 @@ class _ViewModel {
   final List<String> files;
   final String name;
   final int totalWordsCount;
+  final QuizSettings quizSettings;
   final OnSaveCallback onSave;
   final QuizExists quizExists;
 
@@ -37,6 +40,7 @@ class _ViewModel {
     @required this.files,
     @required this.name,
     @required this.totalWordsCount,
+    @required this.quizSettings,
     @required this.onSave,
     @required this.quizExists
   });
@@ -46,6 +50,7 @@ class _ViewModel {
         files: store.state.selectedFiles,
         name: store.state.selectedFiles.length > 0 ? store.state.selectedFiles[0] : '',
         totalWordsCount: store.state.totalWordsCount,
+        quizSettings: store.state.quizSettings,
         onSave: (quiz) {
           store.dispatch(new AddQuizAction(quiz));
         },
