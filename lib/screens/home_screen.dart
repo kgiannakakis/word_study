@@ -1,11 +1,11 @@
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:word_study/models/app_state.dart';
+import 'package:meta/meta.dart';
+import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/screens/quiz_screen.dart';
+import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/quiz.dart';
+import 'package:word_study/screens/quiz_screen.dart';
 import 'package:word_study/words/quiz_instance.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -85,7 +85,20 @@ class HomeScreen extends StatelessWidget {
     return new StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (context, vm) {
-
+        if (vm.isLoading) {
+          return new Scaffold(
+              appBar: new AppBar(
+                title: new Text("Word Study"),
+              ),
+              body: new Column(children: <Widget>[
+                new Expanded(
+                    child: new Align(
+                      alignment: Alignment.center,
+                      child: new CircularProgressIndicator() ,
+                    ))
+              ],)
+          );
+        }
 
         return new Scaffold(
           appBar: new AppBar(
