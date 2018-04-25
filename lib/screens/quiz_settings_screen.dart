@@ -9,14 +9,14 @@ typedef QuizExists = bool Function(String name);
 
 class QuizSettingsScreen extends StatelessWidget {
 
-  static final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final GlobalKey<FormFieldState<String>> _filesKey =
     new GlobalKey<FormFieldState<String>>();
-  static final GlobalKey<FormFieldState<String>> _nameKey =
+  final GlobalKey<FormFieldState<String>> _nameKey =
     new GlobalKey<FormFieldState<String>>();
-  static final GlobalKey<FormFieldState<String>> _wordsCountKey =
+  final GlobalKey<FormFieldState<String>> _wordsCountKey =
     new GlobalKey<FormFieldState<String>>();
-  static final GlobalKey<FormFieldState<String>> _optionsCountKey =
+  final GlobalKey<FormFieldState<String>> _optionsCountKey =
     new GlobalKey<FormFieldState<String>>();
 
   final OnSaveCallback onSave;
@@ -52,7 +52,7 @@ class QuizSettingsScreen extends StatelessWidget {
                     child: new TextFormField(
                       key: _filesKey,
                       keyboardType: TextInputType.text,
-                      controller: new TextEditingController(text: filenames),
+                      initialValue: filenames,
                       decoration: new InputDecoration(
                         hintText: 'Files',
                       ),
@@ -79,7 +79,7 @@ class QuizSettingsScreen extends StatelessWidget {
                   title: new TextFormField(
                     key: _nameKey,
                     keyboardType: TextInputType.text,
-                    controller: new TextEditingController(text: name),
+                    initialValue: name,
                     decoration: new InputDecoration(
                       labelText: "Name",
                       hintText: "Name",
@@ -96,7 +96,7 @@ class QuizSettingsScreen extends StatelessWidget {
                   title: new TextFormField(
                     key: _wordsCountKey,
                     keyboardType: TextInputType.number,
-                    controller: new TextEditingController(text: '$totalWordsCount'),
+                    initialValue: '$totalWordsCount',
                     decoration: new InputDecoration(
                       labelText: "Word Count",
                       hintText: "Word Count",
@@ -139,7 +139,6 @@ class QuizSettingsScreen extends StatelessWidget {
                         return 'Please enter a number less than $totalWordsCount';
                       }
                     },
-                    //onSaved: (value) => _optionsCount = int.parse(value),
                   ),
                 ),
                 const Divider(

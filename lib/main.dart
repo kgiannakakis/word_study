@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:word_study/screens/home_screen.dart';
+import 'package:word_study/containers/create_quiz.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/reducers/app_state_reducer.dart';
 import 'package:word_study/middleware/middleware.dart';
@@ -26,11 +27,18 @@ class WordStudyApp extends StatelessWidget {
         theme: new ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: new StoreBuilder<AppState>(
-          onInit: (store) => store.dispatch(new LoadQuizzesAction()),
-          builder: (context, store) {
-            return new HomeScreen();
-          })
+        routes: {
+          Navigator.defaultRouteName: (context) {
+            return new StoreBuilder<AppState>(
+              onInit: (store) => store.dispatch(new LoadQuizzesAction()),
+              builder: (context, store) {
+                return new HomeScreen();
+              });
+            },
+          '/quizAdd': (context) {
+            return new CreateQuiz();
+          }
+        }
       )
   );
   }

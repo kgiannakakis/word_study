@@ -52,7 +52,7 @@ class FilesListScreen extends StatelessWidget {
                 subtitle: new Text(vm.files[i].created.toString()),
                 onTap: () {
                   vm.onAddSelectedFile(vm.files[i].name);
-                  Navigator.of(context).pop();
+                  Navigator.pushNamedAndRemoveUntil(context, '/quizAdd', ModalRoute.withName('/'));
                 }
             )
         )
