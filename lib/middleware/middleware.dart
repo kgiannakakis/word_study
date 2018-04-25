@@ -1,10 +1,11 @@
 import 'dart:async';
+
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/models/app_state.dart';
-import 'package:word_study/words/quiz_provider.dart';
-import 'package:word_study/words/file_word_provider.dart';
 import 'package:word_study/files/file_service.dart';
+import 'package:word_study/models/app_state.dart';
+import 'package:word_study/words/file_word_provider.dart';
+import 'package:word_study/words/quiz_provider.dart';
 
 List<Middleware<AppState>> createMiddleware() {
   final saveQuizzes = _createSaveQuizzes();
@@ -17,9 +18,7 @@ List<Middleware<AppState>> createMiddleware() {
     new TypedMiddleware<AppState, AddQuizAction>(saveQuizzes),
     new TypedMiddleware<AppState, DeleteQuizAction>(saveQuizzes),
     new TypedMiddleware<AppState, QuizzesLoadedAction>(saveQuizzes),
-    new TypedMiddleware<AppState, AddSelectedFileAction>(calculateWordCount),
-    new TypedMiddleware<AppState, DeleteSelectedFileAction>(calculateWordCount),
-    new TypedMiddleware<AppState, ClearSelectedFilesAction>(calculateWordCount),
+    new TypedMiddleware<AppState, CalculateTotalWordsCountAction>(calculateWordCount),
     new TypedMiddleware<AppState, LoadFilesAction>(loadFiles),
   ];
 }
@@ -60,11 +59,10 @@ Middleware<AppState> _createLoadQuizzes() {
 
 Middleware<AppState> _createCalculateWordCount() {
   return (Store<AppState> store, action, NextDispatcher next) {
-
-    next(action);
-
     _calculateWordCount(store.state.selectedFiles)
         .then((totalWordCount) => store.dispatch(new UpdateTotalWordCountAction(totalWordCount)));
+
+    next(action);
   };
 }
 

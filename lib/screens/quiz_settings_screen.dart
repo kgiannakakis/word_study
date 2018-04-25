@@ -1,24 +1,13 @@
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
-import 'package:word_study/screens/files_list_screen.dart';
-import 'package:word_study/models/quiz_settings.dart';
+import 'package:meta/meta.dart';
 import 'package:word_study/models/quiz.dart';
+import 'package:word_study/models/quiz_settings.dart';
+import 'package:word_study/screens/files_list_screen.dart';
 
 typedef OnSaveCallback = Function(Quiz quiz);
 typedef QuizExists = bool Function(String name);
 
-class QuizSettingsScreen extends StatelessWidget {
-
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final GlobalKey<FormFieldState<String>> _filesKey =
-    new GlobalKey<FormFieldState<String>>();
-  final GlobalKey<FormFieldState<String>> _nameKey =
-    new GlobalKey<FormFieldState<String>>();
-  final GlobalKey<FormFieldState<String>> _wordsCountKey =
-    new GlobalKey<FormFieldState<String>>();
-  final GlobalKey<FormFieldState<String>> _optionsCountKey =
-    new GlobalKey<FormFieldState<String>>();
-
+class QuizSettingsScreen extends StatefulWidget {
   final OnSaveCallback onSave;
   final QuizExists quizExists;
   final List<String> files;
@@ -26,7 +15,37 @@ class QuizSettingsScreen extends StatelessWidget {
   final String name;
 
   QuizSettingsScreen({@required this.onSave, @required this.quizExists,
-                      this.files, this.totalWordsCount, this.name});
+    this.files, this.name, this.totalWordsCount});
+
+  @override State createState() => new QuizSettingsScreenState(onSave: onSave,
+      quizExists: quizExists, files: files, name: name, totalWordsCount: totalWordsCount);
+}
+
+class QuizSettingsScreenState extends State<QuizSettingsScreen> {
+
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
+  final OnSaveCallback onSave;
+  final QuizExists quizExists;
+  final List<String> files;
+  final String name;
+  final int totalWordsCount;
+
+  QuizSettingsScreenState({@required this.onSave, @required this.quizExists,
+                      this.files, this.name, this.totalWordsCount});
+
+  String _filesList;
+  String _name;
+  int _wordsCount;
+  int _optionsCount;
+
+  @override void initState() {
+    super.initState();
+
+    setState(() {
+      _filesList = files.join(',');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +58,6 @@ class QuizSettingsScreen extends StatelessWidget {
       body: new Builder(
         builder: (BuildContext context) {
 
-          String filenames = files.join(',');
-
           return new SingleChildScrollView (
             child: new Form(
               key: _formKey,
@@ -50,9 +67,8 @@ class QuizSettingsScreen extends StatelessWidget {
                   title: new FocusScope(
                     node: new FocusScopeNode(),
                     child: new TextFormField(
-                      key: _filesKey,
                       keyboardType: TextInputType.text,
-                      initialValue: filenames,
+                      initialValue: _filesList,
                       decoration: new InputDecoration(
                         hintText: 'Files',
                       ),
@@ -77,7 +93,6 @@ class QuizSettingsScreen extends StatelessWidget {
                 new ListTile(
                   leading: const Icon(Icons.assignment),
                   title: new TextFormField(
-                    key: _nameKey,
                     keyboardType: TextInputType.text,
                     initialValue: name,
                     decoration: new InputDecoration(
@@ -89,12 +104,12 @@ class QuizSettingsScreen extends StatelessWidget {
                         return 'Please enter the name of the quiz';
                       }
                     },
+                    onSaved: (value) => _name = value,
                   ),
                 ),
                 new ListTile(
                   leading: const Icon(Icons.apps),
                   title: new TextFormField(
-                    key: _wordsCountKey,
                     keyboardType: TextInputType.number,
                     initialValue: '$totalWordsCount',
                     decoration: new InputDecoration(
@@ -114,12 +129,15 @@ class QuizSettingsScreen extends StatelessWidget {
                         return 'Please enter a number less than $totalWordsCount';
                       }
                     },
+                    onSaved: (value) {
+                      var v = int.parse(value);
+                      _wordsCount = v;
+                    },
                   ),
                 ),
                 new ListTile(
                   leading: const Icon(Icons.grain),
                   title: new TextFormField(
-                    key: _optionsCountKey,
                     keyboardType: TextInputType.number,
                     initialValue: '4',
                     decoration: new InputDecoration(
@@ -139,6 +157,10 @@ class QuizSettingsScreen extends StatelessWidget {
                         return 'Please enter a number less than $totalWordsCount';
                       }
                     },
+                    onSaved: (value) {
+                      var v = int.parse(value);
+                      _optionsCount = v;
+                    },
                   ),
                 ),
                 const Divider(
@@ -154,11 +176,7 @@ class QuizSettingsScreen extends StatelessWidget {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
 
-                        int optionsCount = int.parse(_optionsCountKey.currentState.value);
-                        int wordsCount = int.parse(_wordsCountKey.currentState.value);
-                        String _name = _nameKey.currentState?.value;
-
-                        if (optionsCount > wordsCount) {
+                        if (_optionsCount > _wordsCount) {
                           Scaffold.of(context).showSnackBar(
                             new SnackBar(
                               content: new Text(
@@ -178,8 +196,8 @@ class QuizSettingsScreen extends StatelessWidget {
                           else {
                             Quiz quiz = new Quiz(name: _name,
                                 filenames: files,
-                                settings: new QuizSettings(wordsCount: wordsCount,
-                                                           optionsCount: optionsCount));
+                                settings: new QuizSettings(wordsCount: _wordsCount,
+                                                           optionsCount: _optionsCount));
                             onSave(quiz);
                             Navigator.of(context).pop();
                           }

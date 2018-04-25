@@ -1,6 +1,6 @@
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/app_state.dart';
@@ -13,13 +13,14 @@ class CreateQuiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
+      onInit: (store) => store.dispatch(new CalculateTotalWordsCountAction()),
       builder: (BuildContext context, _ViewModel vm) {
         return new QuizSettingsScreen(
           onSave: vm.onSave,
           quizExists: vm.quizExists,
+          totalWordsCount: vm.totalWordsCount,
           name: vm.name,
           files: vm.files,
-          totalWordsCount: vm.totalWordsCount,
         );
       },
     );
@@ -36,8 +37,8 @@ class _ViewModel {
   _ViewModel({
     @required this.files,
     @required this.name,
-    @required this.totalWordsCount,
     @required this.onSave,
+    @required this.totalWordsCount,
     @required this.quizExists
   });
 
@@ -45,11 +46,11 @@ class _ViewModel {
     return new _ViewModel(
         files: store.state.selectedFiles,
         name: store.state.selectedFiles.length > 0 ? store.state.selectedFiles[0] : '',
-        totalWordsCount: store.state.totalWordsCount,
         onSave: (quiz) {
           store.dispatch(new AddQuizAction(quiz));
         },
-      quizExists: (name) {
+        totalWordsCount: store.state.totalWordsCount,
+        quizExists: (name) {
           return store.state.quizzes.where((q) => q.name == name).length > 0;
       }
     );

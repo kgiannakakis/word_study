@@ -19,10 +19,10 @@ List<String> _setNoSelectedFiles(List<String> files, ClearSelectedFilesAction ac
   return [];
 }
 
-Reducer<int> totalWordsCountReducer = combineReducers([
-  new TypedReducer<int, UpdateTotalWordCountAction>(_updateTotalWordCount),
-]);
+Reducer<int> totalWordsCountReducer =
+  new TypedReducer<int, UpdateTotalWordCountAction>(_updateTotalWordCount);
 
 int _updateTotalWordCount(int totalWordCount, UpdateTotalWordCountAction action) {
+  print('totalWordsCountReducer: ${action.totalWordCount}');
   return action.totalWordCount;
 }

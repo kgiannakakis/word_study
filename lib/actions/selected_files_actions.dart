@@ -17,3 +17,5 @@ class UpdateTotalWordCountAction {
 
   UpdateTotalWordCountAction(this.totalWordCount);
 }
+
+class CalculateTotalWordsCountAction {}
