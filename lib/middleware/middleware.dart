@@ -7,9 +7,11 @@ import 'package:word_study/models/app_state.dart';
 import 'package:word_study/words/file_word_provider.dart';
 import 'package:word_study/words/quiz_provider.dart';
 
-List<Middleware<AppState>> createMiddleware() {
-  final saveQuizzes = _createSaveQuizzes();
-  final loadQuizzes = _createLoadQuizzes();
+List<Middleware<AppState>> createMiddleware([
+  QuizProvider quizProvider = const QuizProvider(const FileService())
+]) {
+  final saveQuizzes = _createSaveQuizzes(quizProvider);
+  final loadQuizzes = _createLoadQuizzes(quizProvider);
   final calculateWordCount = _createCalculateWordCount();
   final loadFiles = _createLoadFiles();
 
@@ -23,12 +25,11 @@ List<Middleware<AppState>> createMiddleware() {
   ];
 }
 
-Middleware<AppState> _createSaveQuizzes() {
+Middleware<AppState> _createSaveQuizzes(QuizProvider quizProvider) {
   return (Store<AppState> store, action, NextDispatcher next) {
     next(action);
 
-    QuizProvider repository = new QuizProvider();
-    repository.saveQuizzes(store.state.quizzes)
+    quizProvider.saveQuizzes(store.state.quizzes)
         .then((ok) {
         if (!ok) {
           print('Failed to save quizzes!');
@@ -39,11 +40,10 @@ Middleware<AppState> _createSaveQuizzes() {
   };
 }
 
-Middleware<AppState> _createLoadQuizzes() {
+Middleware<AppState> _createLoadQuizzes(QuizProvider quizProvider) {
   return (Store<AppState> store, action, NextDispatcher next) {
-    QuizProvider repository = new QuizProvider();
 
-    repository.loadQuizzes().then((quizzes) {
+    quizProvider.loadQuizzes().then((quizzes) {
       store.dispatch(
         new QuizzesLoadedAction(quizzes),
       );

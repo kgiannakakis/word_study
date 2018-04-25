@@ -11,14 +11,15 @@ class QuizProvider {
   final String builtinFilename = '__builtin';
   final String _quizzesKey = 'quizzes';
 
-  const QuizProvider();
+  final FileService fileService;
+
+  const QuizProvider(this.fileService);
 
   Future<List<Quiz>> loadQuizzes() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String storedQuizzesStr = prefs.getString(_quizzesKey);
 
     if (storedQuizzesStr == null) {
-      FileService fileService = new FileService();
       final directory = await fileService.localPath;
       File file = new File('$directory/$builtinFilename');
       bool exists = await file.exists();

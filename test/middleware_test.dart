@@ -10,35 +10,35 @@ import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/words/quiz_provider.dart';
 
-class MockQuizzesService extends Mock implements QuizProvider {}
+class MockQuizzesProvider extends Mock implements QuizProvider {}
 
 main() {
   group('Save State Middleware', () {
     test('should load the quizzes in response to a LoadQuizzesAction', () {
-      final service = new MockQuizzesService();
+      final provider = new MockQuizzesProvider();
       final store = new Store<AppState>(
         appReducer,
         initialState: new AppState.loading(),
-        middleware: createMiddleware(),
+        middleware: createMiddleware(provider),
       );
       final quizzes = [
         new Quiz(filenames: <String>['file1'],
             settings: new QuizSettings(wordsCount: 10, optionsCount: 4)),
       ];
 
-      when(service.loadQuizzes()).thenReturn(new Future.value(quizzes));
+      when(provider.loadQuizzes()).thenReturn(new Future.value(quizzes));
 
       store.dispatch(new LoadQuizzesAction());
 
-      verify(service.loadQuizzes());
+      verify(provider.loadQuizzes());
     });
 
     test('should save the state on every update action', () {
-      final service = new MockQuizzesService();
+      final provider = new MockQuizzesProvider();
       final store = new Store<AppState>(
         appReducer,
         initialState: new AppState.loading(),
-        middleware: createMiddleware(),
+        middleware: createMiddleware(provider),
       );
       var quiz = new Quiz(filenames: <String>['file1'],
             settings: new QuizSettings(wordsCount: 10, optionsCount: 4));
@@ -46,7 +46,7 @@ main() {
       store.dispatch(new AddQuizAction(quiz));
       store.dispatch(new DeleteQuizAction('file1'));
 
-      verify(service.saveQuizzes(any)).called(2);
+      verify(provider.saveQuizzes(any)).called(2);
     });
   });
 }

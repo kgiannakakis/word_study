@@ -5,6 +5,8 @@ import 'package:word_study/models/stored_file.dart';
 
 class FileService {
 
+  const FileService();
+
   Future<String> get localPath async {
     final directory = await getApplicationDocumentsDirectory();
 
