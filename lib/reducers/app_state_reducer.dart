@@ -13,5 +13,6 @@ AppState appReducer(AppState state, action) {
     files: filesReducer(state.files, action),
     totalWordsCount: totalWordsCountReducer(state.totalWordsCount, action),
     quizSettings: quizEditReducer(state.quizSettings, action),
+    quizName: quizNameReducer(state.quizName, action)
   );
 }
