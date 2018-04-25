@@ -44,8 +44,6 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   void initState() {
     super.initState();
 
-    print(onAddFile);
-
     _googleSignIn = new GoogleSignIn(
       scopes: <String>[
         'email',
