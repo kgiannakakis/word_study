@@ -26,6 +26,11 @@ class FileService {
   Future<List<StoredFile>> listFiles() async {
     final directory = await localPath;
     Directory dir = new Directory(directory);
+
+    if (!(await dir.exists())) {
+      await dir.create();
+    }
+
     var fileSystemEntities = await _dirContents(dir);
 
     RegExp regexp = new RegExp('[^\/]+\$');
