@@ -6,20 +6,22 @@ import 'package:word_study/screens/files_list_screen.dart';
 
 typedef OnSaveCallback = Function(Quiz quiz);
 typedef QuizExists = bool Function(String name);
+typedef GetTotalWordsCount = int Function();
 
 class QuizSettingsForm extends StatefulWidget {
   final OnSaveCallback onSave;
   final QuizExists quizExists;
   final List<String> files;
+  final GetTotalWordsCount getTotalWordsCount;
   final int totalWordsCount;
   final String name;
 
   QuizSettingsForm({@required this.onSave, @required this.quizExists,
-    this.files, this.name, this.totalWordsCount}) {
+    this.files, this.name, this.getTotalWordsCount, this.totalWordsCount}) {
   }
 
   @override State createState() => new QuizSettingsScreenState(onSave: onSave,
-      quizExists: quizExists, files: files, name: name, totalWordsCount: totalWordsCount);
+      quizExists: quizExists, files: files, name: name, getTotalWordsCount: getTotalWordsCount);
 }
 
 class QuizSettingsScreenState extends State<QuizSettingsForm> {
@@ -28,25 +30,43 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
 
   final OnSaveCallback onSave;
   final QuizExists quizExists;
+  final GetTotalWordsCount getTotalWordsCount;
   final List<String> files;
   final String name;
-  final int totalWordsCount;
 
   QuizSettingsScreenState({@required this.onSave, @required this.quizExists,
-                      this.files, this.name, this.totalWordsCount}) {
+                      this.files, this.name, this.getTotalWordsCount}) {
   }
 
   String _filesList;
   String _name;
   int _wordsCount;
   int _optionsCount;
+  int totalWordsCount;
+
+  TextEditingController _wordEditingController;
 
   @override void initState() {
     super.initState();
 
     setState(() {
       _filesList = files.join(',');
+      totalWordsCount = getTotalWordsCount();
+      _wordEditingController = new TextEditingController(text: '$totalWordsCount');
     });
+  }
+
+  @override
+  void didUpdateWidget(QuizSettingsForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.totalWordsCount != getTotalWordsCount()) {
+      setState(() {
+        totalWordsCount = getTotalWordsCount();
+        _wordEditingController =
+        new TextEditingController(text: '$totalWordsCount');
+      });
+    }
   }
 
   @override
@@ -105,7 +125,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
           leading: const Icon(Icons.apps),
           title: new TextFormField(
             keyboardType: TextInputType.number,
-            initialValue: '$totalWordsCount',
+            controller: _wordEditingController,
             decoration: new InputDecoration(
               labelText: "Word Count",
               hintText: "Word Count",

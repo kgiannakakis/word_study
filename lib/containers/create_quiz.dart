@@ -28,6 +28,7 @@ class CreateQuiz extends StatelessWidget {
                       child: new QuizSettingsForm(
                         onSave: vm.onSave,
                         quizExists: vm.quizExists,
+                        getTotalWordsCount: vm.getTotalWordsCount,
                         totalWordsCount: vm.totalWordsCount,
                         name: vm.name,
                         files: vm.files,
@@ -44,6 +45,7 @@ class CreateQuiz extends StatelessWidget {
 class _ViewModel {
   final List<String> files;
   final String name;
+  final GetTotalWordsCount getTotalWordsCount;
   final int totalWordsCount;
   final OnSaveCallback onSave;
   final QuizExists quizExists;
@@ -52,6 +54,7 @@ class _ViewModel {
     @required this.files,
     @required this.name,
     @required this.onSave,
+    @required this.getTotalWordsCount,
     @required this.totalWordsCount,
     @required this.quizExists
   });
@@ -64,6 +67,7 @@ class _ViewModel {
           store.dispatch(new AddQuizAction(quiz));
         },
         totalWordsCount: store.state.totalWordsCount,
+        getTotalWordsCount: () => store.state.totalWordsCount,
         quizExists: (name) {
           return store.state.quizzes.where((q) => q.name == name).length > 0;
       }
