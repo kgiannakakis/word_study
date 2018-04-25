@@ -11,6 +11,8 @@ class QuizProvider {
   final String builtinFilename = '__builtin';
   final String _quizzesKey = 'quizzes';
 
+  const QuizProvider();
+
   Future<List<Quiz>> loadQuizzes() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String storedQuizzesStr = prefs.getString(_quizzesKey);

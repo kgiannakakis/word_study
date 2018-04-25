@@ -6,6 +6,7 @@ import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/screens/quiz_screen.dart';
+import 'package:word_study/containers/create_quiz.dart';
 import 'package:word_study/words/quiz_instance.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -33,7 +34,11 @@ class HomeScreen extends StatelessWidget {
 
   void _gotoCreateQuiz(BuildContext context, _ViewModel vm) async {
     vm.onClearSelectedFiles();
-    Navigator.pushNamed(context, '/quizAdd');
+    Navigator.of(context).push(
+        new MaterialPageRoute(
+            builder: (context) => new CreateQuiz()
+        )
+    );
   }
 
   Widget _buildRow(_ViewModel vm, int i, BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/screens/file_downloader_screen.dart';
+import 'package:word_study/containers/create_quiz.dart';
 import 'package:word_study/models/stored_file.dart';
 
 class FilesListScreen extends StatelessWidget {
@@ -51,8 +52,13 @@ class FilesListScreen extends StatelessWidget {
                 title: new Text(vm.files[i].name, style: _biggerFont),
                 subtitle: new Text(vm.files[i].created.toString()),
                 onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacement(
+                      new MaterialPageRoute(
+                          builder: (context) => new CreateQuiz()
+                      )
+                  );
                   vm.onAddSelectedFile(vm.files[i].name);
-                  Navigator.pushNamedAndRemoveUntil(context, '/quizAdd', ModalRoute.withName('/'));
                 }
             )
         )
@@ -133,7 +139,10 @@ class _ViewModel {
     return new _ViewModel(
       files: store.state.files,
       isLoading: store.state.isLoading,
-      onAddSelectedFile: (file) => store.dispatch(new AddSelectedFileAction(file)),
+      onAddSelectedFile: (file) {
+        store.dispatch(new AddSelectedFileAction(file));
+        store.dispatch(new CalculateTotalWordsCountAction());
+      },
       onRemove: (file) {
         store.dispatch(new DeleteFileAction(file.name));
       },

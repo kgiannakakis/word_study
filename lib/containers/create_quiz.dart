@@ -4,23 +4,37 @@ import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/app_state.dart';
-import 'package:word_study/screens/quiz_settings_screen.dart';
+import 'package:word_study/screens/quiz_settings_form.dart';
 
 class CreateQuiz extends StatelessWidget {
   CreateQuiz({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, _ViewModel>(
-      converter: _ViewModel.fromStore,
-      onInit: (store) => store.dispatch(new CalculateTotalWordsCountAction()),
-      builder: (BuildContext context, _ViewModel vm) {
-        return new QuizSettingsScreen(
-          onSave: vm.onSave,
-          quizExists: vm.quizExists,
-          totalWordsCount: vm.totalWordsCount,
-          name: vm.name,
-          files: vm.files,
+    return new StoreBuilder<AppState>(
+      onInit: (store) {
+        store.dispatch(new CalculateTotalWordsCountAction());
+      },
+      builder: (BuildContext context, Store<AppState> store) {
+        _ViewModel vm = _ViewModel.fromStore(store);
+
+        return new Scaffold(
+            appBar: new AppBar(
+              title: new Text('Quiz Settings'),
+            ),
+            body: new Builder(
+                builder: (BuildContext context) {
+                  return new SingleChildScrollView (
+                      child: new QuizSettingsForm(
+                        onSave: vm.onSave,
+                        quizExists: vm.quizExists,
+                        totalWordsCount: vm.totalWordsCount,
+                        name: vm.name,
+                        files: vm.files,
+                      )
+                  );
+                }
+            )
         );
       },
     );
