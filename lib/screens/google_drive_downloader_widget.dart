@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert' show json;
+import 'package:meta/meta.dart';
 import 'package:word_study/models/stored_file.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
@@ -17,12 +18,12 @@ class GoogleDriveFileWidget {
 }
 
 class GoogleDriveDownloader extends StatefulWidget {
-  final Function(StoredFile) onAddFile;
+ final Function(StoredFile) onAddFile;
 
-  GoogleDriveDownloader({this.onAddFile});
+  GoogleDriveDownloader({ @required this.onAddFile});
 
   @override
-  State createState() => new GoogleDriveDownloaderState();
+  State createState() => new GoogleDriveDownloaderState(onAddFile: onAddFile);
 }
 
 class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
@@ -37,11 +38,13 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final FileService _fileService = new FileService();
 
-  GoogleDriveDownloaderState({this.onAddFile});
+  GoogleDriveDownloaderState({@required this.onAddFile});
 
   @override
   void initState() {
     super.initState();
+
+    print(onAddFile);
 
     _googleSignIn = new GoogleSignIn(
       scopes: <String>[

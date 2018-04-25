@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:validator/validator.dart';
 import 'package:word_study/models/stored_file.dart';
@@ -5,12 +6,12 @@ import 'package:word_study/words/web_wordprovider.dart';
 import 'package:word_study/files/file_service.dart';
 
 class WebDownloaderWidget extends StatefulWidget {
-  final Function(StoredFile) onAddFile;
+  @required final Function(StoredFile) onAddFile;
 
   WebDownloaderWidget({this.onAddFile});
 
   @override
-  WebDownloaderState createState() => new WebDownloaderState();
+  WebDownloaderState createState() => new WebDownloaderState(onAddFile: onAddFile);
 }
 
 class WebDownloaderState extends State<WebDownloaderWidget> {
@@ -21,7 +22,7 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
   String _fileName;
   bool _isLoading = false;
 
-  WebDownloaderState({this.onAddFile});
+  WebDownloaderState({@required this.onAddFile});
 
   _download() async {
     var webWordProvider = new WebWordProvider(_fileUrl, null);
