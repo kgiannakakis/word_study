@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
-import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/screens/files_list_screen.dart';
+import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/models/quiz.dart';
 
 typedef OnSaveCallback = Function(Quiz quiz);
@@ -22,12 +22,11 @@ class QuizSettingsScreen extends StatelessWidget {
   final OnSaveCallback onSave;
   final QuizExists quizExists;
   final List<String> files;
-  final QuizSettings quizSettings;
   final int totalWordsCount;
   final String name;
 
   QuizSettingsScreen({@required this.onSave, @required this.quizExists,
-                      this.files, this.quizSettings, this.totalWordsCount, this.name});
+                      this.files, this.totalWordsCount, this.name});
 
   @override
   Widget build(BuildContext context) {
