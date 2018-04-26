@@ -17,8 +17,7 @@ class QuizSettingsForm extends StatefulWidget {
   final String name;
 
   QuizSettingsForm({@required this.onSave, @required this.quizExists,
-    this.files, this.name, this.getTotalWordsCount, this.totalWordsCount}) {
-  }
+    this.files, this.name, this.getTotalWordsCount, this.totalWordsCount});
 
   @override State createState() => new QuizSettingsScreenState(onSave: onSave,
       quizExists: quizExists, files: files, name: name, getTotalWordsCount: getTotalWordsCount);
@@ -35,8 +34,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
   final String name;
 
   QuizSettingsScreenState({@required this.onSave, @required this.quizExists,
-                      this.files, this.name, this.getTotalWordsCount}) {
-  }
+                      this.files, this.name, this.getTotalWordsCount});
 
   String _filesList;
   String _name;

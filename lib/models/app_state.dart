@@ -37,11 +37,11 @@ class AppState {
     identical(this, other) ||
     other is AppState &&
       runtimeType == other.runtimeType &&
-      isLoading == (other as AppState).isLoading &&
-      quizzes == (other as AppState).quizzes &&
-      files == (other as AppState).files &&
-      selectedFiles == (other as AppState).selectedFiles &&
-      totalWordsCount == (other as AppState).totalWordsCount ;
+      isLoading == other.isLoading &&
+      quizzes == other.quizzes &&
+      files == other .files &&
+      selectedFiles == other.selectedFiles &&
+      totalWordsCount == other.totalWordsCount ;
 
   @override
   String toString() {
