@@ -1,13 +1,12 @@
-import 'package:redux/redux.dart';
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:word_study/models/app_state.dart';
-import 'package:word_study/reducers/app_state_reducer.dart';
+import 'package:mockito/mockito.dart';
+import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/middleware/middleware.dart';
+import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/quiz_settings.dart';
+import 'package:word_study/reducers/app_state_reducer.dart';
 import 'package:word_study/words/quiz_provider.dart';
 
 class MockQuizzesProvider extends Mock implements QuizProvider {}
@@ -43,10 +42,13 @@ main() {
       var quiz = new Quiz(filenames: <String>['file1'],
             settings: new QuizSettings(wordsCount: 10, optionsCount: 4));
 
+      when(provider.saveQuizzes(<Quiz>[])).thenReturn(new Future.value(true));
+      when(provider.saveQuizzes(<Quiz>[quiz])).thenReturn(new Future.value(true));
+
       store.dispatch(new AddQuizAction(quiz));
       store.dispatch(new DeleteQuizAction('file1'));
 
-      verify(provider.saveQuizzes(any)).called(2);
+      verify(provider.saveQuizzes(typed(any))).called(2);
     });
   });
 }
