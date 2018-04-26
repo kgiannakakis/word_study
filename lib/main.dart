@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:word_study/screens/home_screen.dart';
+import 'package:redux/redux.dart';
+import 'package:word_study/actions/actions.dart';
+import 'package:word_study/middleware/middleware.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/reducers/app_state_reducer.dart';
-import 'package:word_study/middleware/middleware.dart';
-import 'package:word_study/actions/actions.dart';
+import 'package:word_study/screens/home_screen.dart';
 
-void main() => runApp(new WordStudyApp());
-
-class WordStudyApp extends StatelessWidget {
-
-  final store = new Store<AppState>(
+void main() => runApp(new WordStudyApp(new Store<AppState>(
     appReducer,
     initialState: new AppState.loading(),
     middleware: createMiddleware()
-  );
+)));
+
+class WordStudyApp extends StatelessWidget {
+
+  final Store<AppState> store;
+
+  WordStudyApp(this.store);
 
   @override
   Widget build(BuildContext context) {
