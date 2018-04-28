@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:word_study/words/quiz_instance.dart';
 import 'package:word_study/models/quiz_word.dart';
 import 'package:word_study/screens/option_widget.dart';
+import 'package:word_study/screens/home_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   final QuizInstance quizInstance;
@@ -63,11 +65,55 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
     return null;
   }
 
+  Future<Null> _closeWarning() async {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          title: new Text('Exit quiz'),
+          content: new SingleChildScrollView(
+            child: new ListBody(
+              children: <Widget>[
+                new Text('Are you sure you want to exit the quiz?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text('Exit'),
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  new MaterialPageRoute(builder: (BuildContext context) => new HomeScreen()),
+                  (route) => false,
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(_quizWord.word),
+        title: new Text(_quizWord.word), 
+        actions: <Widget>[
+          new IconButton(
+            icon: new Icon(Icons.close),
+            onPressed: () async {
+              await _closeWarning();
+            },
+          )
+        ]
       ),
       body: new Stack(
         children: <Widget>[new ListView.builder(
