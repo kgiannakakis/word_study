@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/screens/files_list_screen.dart';
+import 'package:word_study/localizations.dart';
 
 typedef OnSaveCallback = Function(Quiz quiz);
 typedef QuizExists = bool Function(String name);
@@ -82,11 +83,11 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
               keyboardType: TextInputType.text,
               initialValue: _filesList,
               decoration: new InputDecoration(
-                hintText: 'Files',
+                hintText: WordStudyLocalizations.of(context).files,
               ),
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'Please select a file';
+                  return WordStudyLocalizations.of(context).pleaseSelectAFile;
                 }
               },
             ),
@@ -108,12 +109,12 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
             keyboardType: TextInputType.text,
             initialValue: name,
             decoration: new InputDecoration(
-              labelText: "Name",
-              hintText: "Name",
+              labelText: WordStudyLocalizations.of(context).name,
+              hintText: WordStudyLocalizations.of(context).name,
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please enter the name of the quiz';
+                return WordStudyLocalizations.of(context).pleaseEnterTheNameOfTheQuiz;
               }
             },
             onSaved: (value) => _name = value,
@@ -125,20 +126,20 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
             keyboardType: TextInputType.number,
             controller: _wordEditingController,
             decoration: new InputDecoration(
-              labelText: "Word Count",
-              hintText: "Word Count",
+              labelText: WordStudyLocalizations.of(context).wordsCount,
+              hintText: WordStudyLocalizations.of(context).wordsCount,
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please enter a number';
+                return WordStudyLocalizations.of(context).pleaseEnterANumber;
               }
               var v = int.parse(
                   value, onError: (source) => 0);
               if (v < 1) {
-                return 'Please enter a number greater than 0';
+                return WordStudyLocalizations.of(context).pleaseEnterANumberGreaterThan0;
               }
               if (v > totalWordsCount) {
-                return 'Please enter a number less than $totalWordsCount';
+                return WordStudyLocalizations.of(context).pleaseEnterANumberLessThan(totalWordsCount);
               }
             },
             onSaved: (value) {
@@ -153,20 +154,20 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
             keyboardType: TextInputType.number,
             initialValue: '4',
             decoration: new InputDecoration(
-              labelText: "Options Count",
-              hintText: "Options Count",
+              labelText: WordStudyLocalizations.of(context).optionsCount,
+              hintText: WordStudyLocalizations.of(context).optionsCount,
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please enter a number';
+                return WordStudyLocalizations.of(context).pleaseEnterANumber;
               }
               var v = int.parse(
                   value, onError: (source) => 0);
               if (v < 1) {
-                return 'Please enter a number greater than 0';
+                return WordStudyLocalizations.of(context).pleaseEnterANumberGreaterThan0;
               }
               if (v > totalWordsCount) {
-                return 'Please enter a number less than $totalWordsCount';
+                return WordStudyLocalizations.of(context).pleaseEnterANumberLessThan(totalWordsCount);
               }
             },
             onSaved: (value) {
@@ -182,7 +183,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
           width: screenSize.width - 20.0,
           child: new RaisedButton(
             child: new Text(
-                'Create'
+                WordStudyLocalizations.of(context).create
             ),
             onPressed: () {
               if (_formKey.currentState.validate()) {
@@ -192,7 +193,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
                   Scaffold.of(context).showSnackBar(
                       new SnackBar(
                           content: new Text(
-                              'Options count must be less than words count'),
+                              WordStudyLocalizations.of(context).optionsCountMustBeLessThanWordsCount),
                           backgroundColor: Colors
                               .redAccent));
                 }
@@ -201,7 +202,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
                     Scaffold.of(context).showSnackBar(
                         new SnackBar(
                             content: new Text(
-                                'A quiz with this name already exists!'),
+                                WordStudyLocalizations.of(context).aQuizWithThisNameAlreadyExists),
                             backgroundColor: Colors
                                 .redAccent));
                   }

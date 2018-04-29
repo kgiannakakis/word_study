@@ -25,5 +25,85 @@
     "placeholders": {
       "item": {}
     }
+  },
+  "quizSettings": "Ρυθμίσεις τεστ",
+  "@quizSettings": {
+    "description": "Quiz Settings label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "files": "Αρχεία",
+  "@files": {
+    "description": "Files label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseSelectAFile": "Επιλέξτε ένα αρχείο",
+  "@pleaseSelectAFile": {
+    "description": "Select file validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "'Ονομα",
+  "@name": {
+    "description": "Name label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterTheNameOfTheQuiz": "Επιλέξτε το όνομα του τεστ",
+  "@pleaseEnterTheNameOfTheQuiz": {
+    "description": "Enter quiz name validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "wordsCount": "Αριθμός λέξεων",
+  "@wordsCount": {
+    "description": "Words Count label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "optionsCount": "Αριθμός επιλογών",
+  "@optionsCount": {
+    "description": "Options Count label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterANumber": "Εισάγετε έναν αριθμό",
+  "@pleaseEnterANumber": {
+    "description": "Enter a number validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterANumberGreaterThan0": "Εισάγετε έναν αριθμό μεγαλύτερο από 0",
+  "@pleaseEnterANumberGreaterThan0": {
+    "description": "Enter a number greater than validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterANumberLessThan": "Εισάγετε έναν αριθμό μικρότερο από {number}",
+  "@pleaseEnterANumberLessThan": {
+    "description": "Enter a number less than validation message",
+    "type": "text",
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "create": "Δημιουργία",
+  "@create": {
+    "description": "Create label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "optionsCountMustBeLessThanWordsCount": "Ο αριθμός των επιλογών πρέπει να είναι μικρότερος από τον αριθμό των λέξεων",
+  "@optionsCountMustBeLessThanWordsCount": {
+    "description": "Options count must be less than words count validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aQuizWithThisNameAlreadyExists": "Το όνομα αυτό χρησιμοποιείται ήδη!",
+  "@aQuizWithThisNameAlreadyExists": {
+    "description": "A quiz with this name already exists validation message",
+    "type": "text",
+    "placeholders": {}
   }
 }

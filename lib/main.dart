@@ -31,6 +31,7 @@ class WordStudyApp extends StatelessWidget {
           const WordStudyLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          const FallbackMaterialLocalisationsDelegate()
         ],
         supportedLocales: [
           const Locale('en', ''),

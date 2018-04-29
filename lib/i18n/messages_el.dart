@@ -19,11 +19,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(item) => "${item} διαγράφηκε";
 
+  static m1(number) => "Εισάγετε έναν αριθμό μικρότερο από ${number}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "aQuizWithThisNameAlreadyExists" : MessageLookupByLibrary.simpleMessage("Το όνομα αυτό χρησιμοποιείται ήδη!"),
+    "create" : MessageLookupByLibrary.simpleMessage("Δημιουργία"),
     "dismissed" : m0,
     "failedToStartQuiz" : MessageLookupByLibrary.simpleMessage("Δεν μπορεί να ξεκινήσει το τεστ"),
+    "files" : MessageLookupByLibrary.simpleMessage("Αρχεία"),
+    "name" : MessageLookupByLibrary.simpleMessage("\'Ονομα"),
+    "optionsCount" : MessageLookupByLibrary.simpleMessage("Αριθμός επιλογών"),
+    "optionsCountMustBeLessThanWordsCount" : MessageLookupByLibrary.simpleMessage("Ο αριθμός των επιλογών πρέπει να είναι μικρότερος από τον αριθμό των λέξεων"),
+    "pleaseEnterANumber" : MessageLookupByLibrary.simpleMessage("Εισάγετε έναν αριθμό"),
+    "pleaseEnterANumberGreaterThan0" : MessageLookupByLibrary.simpleMessage("Εισάγετε έναν αριθμό μεγαλύτερο από 0"),
+    "pleaseEnterANumberLessThan" : m1,
+    "pleaseEnterTheNameOfTheQuiz" : MessageLookupByLibrary.simpleMessage("Επιλέξτε το όνομα του τεστ"),
+    "pleaseSelectAFile" : MessageLookupByLibrary.simpleMessage("Επιλέξτε ένα αρχείο"),
+    "quizSettings" : MessageLookupByLibrary.simpleMessage("Ρυθμίσεις τεστ"),
     "title" : MessageLookupByLibrary.simpleMessage("Μάθε τις λέξεις"),
-    "undo" : MessageLookupByLibrary.simpleMessage("Αναίρεση")
+    "undo" : MessageLookupByLibrary.simpleMessage("Αναίρεση"),
+    "wordsCount" : MessageLookupByLibrary.simpleMessage("Αριθμός λέξεων")
   };
 }

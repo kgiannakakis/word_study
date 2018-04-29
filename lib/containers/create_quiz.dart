@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/screens/quiz_settings_form.dart';
+import 'package:word_study/localizations.dart';
 
 class CreateQuiz extends StatelessWidget {
   CreateQuiz({Key key}) : super(key: key);
@@ -20,7 +21,7 @@ class CreateQuiz extends StatelessWidget {
 
         return new Scaffold(
             appBar: new AppBar(
-              title: new Text('Quiz Settings'),
+              title: new Text(WordStudyLocalizations.of(context).quizSettings),
             ),
             body: new Builder(
                 builder: (BuildContext context) {

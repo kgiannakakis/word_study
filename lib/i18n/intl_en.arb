@@ -1,8 +1,108 @@
 {
-  "@@last_modified": "2018-04-28T22:56:20.145523",
+  "@@last_modified": "2018-04-29T18:51:31.016255",
   "title": "Word Study",
   "@title": {
     "description": "Title for Word Study application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToStartQuiz": "Failed to start quiz",
+  "@failedToStartQuiz": {
+    "description": "Message, when a quiz fails to start",
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "Undo",
+  "@undo": {
+    "description": "Undo label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dismissed": "{item} dismissed",
+  "@dismissed": {
+    "description": "Message, when an item is dismissed",
+    "type": "text",
+    "placeholders": {
+      "item": {}
+    }
+  },
+  "quizSettings": "Quiz Settings",
+  "@quizSettings": {
+    "description": "Quiz Settings label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "files": "Files",
+  "@files": {
+    "description": "Files label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseSelectAFile": "Please select a file",
+  "@pleaseSelectAFile": {
+    "description": "Select file validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Name label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterTheNameOfTheQuiz": "Please enter the name of the quiz",
+  "@pleaseEnterTheNameOfTheQuiz": {
+    "description": "Enter quiz name validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "wordsCount": "Words Count",
+  "@wordsCount": {
+    "description": "Words Count label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "optionsCount": "Options Count",
+  "@optionsCount": {
+    "description": "Options Count label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterANumber": "Please enter a number",
+  "@pleaseEnterANumber": {
+    "description": "Enter a number validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterANumberGreaterThan0": "Please enter a number greater than 0",
+  "@pleaseEnterANumberGreaterThan0": {
+    "description": "Enter a number greater than validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterANumberLessThan": "Please enter a number less than {number}",
+  "@pleaseEnterANumberLessThan": {
+    "description": "Enter a number less than validation message",
+    "type": "text",
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "create": "Create",
+  "@create": {
+    "description": "Create label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "optionsCountMustBeLessThanWordsCount": "Options count must be less than words count",
+  "@optionsCountMustBeLessThanWordsCount": {
+    "description": "Options count must be less than words count validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aQuizWithThisNameAlreadyExists": "A quiz with this name already exists!",
+  "@aQuizWithThisNameAlreadyExists": {
+    "description": "A quiz with this name already exists validation message",
     "type": "text",
     "placeholders": {}
   }
