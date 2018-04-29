@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
     }
     else {
       Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text('Failed to start quiz'),
+          content: new Text(WordStudyLocalizations.of(context).failedToStartQuiz),
           backgroundColor: Colors.redAccent
       ));
     }
@@ -68,10 +68,10 @@ class HomeScreen extends StatelessWidget {
 
           Scaffold.of(context).showSnackBar(
             new SnackBar(
-              content: new Text("${vm.quizzes[i].name} dismissed"),
+              content: new Text(WordStudyLocalizations.of(context).dismissed(vm.quizzes[i].name)),
               duration: new Duration(seconds: 5),
               action: new SnackBarAction(
-                  label: 'Undo',
+                  label: WordStudyLocalizations.of(context).undo,
                   onPressed: () {
                     vm.onUndoRemove(vm.quizzes[i]);
                   }),

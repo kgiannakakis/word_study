@@ -1,9 +1,29 @@
 {
-  "@@last_modified": "2018-04-28T22:56:20.145523",
+  "@@last_modified": "2018-04-29T12:05:45.528075",
   "title": "Μάθε τις λέξεις",
   "@title": {
     "description": "Title for Word Study application",
     "type": "text",
     "placeholders": {}
+  },
+  "failedToStartQuiz": "Δεν μπορεί να ξεκινήσει το τεστ",
+  "@failedToStartQuiz": {
+    "description": "Message, when a quiz fails to start",
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "Αναίρεση",
+  "@undo": {
+    "description": "Undo label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dismissed": "{item} διαγράφηκε",
+  "@dismissed": {
+    "description": "Message, when an item is dismissed",
+    "type": "text",
+    "placeholders": {
+      "item": {}
+    }
   }
 }

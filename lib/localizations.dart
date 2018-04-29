@@ -20,9 +20,34 @@ class WordStudyLocalizations {
 
   String get title {
     return Intl.message(
-      'Word Study1',
+      'Word Study',
       name: 'title',
       desc: 'Title for Word Study application',
+    );
+  }
+
+  String get failedToStartQuiz {
+    return Intl.message(
+      'Failed to start quiz',
+      name: 'failedToStartQuiz',
+      desc: 'Message, when a quiz fails to start',
+    );
+  }
+
+  String get undo {
+    return Intl.message(
+      'Undo',
+      name: 'undo',
+      desc: 'Undo label',
+    );
+  }
+
+  String dismissed(String item) {
+    return Intl.message(
+      '$item dismissed',
+      name: 'dismissed',
+      args: [item],
+      desc: 'Message, when an item is dismissed',
     );
   }
 }

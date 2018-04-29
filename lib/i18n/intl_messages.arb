@@ -1,9 +1,29 @@
 {
-  "@@last_modified": "2018-04-28T22:56:20.145523",
-  "title": "Hello World",
+  "@@last_modified": "2018-04-29T12:25:15.412078",
+  "title": "Word Study",
   "@title": {
-    "description": "Title for the Demo application",
+    "description": "Title for Word Study application",
     "type": "text",
     "placeholders": {}
+  },
+  "failedToStartQuiz": "Failed to start quiz",
+  "@failedToStartQuiz": {
+    "description": "Message, when a quiz fails to start",
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "Undo",
+  "@undo": {
+    "description": "Undo label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dismissed": "{item} dismissed",
+  "@dismissed": {
+    "description": "Message, when an item is dismissed",
+    "type": "text",
+    "placeholders": {
+      "item": {}
+    }
   }
 }
