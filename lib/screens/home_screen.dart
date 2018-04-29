@@ -9,6 +9,8 @@ import 'package:word_study/screens/quiz_screen.dart';
 import 'package:word_study/containers/create_quiz.dart';
 import 'package:word_study/words/quiz_instance.dart';
 
+import 'package:word_study/localizations.dart';
+
 class HomeScreen extends StatelessWidget {
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
@@ -93,7 +95,7 @@ class HomeScreen extends StatelessWidget {
         if (vm.isLoading) {
           return new Scaffold(
               appBar: new AppBar(
-                title: new Text("Word Study"),
+                title: new Text(WordStudyLocalizations.of(context).title),
               ),
               body: new Column(children: <Widget>[
                 new Expanded(
@@ -107,7 +109,7 @@ class HomeScreen extends StatelessWidget {
 
         return new Scaffold(
           appBar: new AppBar(
-            title: new Text("Word Study"),
+            title: new Text(WordStudyLocalizations.of(context).title),
           ),
           body: new Builder(
             builder: (BuildContext context) {

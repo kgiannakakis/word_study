@@ -1,0 +1,9 @@
+{
+  "@@last_modified": "2018-04-28T22:56:20.145523",
+  "title": "Word Study",
+  "@title": {
+    "description": "Title for Word Study application",
+    "type": "text",
+    "placeholders": {}
+  }
+}
