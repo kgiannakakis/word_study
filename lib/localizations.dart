@@ -1,16 +1,22 @@
 import 'dart:async';
-import 'package:intl/intl.dart';
+
+import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:word_study/i18n/messages_all.dart';
 
 class WordStudyLocalizations {
+  WordStudyLocalizations(this.locale);
+
+  final Locale locale;
+
   static Future<WordStudyLocalizations> load(Locale locale) {
     final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return new WordStudyLocalizations();
+      return new WordStudyLocalizations(locale);
     });
   }
 
@@ -163,8 +169,15 @@ class WordStudyLocalizationsDelegate extends LocalizationsDelegate<WordStudyLoca
   @override
   bool isSupported(Locale locale) => ['en', 'el'].contains(locale.languageCode);
 
+//  @override
+//  Future<WordStudyLocalizations> load(Locale locale) => WordStudyLocalizations.load(locale);
+
   @override
-  Future<WordStudyLocalizations> load(Locale locale) => WordStudyLocalizations.load(locale);
+  Future<WordStudyLocalizations> load(Locale locale) {
+    // Returning a SynchronousFuture here because an async "load" operation
+    // isn't needed to produce an instance of DemoLocalizations.
+    return new SynchronousFuture<WordStudyLocalizations>(new WordStudyLocalizations(locale));
+  }
 
   @override
   bool shouldReload(WordStudyLocalizationsDelegate old) => false;
