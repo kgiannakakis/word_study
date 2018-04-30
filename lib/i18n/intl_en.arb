@@ -105,5 +105,119 @@
     "description": "A quiz with this name already exists validation message",
     "type": "text",
     "placeholders": {}
+  },
+  "fileDownload": "File Download",
+  "@fileDownload": {
+    "description": "File Download label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "download": "Download",
+  "@download": {
+    "description": "Download label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "url": "Url",
+  "@url": {
+    "description": "Url label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterTheFileUrl": "Please enter the file url",
+  "@pleaseEnterTheFileUrl": {
+    "description": "Please enter the file url validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterAValidUrl": "Please enter a valid url",
+  "@pleaseEnterAValidUrl": {
+    "description": "Please enter a valid url validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterTheNameOfTheFile": "Please enter the file name",
+  "@pleaseEnterTheNameOfTheFile": {
+    "description": "Enter file name validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cantDownloadFile": "Can't download file",
+  "@cantDownloadFile": {
+    "description": "Failed to download file warning",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingFiles": "Loading files...",
+  "@loadingFiles": {
+    "description": "Loading files message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToConnectToGoogleDrive": "Failed to connect to Google Drive",
+  "@failedToConnectToGoogleDrive": {
+    "description": "Failed to connect to Google Drive message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "folderNotFound": "'{folder}' folder not found!",
+  "@folderNotFound": {
+    "description": "Folder not found warning",
+    "type": "text",
+    "placeholders": {
+      "folder": {}
+    }
+  },
+  "folderFound": "'{folder}' folder found!",
+  "@folderFound": {
+    "description": "Folder found message",
+    "type": "text",
+    "placeholders": {
+      "folder": {}
+    }
+  },
+  "folderIsEmpty": "Folder is empty",
+  "@folderIsEmpty": {
+    "description": "Folder is empty message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signedInSuccessfully": "Signed in successfully.",
+  "@signedInSuccessfully": {
+    "description": "Signed in successfully message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "Sign out label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signIn": "Sign in",
+  "@signIn": {
+    "description": "Sign in label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Refresh label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "youAreNotCurrentlySignedIn": "You are not currently signed in.",
+  "@youAreNotCurrentlySignedIn": {
+    "description": "You are not currently signed in message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "googleDriveInstructions": "Download files from your Google Drive. Create a folder named '{folder}' and upload your word files there to discover them.",
+  "@googleDriveInstructions": {
+    "description": "Google Drive Instructions",
+    "type": "text",
+    "placeholders": {
+      "folder": {}
+    }
   }
 }

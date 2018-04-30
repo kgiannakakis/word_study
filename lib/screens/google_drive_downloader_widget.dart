@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:word_study/words/web_wordprovider.dart';
 import 'package:word_study/files/file_service.dart';
+import 'package:word_study/localizations.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
 
@@ -64,7 +65,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
 
   Future<Null> _initGetFiles() async {
     setState(() {
-      _messageText = 'Loading files...';
+      _messageText = WordStudyLocalizations.of(context).loadingFiles;
       _files = [];
     });
     final String q = Uri.encodeComponent('mimeType=\'application/vnd.google-apps.folder\' and name=\'Word Study\'');
@@ -74,7 +75,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
     );
     if (response.statusCode != 200) {
       setState(() {
-        _messageText = 'Failed to connect to Google Drive';
+        _messageText = WordStudyLocalizations.of(context).failedToConnectToGoogleDrive;
       });
       print('Google Drive API ${response.statusCode} response: ${response.body}');
       return;
@@ -83,7 +84,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
 
     if (data['files'].length == 0) {
       setState(() {
-        _messageText = '\'$googleDriveAppFolderName\' folder not found!';
+        _messageText = WordStudyLocalizations.of(context).folderFound(googleDriveAppFolderName);
       });
     }
     else {
@@ -96,9 +97,9 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
 
     setState(() {
       if (appFolder != null) {
-        _messageText = '\'$appFolder\' folder found';
+        _messageText = WordStudyLocalizations.of(context).folderFound(appFolder);
       } else {
-        _messageText = '\'$googleDriveAppFolderName\' folder not found!';
+        _messageText = WordStudyLocalizations.of(context).folderNotFound(googleDriveAppFolderName);
       }
     });
 
@@ -113,7 +114,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
 
     if (filesData['files'].length == 0) {
       setState(() {
-        _messageText = 'Folder is empty';
+        _messageText = WordStudyLocalizations.of(context).folderIsEmpty;
       });
     }
     else {
@@ -183,14 +184,14 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
             title: new Text(_currentUser.displayName),
             subtitle: new Text(_currentUser.email),
           ),
-          const Text("Signed in successfully."),
+          new Text(WordStudyLocalizations.of(context).signedInSuccessfully),
           new Text(_messageText),
           new RaisedButton(
-            child: const Text('SIGN OUT'),
+            child: new Text(WordStudyLocalizations.of(context).signOut),
             onPressed: _handleSignOut,
           ),
           new RaisedButton(
-            child: const Text('REFRESH'),
+            child: new Text(WordStudyLocalizations.of(context).refresh),
             onPressed: _initGetFiles,
           ),
         ],
@@ -218,9 +219,15 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
                         padding: const EdgeInsets.all(12.0),
                         child: new Row(
                           children: <Widget>[
-                            new RaisedButton(onPressed: _handleSignOut, child: new Text('SIGN OUT')),
+                            new RaisedButton(
+                                onPressed: _handleSignOut,
+                                child: new Text(WordStudyLocalizations.of(context).signOut)
+                            ),
                             new Expanded( child:  new Text("")),
-                            new RaisedButton(onPressed: _initGetFiles, child: new Text('REFRESH'))
+                            new RaisedButton(
+                                onPressed: _initGetFiles,
+                                child: new Text(WordStudyLocalizations.of(context).refresh)
+                            )
                           ],
                         )
                     )
@@ -236,13 +243,11 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
           new Padding(
               padding:const EdgeInsets.all(30.0),
               child:
-              const Text('Download files from your Google Drive. '
-                  'Create a folder named \'$googleDriveAppFolderName\' and '
-                  'upload your files there to discover them.')
+              new Text(WordStudyLocalizations.of(context).googleDriveInstructions(googleDriveAppFolderName))
           ),
-          const Text('You are not currently signed in.'),
+          new Text(WordStudyLocalizations.of(context).youAreNotCurrentlySignedIn),
           new RaisedButton(
-            child: const Text('SIGN IN'),
+            child: new Text(WordStudyLocalizations.of(context).signIn),
             onPressed: _handleSignIn,
           ),
         ],

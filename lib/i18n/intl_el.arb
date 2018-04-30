@@ -105,5 +105,119 @@
     "description": "A quiz with this name already exists validation message",
     "type": "text",
     "placeholders": {}
+  },
+  "fileDownload": "Λήψη αρχείου",
+  "@fileDownload": {
+    "description": "File Download label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "download": "Λήψη",
+  "@download": {
+    "description": "Download label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "url": "Url",
+  "@url": {
+    "description": "Url label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterTheFileUrl": "Εισάγετε το url",
+  "@pleaseEnterTheFileUrl": {
+    "description": "Please enter the file url validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterAValidUrl": "Εισάγετε ένα έγκυρο url",
+  "@pleaseEnterAValidUrl": {
+    "description": "Please enter a valid url validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pleaseEnterTheNameOfTheFile": "Εισάγετε το όνομα του αρχείου",
+  "@pleaseEnterTheNameOfTheFile": {
+    "description": "Enter file name validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cantDownloadFile": "Η λήψη είναι αδύνατη",
+  "@cantDownloadFile": {
+    "description": "Failed to download file warning",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingFiles": "Φόρτωση αρχείων...",
+  "@loadingFiles": {
+    "description": "Loading files message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToConnectToGoogleDrive": "Αδυναμία σύνδεσης στο Google Drive",
+  "@failedToConnectToGoogleDrive": {
+    "description": "Failed to connect to Google Drive message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "folderNotFound": "Ο φάκελος '{folder}' δε βρέθηκε!",
+  "@folderNotFound": {
+    "description": "Folder not found warning",
+    "type": "text",
+    "placeholders": {
+      "folder": {}
+    }
+  },
+  "folderFound": "Ο φάκελος '{folder}' βρέθηκε",
+  "@folderFound": {
+    "description": "Folder found message",
+    "type": "text",
+    "placeholders": {
+      "folder": {}
+    }
+  },
+  "folderIsEmpty": "Ο φάκελος είναι άδειος",
+  "@folderIsEmpty": {
+    "description": "Folder is empty message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signedInSuccessfully": "Σύνδεση επιτυχής.",
+  "@signedInSuccessfully": {
+    "description": "Signed in successfully message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signOut": "Αποσύνδεση",
+  "@signOut": {
+    "description": "Sign out label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signIn": "Σύνδεση",
+  "@signIn": {
+    "description": "Sign in label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "refresh": "Ανανέωση",
+  "@refresh": {
+    "description": "Refresh label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "youAreNotCurrentlySignedIn": "Δεν είστε συνδεδεμένοι.",
+  "@youAreNotCurrentlySignedIn": {
+    "description": "You are not currently signed in message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "googleDriveInstructions": "Κατεβάστε αρχεία λέξεων από το Google Drive. Δημιουργήστε ένα φάκελο με το όνομα '{folder}' και ανεβάστε εκεί τα αρχεία σας για να τα ανακαλύψει η εφαρμογή.",
+  "@googleDriveInstructions": {
+    "description": "Google Drive Instructions",
+    "type": "text",
+    "placeholders": {
+      "folder": {}
+    }
   }
 }
