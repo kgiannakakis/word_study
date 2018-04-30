@@ -106,6 +106,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "savedFiles": "Αποθηκευμένα Αρχεία",
+  "@savedFiles": {
+    "description": "Saved files label",
+    "type": "text",
+    "placeholders": {}
+  },
   "fileDownload": "Λήψη αρχείου",
   "@fileDownload": {
     "description": "File Download label",

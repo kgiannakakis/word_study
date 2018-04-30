@@ -63,7 +63,7 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
                     return WordStudyLocalizations.of(context).pleaseEnterTheFileUrl;
                   }
                   if (!isURL(value)) {
-                    return 'Please enter a valid url';
+                    return WordStudyLocalizations.of(context).pleaseEnterAValidUrl;
                   }
                 },
                 onFieldSubmitted: (value) => _fileUrl = value,
@@ -80,7 +80,7 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter the file name';
+                    return WordStudyLocalizations.of(context).pleaseEnterTheNameOfTheFile;
                   }
                 },
                 onFieldSubmitted: (value) => _fileName = value,

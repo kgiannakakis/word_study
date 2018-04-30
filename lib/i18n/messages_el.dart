@@ -30,7 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "aQuizWithThisNameAlreadyExists" : MessageLookupByLibrary.simpleMessage("Το όνομα αυτό χρησιμοποιείται ήδη!"),
-    "cantDownloadFail" : MessageLookupByLibrary.simpleMessage("Η λήψη είναι αδύνατη"),
+    "cantDownloadFile" : MessageLookupByLibrary.simpleMessage("Η λήψη είναι αδύνατη"),
     "create" : MessageLookupByLibrary.simpleMessage("Δημιουργία"),
     "dismissed" : m0,
     "download" : MessageLookupByLibrary.simpleMessage("Λήψη"),
@@ -49,11 +49,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseEnterANumber" : MessageLookupByLibrary.simpleMessage("Εισάγετε έναν αριθμό"),
     "pleaseEnterANumberGreaterThan0" : MessageLookupByLibrary.simpleMessage("Εισάγετε έναν αριθμό μεγαλύτερο από 0"),
     "pleaseEnterANumberLessThan" : m4,
+    "pleaseEnterAValidUrl" : MessageLookupByLibrary.simpleMessage("Εισάγετε ένα έγκυρο url"),
     "pleaseEnterTheFileUrl" : MessageLookupByLibrary.simpleMessage("Εισάγετε το url"),
+    "pleaseEnterTheNameOfTheFile" : MessageLookupByLibrary.simpleMessage("Εισάγετε το όνομα του αρχείου"),
     "pleaseEnterTheNameOfTheQuiz" : MessageLookupByLibrary.simpleMessage("Επιλέξτε το όνομα του τεστ"),
     "pleaseSelectAFile" : MessageLookupByLibrary.simpleMessage("Επιλέξτε ένα αρχείο"),
     "quizSettings" : MessageLookupByLibrary.simpleMessage("Ρυθμίσεις τεστ"),
     "refresh" : MessageLookupByLibrary.simpleMessage("Ανανέωση"),
+    "savedFiles" : MessageLookupByLibrary.simpleMessage("Αποθηκευμένα Αρχεία"),
     "signIn" : MessageLookupByLibrary.simpleMessage("Σύνδεση"),
     "signOut" : MessageLookupByLibrary.simpleMessage("Αποσύνδεση"),
     "signedInSuccessfully" : MessageLookupByLibrary.simpleMessage("Σύνδεση επιτυχής."),

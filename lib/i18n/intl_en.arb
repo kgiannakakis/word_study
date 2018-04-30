@@ -106,6 +106,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "savedFiles": "Saved files",
+  "@savedFiles": {
+    "description": "Saved files label",
+    "type": "text",
+    "placeholders": {}
+  },
   "fileDownload": "File Download",
   "@fileDownload": {
     "description": "File Download label",

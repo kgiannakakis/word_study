@@ -7,6 +7,7 @@ import 'package:word_study/actions/actions.dart';
 import 'package:word_study/screens/file_downloader_screen.dart';
 import 'package:word_study/containers/create_quiz.dart';
 import 'package:word_study/models/stored_file.dart';
+import 'package:word_study/localizations.dart';
 
 class FilesListScreen extends StatelessWidget {
 
@@ -79,7 +80,7 @@ class FilesListScreen extends StatelessWidget {
         if (vm.isLoading) {
           return new Scaffold(
             appBar: new AppBar(
-              title: new Text("Saved Files"),
+              title: new Text(WordStudyLocalizations.of(context).savedFiles),
             ),
             body: new Column(children: <Widget>[
               new Expanded(
@@ -93,7 +94,7 @@ class FilesListScreen extends StatelessWidget {
 
         return new Scaffold(
           appBar: new AppBar(
-          title: new Text("Saved Files"),
+          title: new Text(WordStudyLocalizations.of(context).savedFiles),
           ),
           body: new ListView.builder(
             padding: const EdgeInsets.all(16.0),

@@ -1,14 +1,10 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:word_study/i18n/messages_all.dart';
 
 class WordStudyLocalizations {
-  WordStudyLocalizations(this.locale);
-
-  final Locale locale;
+  WordStudyLocalizations();
 
   static Future<WordStudyLocalizations> load(Locale locale) {
     final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
@@ -16,7 +12,7 @@ class WordStudyLocalizations {
 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return new WordStudyLocalizations(locale);
+      return new WordStudyLocalizations();
     });
   }
 
@@ -159,6 +155,14 @@ class WordStudyLocalizations {
       'A quiz with this name already exists!',
       name: 'aQuizWithThisNameAlreadyExists',
       desc: 'A quiz with this name already exists validation message',
+    );
+  }
+
+  String get savedFiles {
+    return Intl.message(
+      'Saved files',
+      name: 'savedFiles',
+      desc: 'Saved files label',
     );
   }
 
@@ -318,15 +322,8 @@ class WordStudyLocalizationsDelegate extends LocalizationsDelegate<WordStudyLoca
   @override
   bool isSupported(Locale locale) => ['en', 'el'].contains(locale.languageCode);
 
-//  @override
-//  Future<WordStudyLocalizations> load(Locale locale) => WordStudyLocalizations.load(locale);
-
   @override
-  Future<WordStudyLocalizations> load(Locale locale) {
-    // Returning a SynchronousFuture here because an async "load" operation
-    // isn't needed to produce an instance of DemoLocalizations.
-    return new SynchronousFuture<WordStudyLocalizations>(new WordStudyLocalizations(locale));
-  }
+  Future<WordStudyLocalizations> load(Locale locale) => WordStudyLocalizations.load(locale);
 
   @override
   bool shouldReload(WordStudyLocalizationsDelegate old) => false;

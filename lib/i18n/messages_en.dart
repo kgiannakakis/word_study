@@ -30,7 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "aQuizWithThisNameAlreadyExists" : MessageLookupByLibrary.simpleMessage("A quiz with this name already exists!"),
-    "cantDownloadFail" : MessageLookupByLibrary.simpleMessage("Can\'t download file"),
+    "cantDownloadFile" : MessageLookupByLibrary.simpleMessage("Can\'t download file"),
     "create" : MessageLookupByLibrary.simpleMessage("Create"),
     "dismissed" : m0,
     "download" : MessageLookupByLibrary.simpleMessage("Download"),
@@ -49,11 +49,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseEnterANumber" : MessageLookupByLibrary.simpleMessage("Please enter a number"),
     "pleaseEnterANumberGreaterThan0" : MessageLookupByLibrary.simpleMessage("Please enter a number greater than 0"),
     "pleaseEnterANumberLessThan" : m4,
+    "pleaseEnterAValidUrl" : MessageLookupByLibrary.simpleMessage("Please enter a valid url"),
     "pleaseEnterTheFileUrl" : MessageLookupByLibrary.simpleMessage("Please enter the file url"),
+    "pleaseEnterTheNameOfTheFile" : MessageLookupByLibrary.simpleMessage("Please enter the file name"),
     "pleaseEnterTheNameOfTheQuiz" : MessageLookupByLibrary.simpleMessage("Please enter the name of the quiz"),
     "pleaseSelectAFile" : MessageLookupByLibrary.simpleMessage("Please select a file"),
     "quizSettings" : MessageLookupByLibrary.simpleMessage("Quiz Settings"),
     "refresh" : MessageLookupByLibrary.simpleMessage("Refresh"),
+    "savedFiles" : MessageLookupByLibrary.simpleMessage("Saved files"),
     "signIn" : MessageLookupByLibrary.simpleMessage("Sign in"),
     "signOut" : MessageLookupByLibrary.simpleMessage("Sign out"),
     "signedInSuccessfully" : MessageLookupByLibrary.simpleMessage("Signed in successfully."),
