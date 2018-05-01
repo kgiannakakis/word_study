@@ -12,7 +12,10 @@ class FileDownloaderViewModel {
   final Function(GoogleDriveServiceMessage) onSetMessage;
   final Function(List<GoogleDriveFile>) onSetFiles;
   final Function(GoogleSignInAccount) onSetCurrentUser;
+  final Function onSignIn;
   final Function onSignOut;
+  final Function onRefreshFiles;
+  final Function(GoogleDriveFile) onDownloadFile;
   final GoogleDriveState googleDriveState;
 
   FileDownloaderViewModel({
@@ -20,7 +23,10 @@ class FileDownloaderViewModel {
     @required this.onSetMessage,
     @required this.onSetCurrentUser,
     @required this.onSetFiles,
+    @required this.onSignIn,
     @required this.onSignOut,
+    @required this.onRefreshFiles,
+    @required this.onDownloadFile,
     @required this.googleDriveState
   });
 
@@ -30,7 +36,10 @@ class FileDownloaderViewModel {
         onSetMessage: (msg) => store.dispatch(new SetGoogleDriveMessageAction(msg)),
         onSetFiles: (files) => store.dispatch(new SetGoogleDriveFilesAction(files)),
         onSetCurrentUser: (user) => store.dispatch(new SetGoogleDriveUserAction(user)),
+        onSignIn: () => store.dispatch(new GoogleDriveSignInAction()),
         onSignOut: () => store.dispatch(new GoogleDriveSignOutAction()),
+        onRefreshFiles: () => store.dispatch(new GoogleDriveRefreshFilesAction()),
+        onDownloadFile: (file) => store.dispatch(new GoogleDriveDownloadFileAction(file)),
         googleDriveState: store.state.googleDriveState
     );
   }

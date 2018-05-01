@@ -20,4 +20,14 @@ class SetGoogleDriveUserAction {
   SetGoogleDriveUserAction(this.currentUser);
 }
 
+class GoogleDriveSignInAction{}
+
 class GoogleDriveSignOutAction{}
+
+class GoogleDriveRefreshFilesAction{}
+
+class GoogleDriveDownloadFileAction {
+  final GoogleDriveFile file;
+
+  GoogleDriveDownloadFileAction(this.file);
+}

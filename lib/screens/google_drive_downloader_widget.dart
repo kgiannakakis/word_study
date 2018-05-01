@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:word_study/models/stored_file.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:word_study/localizations.dart';
@@ -12,12 +11,12 @@ class GoogleDriveDownloader extends StatelessWidget {
   final FileDownloaderViewModel viewModel;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
-  final GoogleDriveService googleDriveService = new GoogleDriveService();
+  //final GoogleDriveService googleDriveService = new GoogleDriveService();
 
   GoogleDriveDownloader({@required this.viewModel}) {
-    googleDriveService.onUpdateState = onUpdateState;
-    googleDriveService.onUpdateUser = onUpdateUser;
-    googleDriveService.init();
+//    googleDriveService.onUpdateState = onUpdateState;
+//    googleDriveService.onUpdateUser = onUpdateUser;
+//    googleDriveService.init();
   }
 
   void onUpdateUser(GoogleSignInAccount user) {
@@ -91,11 +90,11 @@ class GoogleDriveDownloader extends StatelessWidget {
           new Text(_getMessageText(context, viewModel.googleDriveState.message)),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).signOut),
-            onPressed: googleDriveService.handleSignOut,
+            onPressed: viewModel.onSignOut,
           ),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).refresh),
-            onPressed: googleDriveService.initGetFiles,
+            onPressed: viewModel.onRefreshFiles,
           ),
         ],
       );
@@ -124,12 +123,12 @@ class GoogleDriveDownloader extends StatelessWidget {
                         child: new Row(
                           children: <Widget>[
                             new RaisedButton(
-                                onPressed: googleDriveService.handleSignOut,
+                                onPressed: viewModel.onSignOut,
                                 child: new Text(WordStudyLocalizations.of(context).signOut)
                             ),
                             new Expanded( child:  new Text("")),
                             new RaisedButton(
-                                onPressed: googleDriveService.initGetFiles,
+                                onPressed: viewModel.onRefreshFiles,
                                 child: new Text(WordStudyLocalizations.of(context).refresh)
                             )
                           ],
@@ -152,7 +151,7 @@ class GoogleDriveDownloader extends StatelessWidget {
           new Text(WordStudyLocalizations.of(context).youAreNotCurrentlySignedIn),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).signIn),
-            onPressed: googleDriveService.handleSignIn,
+            onPressed: viewModel.onSignIn,
           ),
         ],
       );
@@ -173,13 +172,15 @@ class GoogleDriveDownloader extends StatelessWidget {
         child: new ListTile(
             title: new Text(viewModel.googleDriveState.files[i].name, style: _biggerFont),
             onTap: () async {
-              if ((await googleDriveService.downloadFile(viewModel.googleDriveState.files[i]))) {
-                viewModel.onAddFile(new StoredFile(
-                    name: viewModel.googleDriveState.files[i].name,
-                    created: DateTime.now())
-                );
-                Navigator.of(context).pop();
-              }
+              viewModel.onDownloadFile(viewModel.googleDriveState.files[i]);
+
+//              if ((await googleDriveService.downloadFile(viewModel.googleDriveState.files[i]))) {
+//                viewModel.onAddFile(new StoredFile(
+//                    name: viewModel.googleDriveState.files[i].name,
+//                    created: DateTime.now())
+//                );
+//                Navigator.of(context).pop();
+//              }
             }
         )
     );
