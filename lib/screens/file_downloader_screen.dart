@@ -1,26 +1,22 @@
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:word_study/models/app_state.dart';
-import 'package:word_study/actions/actions.dart';
-import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/screens/google_drive_downloader_widget.dart';
 import 'package:word_study/screens/web_downloader_widget.dart';
 import 'package:word_study/localizations.dart';
+import 'package:word_study/screens/file_downloader_view_model.dart';
 
 class FileDownloaderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, _ViewModel>(
+    return new StoreConnector<AppState, FileDownloaderViewModel>(
       converter: (Store<AppState> store) {
-        return new _ViewModel(
-            onAddFile: (file) => store.dispatch(new AddFileAction(file))
-        );
+        return FileDownloaderViewModel.fromStore(store);
       },
-      builder: (BuildContext context, _ViewModel vm) {
+      builder: (BuildContext context, FileDownloaderViewModel vm) {
         return new DefaultTabController(
           length: 2,
           child: new Scaffold(
@@ -46,11 +42,4 @@ class FileDownloaderScreen extends StatelessWidget {
   }
 }
 
-class _ViewModel {
-  final Function(StoredFile) onAddFile;
-
-  _ViewModel({
-    @required this.onAddFile
-  });
-}
 
