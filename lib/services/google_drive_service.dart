@@ -4,15 +4,9 @@ import "package:http/http.dart" as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:word_study/words/web_wordprovider.dart';
 import 'package:word_study/services/file_service.dart';
+import 'package:word_study/models/google_drive_file.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
-
-class GoogleDriveFileWidget {
-  final String name;
-  final String id;
-
-  GoogleDriveFileWidget(this.name, this.id);
-}
 
 enum GoogleDriveServiceMessage {
   failedToConnect,
@@ -22,9 +16,8 @@ enum GoogleDriveServiceMessage {
   loadingFiles
 }
 
-typedef onGoogleDriveUpdateState =
-void Function({GoogleDriveServiceMessage msg,
-List<GoogleDriveFileWidget> files});
+typedef onGoogleDriveUpdateState = void Function({GoogleDriveServiceMessage msg,
+                                                  List<GoogleDriveFileWidget> files});
 
 typedef onGoogleDriveUserUpdated = void Function(GoogleSignInAccount user);
 

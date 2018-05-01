@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/services/google_drive_service.dart';
+import 'package:word_study/models/google_drive_file.dart';
 
 class GoogleDriveDownloader extends StatefulWidget {
   final Function(StoredFile) onAddFile;
