@@ -1,34 +1,43 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:word_study/models/google_drive_file.dart';
 
+enum GoogleDriveServiceMessage {
+  starting,
+  failedToConnect,
+  folderFound,
+  folderNotFound,
+  folderEmpty,
+  loadingFiles
+}
+
 class GoogleDriveState {
-  final String messageText;
+  final GoogleDriveServiceMessage message;
   final List<GoogleDriveFile> files;
   final GoogleSignInAccount currentUser;
 
-  const GoogleDriveState({this.messageText = '',
+  const GoogleDriveState({this.message = GoogleDriveServiceMessage.starting,
                           this.files = const [],
                           this.currentUser});
 
-  GoogleDriveState copyWith({String messageText,
+  GoogleDriveState copyWith({GoogleDriveServiceMessage message,
     List<GoogleDriveFile> files,
     GoogleSignInAccount currentUser}) {
       return new GoogleDriveState(
-        messageText: messageText ?? this.messageText,
+        message: message ?? this.message,
         files: files ?? this.files,
         currentUser: currentUser ?? this.currentUser
       );
   }
 
   @override
-  int get hashCode => messageText.hashCode ^ files.hashCode ^
+  int get hashCode => message.hashCode ^ files.hashCode ^
                       currentUser.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
           other is GoogleDriveState &&
-          other.messageText == messageText &&
+          other.message == message &&
           other.files == files &&
           other.currentUser == currentUser;
 }

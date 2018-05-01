@@ -10,7 +10,7 @@ final Reducer<GoogleDriveState> googleDriveReducer = combineReducers([
 ]);
 
 GoogleDriveState _setMessage(GoogleDriveState state, SetGoogleDriveMessageAction action) {
-  return state.copyWith(messageText: action.message);
+  return state.copyWith(message: action.message);
 }
 
 GoogleDriveState _setFiles(GoogleDriveState state, SetGoogleDriveFilesAction action) {

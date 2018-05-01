@@ -5,36 +5,36 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/services/google_drive_service.dart';
 import 'package:word_study/models/google_drive_file.dart';
+import 'package:word_study/screens/file_downloader_view_model.dart';
+import 'package:word_study/models/google_drive_state.dart';
 
-class GoogleDriveDownloader extends StatefulWidget {
-  final Function(StoredFile) onAddFile;
-
-  GoogleDriveDownloader({ @required this.onAddFile});
-
-  @override
-  State createState() => new GoogleDriveDownloaderState(onAddFile: onAddFile);
-}
-
-class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
-  final Function(StoredFile) onAddFile;
-
-  String _messageText = '';
-  List<GoogleDriveFile> _files = <GoogleDriveFile>[];
-  GoogleSignInAccount _currentUser;
+class GoogleDriveDownloader extends StatelessWidget {
+  final FileDownloaderViewModel viewModel;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final GoogleDriveService googleDriveService = new GoogleDriveService();
 
-  GoogleDriveDownloaderState({@required this.onAddFile});
+  GoogleDriveDownloader({@required this.viewModel}) {
+    googleDriveService.onUpdateState = onUpdateState;
+    googleDriveService.onUpdateUser = onUpdateUser;
+    googleDriveService.init();
+  }
 
-  void onUpdateUser(GoogleSignInAccount currentUser) {
-    setState(() => _currentUser = currentUser);
+  void onUpdateUser(GoogleSignInAccount user) {
+
   }
 
   void onUpdateState({GoogleDriveServiceMessage msg, List<GoogleDriveFile> files}) {
-    String m = null;
+
+  }
+
+  String _getMessageText(BuildContext context, GoogleDriveServiceMessage msg) {
+    String m = '';
     if (msg != null) {
       switch (msg) {
+        case GoogleDriveServiceMessage.starting:
+          m = '';
+          break;
         case GoogleDriveServiceMessage.failedToConnect:
           m = WordStudyLocalizations
               .of(context)
@@ -60,40 +60,25 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
           break;
       }
     }
-    setState(() {
-      if (m != null) {
-        _messageText = m;
-      }
-      if (files != null) {
-        _files = files;
-      }
-    });
+    return m;
   }
 
-  @override
-  void initState() {
-    super.initState();
+  Widget _buildBody(BuildContext context) {
 
-    googleDriveService.onUpdateState = onUpdateState;
-    googleDriveService.onUpdateUser = onUpdateUser;
-    googleDriveService.init();
-  }
-
-  Widget _buildBody() {
-
-    if (_currentUser != null && _files.length == 0) {
+    if (viewModel.googleDriveState.currentUser != null &&
+        viewModel.googleDriveState.files.length == 0) {
       return new Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           new ListTile(
             leading: new GoogleUserCircleAvatar(
-              identity: _currentUser,
+              identity: viewModel.googleDriveState.currentUser,
             ),
-            title: new Text(_currentUser.displayName),
-            subtitle: new Text(_currentUser.email),
+            title: new Text(viewModel.googleDriveState.currentUser.displayName),
+            subtitle: new Text(viewModel.googleDriveState.currentUser.email),
           ),
           new Text(WordStudyLocalizations.of(context).signedInSuccessfully),
-          new Text(_messageText),
+          new Text(_getMessageText(context, viewModel.googleDriveState.message)),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).signOut),
             onPressed: googleDriveService.handleSignOut,
@@ -105,19 +90,20 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
         ],
       );
     }
-    else if (_currentUser != null && _files.length > 0) {
+    else if (viewModel.googleDriveState.currentUser != null &&
+        viewModel.googleDriveState.files.length > 0) {
       return
         new Stack(
           children: <Widget>[
             new ListView.builder(
                 padding: const EdgeInsets.all(16.0),
-                itemCount: 2*_files.length,
+                itemCount: 2*viewModel.googleDriveState.files.length,
                 itemBuilder: (BuildContext context, int position) {
                   if (position.isOdd) return new Divider();
 
                   final index = position ~/ 2;
 
-                  return _buildRow(index);
+                  return _buildRow(context, index);
                 }),
             new Align(
                 alignment: new Alignment(0.0, 1.0),
@@ -167,18 +153,21 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   Widget build(BuildContext context) {
     return new ConstrainedBox(
         constraints: const BoxConstraints.expand(),
-        child: _buildBody(),
+        child: _buildBody(context),
       );
   }
 
-  Widget _buildRow(int i) {
+  Widget _buildRow(BuildContext context, int i) {
     return new Padding(
         padding: const EdgeInsets.all(16.0),
         child: new ListTile(
-            title: new Text(_files[i].name, style: _biggerFont),
+            title: new Text(viewModel.googleDriveState.files[i].name, style: _biggerFont),
             onTap: () async {
-              if ((await googleDriveService.downloadFile(_files[i]))) {
-                onAddFile(new StoredFile(name: _files[i].name, created: DateTime.now()));
+              if ((await googleDriveService.downloadFile(viewModel.googleDriveState.files[i]))) {
+                viewModel.onAddFile(new StoredFile(
+                    name: viewModel.googleDriveState.files[i].name,
+                    created: DateTime.now())
+                );
                 Navigator.of(context).pop();
               }
             }

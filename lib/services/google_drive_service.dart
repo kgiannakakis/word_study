@@ -5,16 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:word_study/words/web_wordprovider.dart';
 import 'package:word_study/services/file_service.dart';
 import 'package:word_study/models/google_drive_file.dart';
+import 'package:word_study/models/google_drive_state.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
-
-enum GoogleDriveServiceMessage {
-  failedToConnect,
-  folderFound,
-  folderNotFound,
-  folderEmpty,
-  loadingFiles
-}
 
 typedef onGoogleDriveUpdateState = void Function({GoogleDriveServiceMessage msg,
                                                   List<GoogleDriveFile> files});

@@ -9,7 +9,7 @@ import 'package:word_study/models/google_drive_state.dart';
 
 class FileDownloaderViewModel {
   final Function(StoredFile) onAddFile;
-  final Function(String) onSetMessage;
+  final Function(GoogleDriveServiceMessage) onSetMessage;
   final Function(List<GoogleDriveFile>) onSetFiles;
   final Function(GoogleSignInAccount) onSetCurrentUser;
   final Function onSignOut;

@@ -3,10 +3,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:word_study/models/app_state.dart';
-import 'package:word_study/screens/google_drive_downloader_widget.dart';
 import 'package:word_study/screens/web_downloader_widget.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/screens/file_downloader_view_model.dart';
+import 'package:word_study/screens/google_drive_downloader_widget.dart';
 
 class FileDownloaderScreen extends StatelessWidget {
 
@@ -16,7 +16,7 @@ class FileDownloaderScreen extends StatelessWidget {
       converter: (Store<AppState> store) {
         return FileDownloaderViewModel.fromStore(store);
       },
-      builder: (BuildContext context, FileDownloaderViewModel vm) {
+      builder: (BuildContext context, FileDownloaderViewModel viewModel) {
         return new DefaultTabController(
           length: 2,
           child: new Scaffold(
@@ -31,8 +31,8 @@ class FileDownloaderScreen extends StatelessWidget {
             ),
             body: new TabBarView(
               children: [
-                new GoogleDriveDownloader(onAddFile: vm.onAddFile),
-                new WebDownloaderWidget(onAddFile: vm.onAddFile),
+                new GoogleDriveDownloader(viewModel: viewModel),
+                new WebDownloaderWidget(onAddFile: viewModel.onAddFile),
               ],
             ),
           ),
