@@ -1,25 +1,12 @@
-import 'dart:async';
-import 'dart:convert' show json;
 import 'package:meta/meta.dart';
 import 'package:word_study/models/stored_file.dart';
-import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:word_study/words/web_wordprovider.dart';
-import 'package:word_study/files/file_service.dart';
 import 'package:word_study/localizations.dart';
-
-const String googleDriveAppFolderName = 'Word Study';
-
-class GoogleDriveFileWidget {
-  final String name;
-  final String id;
-
-  GoogleDriveFileWidget(this.name, this.id);
-}
+import 'package:word_study/services/google_drive_service.dart';
 
 class GoogleDriveDownloader extends StatefulWidget {
- final Function(StoredFile) onAddFile;
+  final Function(StoredFile) onAddFile;
 
   GoogleDriveDownloader({ @required this.onAddFile});
 
@@ -30,145 +17,65 @@ class GoogleDriveDownloader extends StatefulWidget {
 class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   final Function(StoredFile) onAddFile;
 
-  GoogleSignIn _googleSignIn;
+  String _messageText = '';
+  List<GoogleDriveFileWidget> _files = <GoogleDriveFileWidget>[];
   GoogleSignInAccount _currentUser;
 
-  String _messageText;
-  List<GoogleDriveFileWidget> _files = <GoogleDriveFileWidget>[];
-
   final _biggerFont = const TextStyle(fontSize: 18.0);
-  final FileService _fileService = new FileService();
+  final GoogleDriveService googleDriveService = new GoogleDriveService();
 
   GoogleDriveDownloaderState({@required this.onAddFile});
+
+  void onUpdateUser(GoogleSignInAccount currentUser) {
+    setState(() => _currentUser = currentUser);
+  }
+
+  void onUpdateState({GoogleDriveServiceMessage msg, List<GoogleDriveFileWidget> files}) {
+    String m = null;
+    if (msg != null) {
+      switch (msg) {
+        case GoogleDriveServiceMessage.failedToConnect:
+          m = WordStudyLocalizations
+              .of(context)
+              .failedToConnectToGoogleDrive;
+          break;
+        case GoogleDriveServiceMessage.folderNotFound:
+          m = WordStudyLocalizations.of(context).folderFound(
+              googleDriveAppFolderName);
+          break;
+        case GoogleDriveServiceMessage.folderFound:
+          m = WordStudyLocalizations.of(context).folderFound(
+              googleDriveAppFolderName);
+          break;
+        case GoogleDriveServiceMessage.folderEmpty:
+          m = WordStudyLocalizations
+              .of(context)
+              .folderIsEmpty;
+          break;
+        case GoogleDriveServiceMessage.loadingFiles:
+          m = WordStudyLocalizations
+              .of(context)
+              .loadingFiles;
+          break;
+      }
+    }
+    setState(() {
+      if (m != null) {
+        _messageText = m;
+      }
+      if (files != null) {
+        _files = files;
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
 
-    _googleSignIn = new GoogleSignIn(
-      scopes: <String>[
-        'email',
-        'https://www.googleapis.com/auth/drive.readonly'
-      ],
-    );
-
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      setState(() {
-        _currentUser = account;
-      });
-      if (_currentUser != null) {
-        _initGetFiles();
-      }
-    });
-    _googleSignIn.signInSilently();
-  }
-
-  Future<Null> _initGetFiles() async {
-    setState(() {
-      _messageText = WordStudyLocalizations.of(context).loadingFiles;
-      _files = [];
-    });
-    final String q = Uri.encodeComponent('mimeType=\'application/vnd.google-apps.folder\' and name=\'Word Study\'');
-    final http.Response response = await http.get(
-      'https://www.googleapis.com/drive/v3/files?q=' + q,
-      headers: await _currentUser.authHeaders,
-    );
-    if (response.statusCode != 200) {
-      setState(() {
-        _messageText = WordStudyLocalizations.of(context).failedToConnectToGoogleDrive;
-      });
-      print('Google Drive API ${response.statusCode} response: ${response.body}');
-      return;
-    }
-    final Map<String, dynamic> data = json.decode(response.body);
-
-    if (data['files'].length == 0) {
-      setState(() {
-        _messageText = WordStudyLocalizations.of(context).folderFound(googleDriveAppFolderName);
-      });
-    }
-    else {
-      _getFilesList(data);
-    }
-  }
-
-  Future<void> _getFilesList(Map<String, dynamic> data) async {
-    final String appFolder = _pickFirstFile(data);
-
-    setState(() {
-      if (appFolder != null) {
-        _messageText = WordStudyLocalizations.of(context).folderFound(appFolder);
-      } else {
-        _messageText = WordStudyLocalizations.of(context).folderNotFound(googleDriveAppFolderName);
-      }
-    });
-
-    final Map<String, dynamic> folder0 = data['files'][0];
-    final String q2 = Uri.encodeComponent('\'${folder0['id']}\' in parents and '
-        'mimeType = \'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\'');
-    final http.Response response = await http.get(
-      'https://www.googleapis.com/drive/v3/files?q=' + q2,
-      headers: await _currentUser.authHeaders,
-    );
-    final Map<String, dynamic> filesData = json.decode(response.body);
-
-    if (filesData['files'].length == 0) {
-      setState(() {
-        _messageText = WordStudyLocalizations.of(context).folderIsEmpty;
-      });
-    }
-    else {
-      var files = <GoogleDriveFileWidget>[];
-      for(int i=0; i<filesData['files'].length; i++) {
-        files.add(new GoogleDriveFileWidget(filesData['files'][i]['name'],
-                                      filesData['files'][i]['id']));
-      }
-      setState(() {
-        _files = files;
-      });
-    }
-  }
-
-  String _pickFirstFile(Map<String, dynamic> data) {
-    final List<dynamic> files = data['files'];
-    final Map<String, dynamic> file = files?.firstWhere(
-          (dynamic contact) => contact['name'] != null,
-      orElse: () => null,
-    );
-    if (file != null) {
-      if (file != null) {
-        return file['name'];
-      }
-    }
-    return null;
-  }
-
-  Future<bool> _downloadFile(int i) async {
-    GoogleDriveFileWidget file;
-    file = _files[i];
-
-    var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file.id}?alt=media';
-    var headers = await _currentUser.authHeaders;
-
-    var webWordProvider = new WebWordProvider(fileUrl, headers);
-    bool ok = await webWordProvider.init();
-    if (ok) {
-      String filename = await _fileService.getNewFilename(file.name);
-      await webWordProvider.store(filename);
-    }
-    return ok;
-  }
-
-  Future<Null> _handleSignIn() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  Future<Null> _handleSignOut() async {
-    _googleSignIn.disconnect();
+    googleDriveService.onUpdateState = onUpdateState;
+    googleDriveService.onUpdateUser = onUpdateUser;
+    googleDriveService.init();
   }
 
   Widget _buildBody() {
@@ -188,11 +95,11 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
           new Text(_messageText),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).signOut),
-            onPressed: _handleSignOut,
+            onPressed: googleDriveService.handleSignOut,
           ),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).refresh),
-            onPressed: _initGetFiles,
+            onPressed: googleDriveService.initGetFiles,
           ),
         ],
       );
@@ -220,12 +127,12 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
                         child: new Row(
                           children: <Widget>[
                             new RaisedButton(
-                                onPressed: _handleSignOut,
+                                onPressed: googleDriveService.handleSignOut,
                                 child: new Text(WordStudyLocalizations.of(context).signOut)
                             ),
                             new Expanded( child:  new Text("")),
                             new RaisedButton(
-                                onPressed: _initGetFiles,
+                                onPressed: googleDriveService.initGetFiles,
                                 child: new Text(WordStudyLocalizations.of(context).refresh)
                             )
                           ],
@@ -248,7 +155,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
           new Text(WordStudyLocalizations.of(context).youAreNotCurrentlySignedIn),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).signIn),
-            onPressed: _handleSignIn,
+            onPressed: googleDriveService.handleSignIn,
           ),
         ],
       );
@@ -269,7 +176,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
         child: new ListTile(
             title: new Text(_files[i].name, style: _biggerFont),
             onTap: () async {
-              if ((await _downloadFile(i))) {
+              if ((await googleDriveService.downloadFile(_files[i]))) {
                 onAddFile(new StoredFile(name: _files[i].name, created: DateTime.now()));
                 Navigator.of(context).pop();
               }

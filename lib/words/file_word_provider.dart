@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:word_study/models/word.dart';
 import 'package:word_study/models/quiz_word.dart';
 import 'package:word_study/words/word_provider.dart';
-import 'package:word_study/files/file_service.dart';
+import 'package:word_study/services/file_service.dart';
 
 class FileWordProvider extends WordProvider {
   final String filename;

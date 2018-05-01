@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:validator/validator.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/words/web_wordprovider.dart';
-import 'package:word_study/files/file_service.dart';
+import 'package:word_study/services/file_service.dart';
 import 'package:word_study/localizations.dart';
 
 class WebDownloaderWidget extends StatefulWidget {

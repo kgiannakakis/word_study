@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/files/file_service.dart';
+import 'package:word_study/services/file_service.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/words/file_word_provider.dart';
 import 'package:word_study/words/quiz_provider.dart';
