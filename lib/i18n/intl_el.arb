@@ -225,5 +225,11 @@
     "placeholders": {
       "folder": {}
     }
+  },
+  "googleDriveError": "Αποτυχία σύνδεσης στο Google Drive",
+  "@googleDriveError": {
+    "description": "Google Drive connection error",
+    "type": "text",
+    "placeholders": {}
   }
 }

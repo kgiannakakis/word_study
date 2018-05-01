@@ -81,7 +81,10 @@ class GoogleDriveService {
     );
     final Map<String, dynamic> filesData = json.decode(response.body);
 
-    if (filesData['files'].length == 0) {
+    if (filesData['files'] == null) {
+      onUpdateState(msg: GoogleDriveServiceMessage.error);
+    }
+    else if (filesData['files'].length == 0) {
       onUpdateState(msg: GoogleDriveServiceMessage.folderEmpty);
     }
     else {

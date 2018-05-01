@@ -21,11 +21,16 @@ class GoogleDriveDownloader extends StatelessWidget {
   }
 
   void onUpdateUser(GoogleSignInAccount user) {
-
+    viewModel.onSetCurrentUser(user);
   }
 
   void onUpdateState({GoogleDriveServiceMessage msg, List<GoogleDriveFile> files}) {
-
+    if (msg != null) {
+      viewModel.onSetMessage(msg);
+    }
+    if (files != null) {
+      viewModel.onSetFiles(files);
+    }
   }
 
   String _getMessageText(BuildContext context, GoogleDriveServiceMessage msg) {
@@ -57,6 +62,11 @@ class GoogleDriveDownloader extends StatelessWidget {
           m = WordStudyLocalizations
               .of(context)
               .loadingFiles;
+          break;
+        case GoogleDriveServiceMessage.error:
+          m = WordStudyLocalizations
+              .of(context)
+              .googleDriveError;
           break;
       }
     }

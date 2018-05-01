@@ -7,7 +7,8 @@ enum GoogleDriveServiceMessage {
   folderFound,
   folderNotFound,
   folderEmpty,
-  loadingFiles
+  loadingFiles,
+  error
 }
 
 class GoogleDriveState {

@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-04-30T22:05:01.948285",
+  "@@last_modified": "2018-05-01T22:09:07.247819",
   "title": "Word Study",
   "@title": {
     "description": "Title for Word Study application",
@@ -225,5 +225,11 @@
     "placeholders": {
       "folder": {}
     }
+  },
+  "googleDriveError": "Failed to connect to Google Drive",
+  "@googleDriveError": {
+    "description": "Google Drive connection error",
+    "type": "text",
+    "placeholders": {}
   }
 }
