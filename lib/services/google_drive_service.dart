@@ -17,7 +17,7 @@ enum GoogleDriveServiceMessage {
 }
 
 typedef onGoogleDriveUpdateState = void Function({GoogleDriveServiceMessage msg,
-                                                  List<GoogleDriveFileWidget> files});
+                                                  List<GoogleDriveFile> files});
 
 typedef onGoogleDriveUserUpdated = void Function(GoogleSignInAccount user);
 
@@ -92,9 +92,9 @@ class GoogleDriveService {
       onUpdateState(msg: GoogleDriveServiceMessage.folderEmpty);
     }
     else {
-      var files = <GoogleDriveFileWidget>[];
+      var files = <GoogleDriveFile>[];
       for(int i=0; i<filesData['files'].length; i++) {
-        files.add(new GoogleDriveFileWidget(filesData['files'][i]['name'],
+        files.add(new GoogleDriveFile(filesData['files'][i]['name'],
             filesData['files'][i]['id']));
       }
       onUpdateState(files: files);
@@ -115,7 +115,7 @@ class GoogleDriveService {
     return null;
   }
 
-  Future<bool> downloadFile(GoogleDriveFileWidget file) async {
+  Future<bool> downloadFile(GoogleDriveFile file) async {
     final FileService fileService = new FileService();
 
     var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file.id}?alt=media';

@@ -1,9 +1,9 @@
 
-class GoogleDriveFileWidget {
+class GoogleDriveFile {
   final String name;
   final String id;
 
-  GoogleDriveFileWidget(this.name, this.id);
+  GoogleDriveFile(this.name, this.id);
 
   @override
   int get hashCode =>
@@ -12,7 +12,7 @@ class GoogleDriveFileWidget {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-        other is GoogleDriveFileWidget &&
+        other is GoogleDriveFile &&
         other.name == name &&
         other.id == id;
 }

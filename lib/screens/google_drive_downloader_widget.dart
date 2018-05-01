@@ -19,7 +19,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
   final Function(StoredFile) onAddFile;
 
   String _messageText = '';
-  List<GoogleDriveFileWidget> _files = <GoogleDriveFileWidget>[];
+  List<GoogleDriveFile> _files = <GoogleDriveFile>[];
   GoogleSignInAccount _currentUser;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
@@ -31,7 +31,7 @@ class GoogleDriveDownloaderState extends State<GoogleDriveDownloader> {
     setState(() => _currentUser = currentUser);
   }
 
-  void onUpdateState({GoogleDriveServiceMessage msg, List<GoogleDriveFileWidget> files}) {
+  void onUpdateState({GoogleDriveServiceMessage msg, List<GoogleDriveFile> files}) {
     String m = null;
     if (msg != null) {
       switch (msg) {
