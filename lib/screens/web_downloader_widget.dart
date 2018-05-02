@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:validator/validator.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/words/web_wordprovider.dart';
-import 'package:word_study/files/file_service.dart';
+import 'package:word_study/services/file_service.dart';
+import 'package:word_study/localizations.dart';
 
 class WebDownloaderWidget extends StatefulWidget {
   @required final Function(StoredFile) onAddFile;
@@ -54,15 +55,15 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
                 keyboardType: TextInputType.url,
                 initialValue: 'https://',
                 decoration: new InputDecoration(
-                  labelText: "Url",
-                  hintText: "Url",
+                  labelText: WordStudyLocalizations.of(context).url,
+                  hintText: WordStudyLocalizations.of(context).url,
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter the file url';
+                    return WordStudyLocalizations.of(context).pleaseEnterTheFileUrl;
                   }
                   if (!isURL(value)) {
-                    return 'Please enter a valid url';
+                    return WordStudyLocalizations.of(context).pleaseEnterAValidUrl;
                   }
                 },
                 onFieldSubmitted: (value) => _fileUrl = value,
@@ -74,12 +75,12 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
               title: new TextFormField(
                 keyboardType: TextInputType.text,
                 decoration: new InputDecoration(
-                  labelText: "Name",
-                  hintText: "Name",
+                  labelText: WordStudyLocalizations.of(context).name,
+                  hintText: WordStudyLocalizations.of(context).name,
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter the file name';
+                    return WordStudyLocalizations.of(context).pleaseEnterTheNameOfTheFile;
                   }
                 },
                 onFieldSubmitted: (value) => _fileName = value,
@@ -90,7 +91,7 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
             new Container(
               width: screenSize.width,
               child: new RaisedButton(
-                child: new Text('Download'),
+                child: new Text(WordStudyLocalizations.of(context).download),
                 onPressed: _isLoading ? null : () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
@@ -103,7 +104,7 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
                       Scaffold.of(context).showSnackBar(
                           new SnackBar(
                               content: new Text(
-                                  'Can\'t download file'),
+                                  WordStudyLocalizations.of(context).cantDownloadFile),
                               backgroundColor: Colors.redAccent));
                     }
                     else {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:redux/redux.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/middleware/middleware.dart';
@@ -10,6 +11,21 @@ import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/reducers/app_state_reducer.dart';
 import 'package:word_study/screens/home_screen.dart';
+
+class MockWordStudyLocalizationsDelegate extends LocalizationsDelegate<WordStudyLocalizations> {
+  const MockWordStudyLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) => ['en', 'el'].contains(locale.languageCode);
+
+  @override
+  Future<WordStudyLocalizations> load(Locale locale) {
+    return new SynchronousFuture<WordStudyLocalizations>(new WordStudyLocalizations());
+  }
+
+  @override
+  bool shouldReload(MockWordStudyLocalizationsDelegate old) => false;
+}
 
 
 class MockWordStudyApp extends StatelessWidget {
@@ -25,7 +41,7 @@ class MockWordStudyApp extends StatelessWidget {
       child: new MaterialApp(
         onGenerateTitle: (BuildContext context) => WordStudyLocalizations.of(context).title,
         localizationsDelegates: [
-          const WordStudyLocalizationsDelegate(),
+          const MockWordStudyLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           const FallbackMaterialLocalisationsDelegate()

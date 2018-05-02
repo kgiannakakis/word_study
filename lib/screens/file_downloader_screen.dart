@@ -7,6 +7,7 @@ import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/screens/google_drive_downloader_widget.dart';
 import 'package:word_study/screens/web_downloader_widget.dart';
+import 'package:word_study/localizations.dart';
 
 class FileDownloaderScreen extends StatelessWidget {
 
@@ -29,7 +30,7 @@ class FileDownloaderScreen extends StatelessWidget {
                   new Tab(icon: new Icon(FontAwesomeIcons.globe)),
                 ],
               ),
-              title: new Text('File Download'),
+              title: new Text(WordStudyLocalizations.of(context).fileDownload),
             ),
             body: new TabBarView(
               children: [

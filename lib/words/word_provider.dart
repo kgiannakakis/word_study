@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:word_study/models/word.dart';
 import 'package:word_study/models/quiz_word.dart';
 import 'package:word_study/models/quiz_option.dart';
-import 'package:word_study/files/file_service.dart';
+import 'package:word_study/services/file_service.dart';
 
 class WordProvider {
   var _random = new Random(new DateTime.now().millisecondsSinceEpoch);

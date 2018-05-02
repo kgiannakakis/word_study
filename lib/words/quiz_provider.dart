@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:word_study/files/file_service.dart';
+import 'package:word_study/services/file_service.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/words/word_provider.dart';

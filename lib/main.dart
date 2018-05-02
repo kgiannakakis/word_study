@@ -23,6 +23,7 @@ class WordStudyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return new StoreProvider<AppState>(
       store: store,
       child: new MaterialApp(

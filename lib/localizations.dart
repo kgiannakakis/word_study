@@ -1,14 +1,10 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:word_study/i18n/messages_all.dart';
 
 class WordStudyLocalizations {
-  WordStudyLocalizations(this.locale);
-
-  final Locale locale;
+  WordStudyLocalizations();
 
   static Future<WordStudyLocalizations> load(Locale locale) {
     final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
@@ -16,7 +12,7 @@ class WordStudyLocalizations {
 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return new WordStudyLocalizations(locale);
+      return new WordStudyLocalizations();
     });
   }
 
@@ -161,6 +157,163 @@ class WordStudyLocalizations {
       desc: 'A quiz with this name already exists validation message',
     );
   }
+
+  String get savedFiles {
+    return Intl.message(
+      'Saved files',
+      name: 'savedFiles',
+      desc: 'Saved files label',
+    );
+  }
+
+  String get fileDownload {
+    return Intl.message(
+      'File Download',
+      name: 'fileDownload',
+      desc: 'File Download label',
+    );
+  }
+
+  String get download {
+    return Intl.message(
+      'Download',
+      name: 'download',
+      desc: 'Download label',
+    );
+  }
+
+  String get url {
+    return Intl.message(
+      'Url',
+      name: 'url',
+      desc: 'Url label',
+    );
+  }
+
+  String get pleaseEnterTheFileUrl {
+    return Intl.message(
+      'Please enter the file url',
+      name: 'pleaseEnterTheFileUrl',
+      desc: 'Please enter the file url validation message',
+    );
+  }
+
+  String get pleaseEnterAValidUrl {
+    return Intl.message(
+      'Please enter a valid url',
+      name: 'pleaseEnterAValidUrl',
+      desc: 'Please enter a valid url validation message',
+    );
+  }
+
+  String get pleaseEnterTheNameOfTheFile {
+    return Intl.message(
+      'Please enter the file name',
+      name: 'pleaseEnterTheNameOfTheFile',
+      desc: 'Enter file name validation message',
+    );
+  }
+
+  String get cantDownloadFile {
+    return Intl.message(
+      'Can\'t download file',
+      name: 'cantDownloadFile',
+      desc: 'Failed to download file warning',
+    );
+  }
+
+  String get loadingFiles {
+    return Intl.message(
+      'Loading files...',
+      name: 'loadingFiles',
+      desc: 'Loading files message',
+    );
+  }
+
+  String get failedToConnectToGoogleDrive {
+    return Intl.message(
+      'Failed to connect to Google Drive',
+      name: 'failedToConnectToGoogleDrive',
+      desc: 'Failed to connect to Google Drive message',
+    );
+  }
+
+  String folderNotFound(String folder) {
+    return Intl.message(
+      '\'$folder\' folder not found!',
+      name: 'folderNotFound',
+      args: [folder],
+      desc: 'Folder not found warning',
+    );
+  }
+
+  String folderFound(String folder) {
+    return Intl.message(
+      '\'$folder\' folder found!',
+      name: 'folderFound',
+      args: [folder],
+      desc: 'Folder found message',
+    );
+  }
+
+  String get folderIsEmpty {
+    return Intl.message(
+      'Folder is empty',
+      name: 'folderIsEmpty',
+      desc: 'Folder is empty message',
+    );
+  }
+
+  String get signedInSuccessfully {
+    return Intl.message(
+      'Signed in successfully.',
+      name: 'signedInSuccessfully',
+      desc: 'Signed in successfully message',
+    );
+  }
+
+  String get signOut {
+    return Intl.message(
+      'Sign out',
+      name: 'signOut',
+      desc: 'Sign out label',
+    );
+  }
+
+  String get signIn {
+    return Intl.message(
+      'Sign in',
+      name: 'signIn',
+      desc: 'Sign in label',
+    );
+  }
+
+  String get refresh {
+    return Intl.message(
+      'Refresh',
+      name: 'refresh',
+      desc: 'Refresh label',
+    );
+  }
+
+  String get youAreNotCurrentlySignedIn {
+    return Intl.message(
+      'You are not currently signed in.',
+      name: 'youAreNotCurrentlySignedIn',
+      desc: 'You are not currently signed in message',
+    );
+  }
+
+  String googleDriveInstructions(String folder) {
+    return Intl.message(
+      'Download files from your Google Drive. '
+          'Create a folder named \'$folder\' and '
+          'upload your files there to discover them.',
+      name: 'googleDriveInstructions',
+      args: [folder],
+      desc: 'Google Drive Instructions',
+    );
+  }
 }
 
 class WordStudyLocalizationsDelegate extends LocalizationsDelegate<WordStudyLocalizations> {
@@ -169,15 +322,8 @@ class WordStudyLocalizationsDelegate extends LocalizationsDelegate<WordStudyLoca
   @override
   bool isSupported(Locale locale) => ['en', 'el'].contains(locale.languageCode);
 
-//  @override
-//  Future<WordStudyLocalizations> load(Locale locale) => WordStudyLocalizations.load(locale);
-
   @override
-  Future<WordStudyLocalizations> load(Locale locale) {
-    // Returning a SynchronousFuture here because an async "load" operation
-    // isn't needed to produce an instance of DemoLocalizations.
-    return new SynchronousFuture<WordStudyLocalizations>(new WordStudyLocalizations(locale));
-  }
+  Future<WordStudyLocalizations> load(Locale locale) => WordStudyLocalizations.load(locale);
 
   @override
   bool shouldReload(WordStudyLocalizationsDelegate old) => false;
