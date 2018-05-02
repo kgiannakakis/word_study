@@ -314,6 +314,14 @@ class WordStudyLocalizations {
       desc: 'Google Drive Instructions',
     );
   }
+
+  String get googleDriveError {
+    return Intl.message(
+      'Failed to connect to Google Drive',
+      name: 'googleDriveError',
+      desc: 'Google Drive connection error',
+    );
+  }
 }
 
 class WordStudyLocalizationsDelegate extends LocalizationsDelegate<WordStudyLocalizations> {

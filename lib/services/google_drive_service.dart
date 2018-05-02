@@ -1,34 +1,24 @@
 import 'dart:async';
 import 'dart:convert' show json;
-import "package:http/http.dart" as http;
+
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:word_study/words/web_wordprovider.dart';
+import "package:http/http.dart" as http;
+import 'package:word_study/models/google_drive_file.dart';
+import 'package:word_study/models/google_drive_state.dart';
 import 'package:word_study/services/file_service.dart';
+import 'package:word_study/words/web_wordprovider.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
 
-class GoogleDriveFileWidget {
-  final String name;
-  final String id;
-
-  GoogleDriveFileWidget(this.name, this.id);
-}
-
-enum GoogleDriveServiceMessage {
-  failedToConnect,
-  folderFound,
-  folderNotFound,
-  folderEmpty,
-  loadingFiles
-}
-
-typedef onGoogleDriveUpdateState =
-void Function({GoogleDriveServiceMessage msg,
-List<GoogleDriveFileWidget> files});
+typedef onGoogleDriveUpdateState = void Function({GoogleDriveServiceMessage msg,
+                                                  List<GoogleDriveFile> files});
 
 typedef onGoogleDriveUserUpdated = void Function(GoogleSignInAccount user);
 
 class GoogleDriveService {
+
+  bool isInit = false;
+
   GoogleSignIn _googleSignIn;
   GoogleSignInAccount _currentUser;
 
@@ -36,21 +26,24 @@ class GoogleDriveService {
   onGoogleDriveUserUpdated onUpdateUser;
 
   void init() {
-    _googleSignIn = new GoogleSignIn(
-      scopes: <String>[
-        'email',
-        'https://www.googleapis.com/auth/drive.readonly'
-      ],
-    );
+    if (!isInit) {
+      _googleSignIn = new GoogleSignIn(
+        scopes: <String>[
+          'email',
+          'https://www.googleapis.com/auth/drive.readonly'
+        ],
+      );
 
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      _currentUser = account;
-      onUpdateUser(_currentUser);
-      if (_currentUser != null) {
-        initGetFiles();
-      }
-    });
-    _googleSignIn.signInSilently();
+      _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+        _currentUser = account;
+        onUpdateUser(_currentUser);
+        if (_currentUser != null) {
+          isInit = true;
+          initGetFiles();
+        }
+      });
+      _googleSignIn.signInSilently();
+    }
   }
 
   Future<Null> initGetFiles() async {
@@ -95,13 +88,16 @@ class GoogleDriveService {
     );
     final Map<String, dynamic> filesData = json.decode(response.body);
 
-    if (filesData['files'].length == 0) {
+    if (filesData['files'] == null) {
+      onUpdateState(msg: GoogleDriveServiceMessage.error);
+    }
+    else if (filesData['files'].length == 0) {
       onUpdateState(msg: GoogleDriveServiceMessage.folderEmpty);
     }
     else {
-      var files = <GoogleDriveFileWidget>[];
+      var files = <GoogleDriveFile>[];
       for(int i=0; i<filesData['files'].length; i++) {
-        files.add(new GoogleDriveFileWidget(filesData['files'][i]['name'],
+        files.add(new GoogleDriveFile(filesData['files'][i]['name'],
             filesData['files'][i]['id']));
       }
       onUpdateState(files: files);
@@ -122,7 +118,7 @@ class GoogleDriveService {
     return null;
   }
 
-  Future<bool> downloadFile(GoogleDriveFileWidget file) async {
+  Future<bool> downloadFile(GoogleDriveFile file) async {
     final FileService fileService = new FileService();
 
     var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file.id}?alt=media';

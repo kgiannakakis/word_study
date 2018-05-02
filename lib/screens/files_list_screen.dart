@@ -37,10 +37,12 @@ class FilesListScreen extends StatelessWidget {
 
           Scaffold.of(context).showSnackBar(
               new SnackBar(
-                content: new Text("${vm.files[i].name} dismissed"),
+                content: new Text(
+                  WordStudyLocalizations.of(context).dismissed(vm.files[i].name)
+                ),
                 duration: new Duration(seconds: 5),
                 action: new SnackBarAction(
-                    label: 'Undo',
+                    label: WordStudyLocalizations.of(context).undo,
                     onPressed: () {
                       vm.onUndoRemove(vm.files[i]);
                     }),
