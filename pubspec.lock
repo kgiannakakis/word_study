@@ -60,9 +60,9 @@ packages:
   charts_flutter:
     dependency: "direct main"
     description:
-      path: "/Users/kgiannakakis/Documents/Source/Tests/flutter/charts/charts_flutter"
-      relative: false
-    source: path
+      name: charts_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.2.0"
   cli_util:
     dependency: transitive
