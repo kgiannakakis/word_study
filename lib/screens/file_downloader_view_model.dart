@@ -1,11 +1,11 @@
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:word_study/models/app_state.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/models/stored_file.dart';
+import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/google_drive_file.dart';
 import 'package:word_study/models/google_drive_state.dart';
+import 'package:word_study/models/stored_file.dart';
 
 class FileDownloaderViewModel {
   final Function(StoredFile) onAddFile;
@@ -15,7 +15,7 @@ class FileDownloaderViewModel {
   final Function onSignIn;
   final Function onSignOut;
   final Function onRefreshFiles;
-  final Function(GoogleDriveFile) onDownloadFile;
+  final Function(GoogleDriveFile, Function, Function) onDownloadFile;
   final GoogleDriveState googleDriveState;
 
   FileDownloaderViewModel({
@@ -39,7 +39,8 @@ class FileDownloaderViewModel {
         onSignIn: () => store.dispatch(new GoogleDriveSignInAction()),
         onSignOut: () => store.dispatch(new GoogleDriveSignOutAction()),
         onRefreshFiles: () => store.dispatch(new GoogleDriveRefreshFilesAction()),
-        onDownloadFile: (file) => store.dispatch(new GoogleDriveDownloadFileAction(file)),
+        onDownloadFile: (file, onDownloaded, onDownloadFailed) =>
+            store.dispatch(new GoogleDriveDownloadFileAction(file, onDownloaded, onDownloadFailed)),
         googleDriveState: store.state.googleDriveState
     );
   }

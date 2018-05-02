@@ -166,12 +166,15 @@ Middleware<AppState> _googleDriveDownloadFile(GoogleDriveService googleDriveServ
     GoogleDriveFile file = (action as GoogleDriveDownloadFileAction).file;
     googleDriveService.downloadFile(file).then((ok) {
       if (ok) {
+        (action as GoogleDriveDownloadFileAction).onDownloaded();
         store.dispatch(new AddFileAction(
             new StoredFile(
               name: file.name,
               created: DateTime.now()
             )
         ));
+      } else {
+        (action as GoogleDriveDownloadFileAction).onDownloadFailed();
       }
     });
 

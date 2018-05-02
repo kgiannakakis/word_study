@@ -30,6 +30,8 @@ class GoogleDriveRefreshFilesAction{}
 
 class GoogleDriveDownloadFileAction {
   final GoogleDriveFile file;
+  final Function onDownloaded;
+  final Function onDownloadFailed;
 
-  GoogleDriveDownloadFileAction(this.file);
+  GoogleDriveDownloadFileAction(this.file, this.onDownloaded, this.onDownloadFailed);
 }

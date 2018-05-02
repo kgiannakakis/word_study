@@ -156,14 +156,26 @@ class GoogleDriveDownloader extends StatelessWidget {
       );
   }
 
+  void _onDownloaded(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
+  void _onDownloadFailed(BuildContext context) {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+        content: new Text(WordStudyLocalizations.of(context).cantDownloadFile)
+      )
+    );
+  }
+
   Widget _buildRow(BuildContext context, int i) {
     return new Padding(
         padding: const EdgeInsets.all(16.0),
         child: new ListTile(
             title: new Text(viewModel.googleDriveState.files[i].name, style: _biggerFont),
             onTap: () async {
-              viewModel.onDownloadFile(viewModel.googleDriveState.files[i]);
-              Navigator.of(context).pop();
+              viewModel.onDownloadFile(viewModel.googleDriveState.files[i],
+              () => _onDownloaded(context),
+              () => _onDownloadFailed(context));
             }
         )
     );
