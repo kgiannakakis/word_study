@@ -53,16 +53,16 @@ packages:
   charts_common:
     dependency: transitive
     description:
-      name: charts_common
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../flutter/charts/charts_common"
+      relative: true
+    source: path
     version: "0.2.0"
   charts_flutter:
     dependency: "direct main"
     description:
-      name: charts_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "/Users/kgiannakakis/Documents/Source/Tests/flutter/charts/charts_flutter"
+      relative: false
+    source: path
     version: "0.2.0"
   cli_util:
     dependency: transitive

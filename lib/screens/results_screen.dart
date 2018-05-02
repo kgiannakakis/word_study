@@ -9,9 +9,9 @@ class ResultsScreen extends StatelessWidget {
       id: 'Results',
       domainFn: (QuizResults results, _) => results.category,
       measureFn: (QuizResults results, _) => results.count,
-      //colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-      //colorFn: (QuizResults results, _) => results.category == 1 ?
-      //  charts.Color.fromHex(code: '0xFF00C853') : charts.Color.fromHex(code: '0xFFFF1744'),
+      //colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+      colorFn: (QuizResults results, _) => results.category == 1 ?
+        charts.Color.fromHex(code: '#00C853') : charts.Color.fromHex(code: '#FF1744'),
       data: <QuizResults>[ new QuizResults(0, 10), new QuizResults(1, 20)],
     )
   ];
