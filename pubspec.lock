@@ -50,6 +50,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+  charts_common:
+    dependency: transitive
+    description:
+      path: "../flutter/charts/charts_common"
+      relative: true
+    source: path
+    version: "0.2.0"
+  charts_flutter:
+    dependency: "direct main"
+    description:
+      path: "/Users/kgiannakakis/Documents/Source/Tests/flutter/charts/charts_flutter"
+      relative: false
+    source: path
+    version: "0.2.0"
   cli_util:
     dependency: transitive
     description:

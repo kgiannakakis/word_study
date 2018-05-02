@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:word_study/words/quiz_instance.dart';
 import 'package:word_study/models/quiz_word.dart';
-import 'package:word_study/screens/option_widget.dart';
 import 'package:word_study/screens/home_screen.dart';
+import 'package:word_study/screens/option_widget.dart';
+import 'package:word_study/screens/results_screen.dart';
+import 'package:word_study/words/quiz_instance.dart';
 
 class QuizScreen extends StatefulWidget {
   final QuizInstance quizInstance;
@@ -62,7 +64,15 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
         );
       };
     }
-    return null;
+    else {
+      return () {
+        Navigator.of(context).push(
+            new MaterialPageRoute(
+                builder: (context) => new ResultsScreen()
+            )
+        );
+      };
+    }
   }
 
   Future<Null> _closeWarning() async {
