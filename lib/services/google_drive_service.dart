@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert' show json;
-import "package:http/http.dart" as http;
+
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:word_study/words/web_wordprovider.dart';
-import 'package:word_study/services/file_service.dart';
+import "package:http/http.dart" as http;
 import 'package:word_study/models/google_drive_file.dart';
 import 'package:word_study/models/google_drive_state.dart';
+import 'package:word_study/services/file_service.dart';
+import 'package:word_study/words/web_wordprovider.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
 
@@ -15,6 +16,9 @@ typedef onGoogleDriveUpdateState = void Function({GoogleDriveServiceMessage msg,
 typedef onGoogleDriveUserUpdated = void Function(GoogleSignInAccount user);
 
 class GoogleDriveService {
+
+  bool isInit = false;
+
   GoogleSignIn _googleSignIn;
   GoogleSignInAccount _currentUser;
 
@@ -22,21 +26,24 @@ class GoogleDriveService {
   onGoogleDriveUserUpdated onUpdateUser;
 
   void init() {
-    _googleSignIn = new GoogleSignIn(
-      scopes: <String>[
-        'email',
-        'https://www.googleapis.com/auth/drive.readonly'
-      ],
-    );
+    if (!isInit) {
+      _googleSignIn = new GoogleSignIn(
+        scopes: <String>[
+          'email',
+          'https://www.googleapis.com/auth/drive.readonly'
+        ],
+      );
 
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      _currentUser = account;
-      onUpdateUser(_currentUser);
-      if (_currentUser != null) {
-        initGetFiles();
-      }
-    });
-    _googleSignIn.signInSilently();
+      _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+        _currentUser = account;
+        onUpdateUser(_currentUser);
+        if (_currentUser != null) {
+          isInit = true;
+          initGetFiles();
+        }
+      });
+      _googleSignIn.signInSilently();
+    }
   }
 
   Future<Null> initGetFiles() async {

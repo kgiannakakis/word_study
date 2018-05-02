@@ -1,27 +1,17 @@
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:meta/meta.dart';
 import 'package:word_study/localizations.dart';
-import 'package:word_study/services/google_drive_service.dart';
 import 'package:word_study/models/google_drive_file.dart';
-import 'package:word_study/screens/file_downloader_view_model.dart';
 import 'package:word_study/models/google_drive_state.dart';
+import 'package:word_study/screens/file_downloader_view_model.dart';
+import 'package:word_study/services/google_drive_service.dart';
 
 class GoogleDriveDownloader extends StatelessWidget {
   final FileDownloaderViewModel viewModel;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
-  //final GoogleDriveService googleDriveService = new GoogleDriveService();
-
-  GoogleDriveDownloader({@required this.viewModel}) {
-//    googleDriveService.onUpdateState = onUpdateState;
-//    googleDriveService.onUpdateUser = onUpdateUser;
-//    googleDriveService.init();
-  }
-
-  void onUpdateUser(GoogleSignInAccount user) {
-    viewModel.onSetCurrentUser(user);
-  }
+  GoogleDriveDownloader({@required this.viewModel});
 
   void onUpdateState({GoogleDriveServiceMessage msg, List<GoogleDriveFile> files}) {
     if (msg != null) {
@@ -173,14 +163,7 @@ class GoogleDriveDownloader extends StatelessWidget {
             title: new Text(viewModel.googleDriveState.files[i].name, style: _biggerFont),
             onTap: () async {
               viewModel.onDownloadFile(viewModel.googleDriveState.files[i]);
-
-//              if ((await googleDriveService.downloadFile(viewModel.googleDriveState.files[i]))) {
-//                viewModel.onAddFile(new StoredFile(
-//                    name: viewModel.googleDriveState.files[i].name,
-//                    created: DateTime.now())
-//                );
-//                Navigator.of(context).pop();
-//              }
+              Navigator.of(context).pop();
             }
         )
     );

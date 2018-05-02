@@ -1,5 +1,5 @@
-import 'package:word_study/models/google_drive_file.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:word_study/models/google_drive_file.dart';
 import 'package:word_study/models/google_drive_state.dart';
 
 class SetGoogleDriveMessageAction {
@@ -19,6 +19,8 @@ class SetGoogleDriveUserAction {
 
   SetGoogleDriveUserAction(this.currentUser);
 }
+
+class GoogleDriveInitAction{}
 
 class GoogleDriveSignInAction{}
 
