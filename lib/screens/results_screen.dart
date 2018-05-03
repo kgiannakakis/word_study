@@ -1,5 +1,6 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:word_study/localizations.dart';
 import 'package:word_study/screens/home_screen.dart';
 
 class ResultsScreen extends StatelessWidget {
@@ -19,7 +20,7 @@ class ResultsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Results'),
+        title: new Text(WordStudyLocalizations.of(context).results),
         actions: <Widget>[
           new IconButton(
             icon: new Icon(Icons.close),
@@ -43,7 +44,7 @@ class ResultsScreen extends StatelessWidget {
               padding: EdgeInsets.all(10.0),
               child: new Align(
                 alignment: Alignment.topCenter,
-                child: new Text('You got 10 out of 20 right!'),
+                child: new Text(WordStudyLocalizations.of(context).resultsMessage(10, 30)),
               )
           ),
           //new Text('You got 20 out of 30 correct!')

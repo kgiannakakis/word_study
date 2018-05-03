@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:word_study/localizations.dart';
 import 'package:word_study/models/quiz_word.dart';
 import 'package:word_study/screens/home_screen.dart';
 import 'package:word_study/screens/option_widget.dart';
@@ -81,23 +82,23 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return new AlertDialog(
-          title: new Text('Exit quiz'),
+          title: new Text(WordStudyLocalizations.of(context).exitQuiz),
           content: new SingleChildScrollView(
             child: new ListBody(
               children: <Widget>[
-                new Text('Are you sure you want to exit the quiz?'),
+                new Text(WordStudyLocalizations.of(context).exitQuizWarning),
               ],
             ),
           ),
           actions: <Widget>[
             new FlatButton(
-              child: new Text('Cancel'),
+              child: new Text(WordStudyLocalizations.of(context).cancel),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             new FlatButton(
-              child: new Text('Exit'),
+              child: new Text(WordStudyLocalizations.of(context).exit),
               onPressed: () {
                 Navigator.of(context).pushAndRemoveUntil(
                   new MaterialPageRoute(builder: (BuildContext context) => new HomeScreen()),
@@ -156,9 +157,13 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
                   padding: const EdgeInsets.all(12.0),
                   child: new Row(
                     children: <Widget>[
-                      new FlatButton(onPressed: _getPreviousCallback(), child: new Text("Previous")),
+                      new FlatButton(
+                          onPressed: _getPreviousCallback(),
+                          child: new Text(WordStudyLocalizations.of(context).previous)),
                       new Expanded( child:  new Text("")),
-                      new FlatButton(onPressed: _getNextCallback(), child: new Text("Next"))
+                      new FlatButton(
+                          onPressed: _getNextCallback(),
+                          child: new Text(WordStudyLocalizations.of(context).next))
                     ],
                   )
                 )

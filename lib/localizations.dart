@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:word_study/i18n/messages_all.dart';
@@ -320,6 +321,80 @@ class WordStudyLocalizations {
       'Failed to connect to Google Drive',
       name: 'googleDriveError',
       desc: 'Google Drive connection error',
+    );
+  }
+
+  String questionNumber(int question, int total) {
+    return Intl.message(
+      'Question $question from $total',
+      name: 'questionNumber',
+      args: [question, total],
+      desc: 'Question number label',
+    );
+  }
+
+  String get exitQuiz {
+    return Intl.message(
+      'Exit Quiz',
+      name: 'exitQuiz',
+      desc: 'Exit Quiz label',
+    );
+  }
+
+  String get exitQuizWarning {
+    return Intl.message(
+      'Are you sure you want to exit the quiz?',
+      name: 'exitQuizWarning',
+      desc: 'Exit Quiz warning message',
+    );
+  }
+
+  String get exit {
+    return Intl.message(
+      'Exit',
+      name: 'exit',
+      desc: 'Exit label',
+    );
+  }
+
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: 'Cancel label',
+    );
+  }
+
+  String get previous {
+    return Intl.message(
+      'Previous',
+      name: 'previous',
+      desc: 'Previous label',
+    );
+  }
+
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: 'Next label',
+    );
+  }
+
+  String get results {
+    return Intl.message(
+      'Results',
+      name: 'results',
+      desc: 'Results label',
+    );
+  }
+
+  String resultsMessage(int correct, int total) {
+    return Intl.message(
+      'You got $correct out of $total right!',
+      name: 'resultsMessage',
+      args: [correct, total],
+      desc: 'Results message',
     );
   }
 }

@@ -231,5 +231,65 @@
     "description": "Google Drive connection error",
     "type": "text",
     "placeholders": {}
-  }
+  },
+    "questionNumber": "Ερώτηση {question} από {total}",
+    "@questionNumber": {
+      "description": "Question number label",
+      "type": "text",
+      "placeholders": {
+        "question": {},
+        "total": {}
+      }
+    },
+    "exitQuiz": "Έξοδος",
+    "@exitQuiz": {
+      "description": "Exit Quiz label",
+      "type": "text",
+      "placeholders": {}
+    },
+    "exitQuizWarning": "Είστε σίγουροι ότι θέλετε να τερματίσετε το τεστ;",
+    "@exitQuizWarning": {
+      "description": "Exit Quiz warning message",
+      "type": "text",
+      "placeholders": {}
+    },
+    "exit": "Έξοδος",
+    "@exit": {
+      "description": "Exit label",
+      "type": "text",
+      "placeholders": {}
+    },
+    "cancel": "Ακύρωση",
+    "@cancel": {
+      "description": "Cancel label",
+      "type": "text",
+      "placeholders": {}
+    },
+    "previous": "Προηγούμενο",
+    "@previous": {
+      "description": "Previous label",
+      "type": "text",
+      "placeholders": {}
+    },
+    "next": "Επόμενο",
+    "@next": {
+      "description": "Next label",
+      "type": "text",
+      "placeholders": {}
+    },
+    "results": "Αποτελέσματα",
+    "@results": {
+      "description": "Results label",
+      "type": "text",
+      "placeholders": {}
+    },
+    "resultsMessage": "Βρήκατε {correct} από τα {total}!",
+    "@resultsMessage": {
+      "description": "Results message",
+      "type": "text",
+      "placeholders": {
+        "correct": {},
+        "total": {}
+      }
+    }
 }

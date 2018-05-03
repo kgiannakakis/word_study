@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-05-01T22:09:07.247819",
+  "@@last_modified": "2018-05-03T10:11:54.105978",
   "title": "Word Study",
   "@title": {
     "description": "Title for Word Study application",
@@ -231,5 +231,65 @@
     "description": "Google Drive connection error",
     "type": "text",
     "placeholders": {}
+  },
+  "questionNumber": "Question {question} from {total}",
+  "@questionNumber": {
+    "description": "Question number label",
+    "type": "text",
+    "placeholders": {
+      "question": {},
+      "total": {}
+    }
+  },
+  "exitQuiz": "Exit Quiz",
+  "@exitQuiz": {
+    "description": "Exit Quiz label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "exitQuizWarning": "Are you sure you want to exit the quiz?",
+  "@exitQuizWarning": {
+    "description": "Exit Quiz warning message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "exit": "Exit",
+  "@exit": {
+    "description": "Exit label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "previous": "Previous",
+  "@previous": {
+    "description": "Previous label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "results": "Results",
+  "@results": {
+    "description": "Results label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resultsMessage": "You got {correct} out of {total} right!",
+  "@resultsMessage": {
+    "description": "Results message",
+    "type": "text",
+    "placeholders": {
+      "correct": {},
+      "total": {}
+    }
   }
 }

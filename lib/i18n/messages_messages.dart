@@ -27,13 +27,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m4(number) => "Please enter a number less than ${number}";
 
+  static m5(question, total) => "Question ${question} from ${total}";
+
+  static m6(correct, total) => "You got ${correct} out of ${total} right!";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "aQuizWithThisNameAlreadyExists" : MessageLookupByLibrary.simpleMessage("A quiz with this name already exists!"),
+    "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "cantDownloadFile" : MessageLookupByLibrary.simpleMessage("Can\'t download file"),
     "create" : MessageLookupByLibrary.simpleMessage("Create"),
     "dismissed" : m0,
     "download" : MessageLookupByLibrary.simpleMessage("Download"),
+    "exit" : MessageLookupByLibrary.simpleMessage("Exit"),
+    "exitQuiz" : MessageLookupByLibrary.simpleMessage("Exit Quiz"),
+    "exitQuizWarning" : MessageLookupByLibrary.simpleMessage("Are you sure you want to exit the quiz?"),
     "failedToConnectToGoogleDrive" : MessageLookupByLibrary.simpleMessage("Failed to connect to Google Drive"),
     "failedToStartQuiz" : MessageLookupByLibrary.simpleMessage("Failed to start quiz"),
     "fileDownload" : MessageLookupByLibrary.simpleMessage("File Download"),
@@ -45,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "googleDriveInstructions" : m3,
     "loadingFiles" : MessageLookupByLibrary.simpleMessage("Loading files..."),
     "name" : MessageLookupByLibrary.simpleMessage("Name"),
+    "next" : MessageLookupByLibrary.simpleMessage("Next"),
     "optionsCount" : MessageLookupByLibrary.simpleMessage("Options Count"),
     "optionsCountMustBeLessThanWordsCount" : MessageLookupByLibrary.simpleMessage("Options count must be less than words count"),
     "pleaseEnterANumber" : MessageLookupByLibrary.simpleMessage("Please enter a number"),
@@ -55,8 +64,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseEnterTheNameOfTheFile" : MessageLookupByLibrary.simpleMessage("Please enter the file name"),
     "pleaseEnterTheNameOfTheQuiz" : MessageLookupByLibrary.simpleMessage("Please enter the name of the quiz"),
     "pleaseSelectAFile" : MessageLookupByLibrary.simpleMessage("Please select a file"),
+    "previous" : MessageLookupByLibrary.simpleMessage("Previous"),
+    "questionNumber" : m5,
     "quizSettings" : MessageLookupByLibrary.simpleMessage("Quiz Settings"),
     "refresh" : MessageLookupByLibrary.simpleMessage("Refresh"),
+    "results" : MessageLookupByLibrary.simpleMessage("Results"),
+    "resultsMessage" : m6,
     "savedFiles" : MessageLookupByLibrary.simpleMessage("Saved files"),
     "signIn" : MessageLookupByLibrary.simpleMessage("Sign in"),
     "signOut" : MessageLookupByLibrary.simpleMessage("Sign out"),

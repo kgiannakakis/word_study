@@ -27,13 +27,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m4(number) => "Εισάγετε έναν αριθμό μικρότερο από ${number}";
 
+  static m5(question, total) => "Ερώτηση ${question} από ${total}";
+
+  static m6(correct, total) => "Βρήκατε ${correct} από τα ${total}!";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "aQuizWithThisNameAlreadyExists" : MessageLookupByLibrary.simpleMessage("Το όνομα αυτό χρησιμοποιείται ήδη!"),
+    "cancel" : MessageLookupByLibrary.simpleMessage("Ακύρωση"),
     "cantDownloadFile" : MessageLookupByLibrary.simpleMessage("Η λήψη είναι αδύνατη"),
     "create" : MessageLookupByLibrary.simpleMessage("Δημιουργία"),
     "dismissed" : m0,
     "download" : MessageLookupByLibrary.simpleMessage("Λήψη"),
+    "exit" : MessageLookupByLibrary.simpleMessage("Έξοδος"),
+    "exitQuiz" : MessageLookupByLibrary.simpleMessage("Έξοδος"),
+    "exitQuizWarning" : MessageLookupByLibrary.simpleMessage("Είστε σίγουροι ότι θέλετε να τερματίσετε το τεστ;"),
     "failedToConnectToGoogleDrive" : MessageLookupByLibrary.simpleMessage("Αδυναμία σύνδεσης στο Google Drive"),
     "failedToStartQuiz" : MessageLookupByLibrary.simpleMessage("Δεν μπορεί να ξεκινήσει το τεστ"),
     "fileDownload" : MessageLookupByLibrary.simpleMessage("Λήψη αρχείου"),
@@ -45,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "googleDriveInstructions" : m3,
     "loadingFiles" : MessageLookupByLibrary.simpleMessage("Φόρτωση αρχείων..."),
     "name" : MessageLookupByLibrary.simpleMessage("\'Ονομα"),
+    "next" : MessageLookupByLibrary.simpleMessage("Επόμενο"),
     "optionsCount" : MessageLookupByLibrary.simpleMessage("Αριθμός επιλογών"),
     "optionsCountMustBeLessThanWordsCount" : MessageLookupByLibrary.simpleMessage("Ο αριθμός των επιλογών πρέπει να είναι μικρότερος από τον αριθμό των λέξεων"),
     "pleaseEnterANumber" : MessageLookupByLibrary.simpleMessage("Εισάγετε έναν αριθμό"),
@@ -55,8 +64,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseEnterTheNameOfTheFile" : MessageLookupByLibrary.simpleMessage("Εισάγετε το όνομα του αρχείου"),
     "pleaseEnterTheNameOfTheQuiz" : MessageLookupByLibrary.simpleMessage("Επιλέξτε το όνομα του τεστ"),
     "pleaseSelectAFile" : MessageLookupByLibrary.simpleMessage("Επιλέξτε ένα αρχείο"),
+    "previous" : MessageLookupByLibrary.simpleMessage("Προηγούμενο"),
+    "questionNumber" : m5,
     "quizSettings" : MessageLookupByLibrary.simpleMessage("Ρυθμίσεις τεστ"),
     "refresh" : MessageLookupByLibrary.simpleMessage("Ανανέωση"),
+    "results" : MessageLookupByLibrary.simpleMessage("Αποτελέσματα"),
+    "resultsMessage" : m6,
     "savedFiles" : MessageLookupByLibrary.simpleMessage("Αποθηκευμένα Αρχεία"),
     "signIn" : MessageLookupByLibrary.simpleMessage("Σύνδεση"),
     "signOut" : MessageLookupByLibrary.simpleMessage("Αποσύνδεση"),
