@@ -75,8 +75,8 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
     }
   }
 
-  Future<Null> _closeWarning() async {
-    return showDialog<Null>(
+  Future<bool> _closeWarning() async {
+    showDialog<Null>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
@@ -109,10 +109,23 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
         );
       },
     );
+    return new Future.value(false);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (currentWord > 0) {
+      return _buildScreen(context);
+    }
+    else {
+      return new WillPopScope(
+        onWillPop: _closeWarning,
+        child:_buildScreen(context)
+      );
+    }
+  }
+
+  Widget _buildScreen(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(_quizWord.word), 
