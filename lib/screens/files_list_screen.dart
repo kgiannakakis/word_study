@@ -33,6 +33,7 @@ class FilesListScreen extends StatelessWidget {
         ),
         key: new ObjectKey('quiz_$i'),
         onDismissed: (direction) {
+          String filename = vm.files[i].name;
           vm.onRemove(vm.files[i]);
 
           Scaffold.of(context).showSnackBar(
@@ -44,7 +45,7 @@ class FilesListScreen extends StatelessWidget {
                 action: new SnackBarAction(
                     label: WordStudyLocalizations.of(context).undo,
                     onPressed: () {
-                      vm.onUndoRemove(vm.files[i]);
+                      vm.onUndoRemove(filename);
                     }),
               )
           );
@@ -128,7 +129,7 @@ class _ViewModel {
   final bool isLoading;
   final Function(String) onAddSelectedFile;
   final Function(StoredFile) onRemove;
-  final Function(StoredFile) onUndoRemove;
+  final Function(String) onUndoRemove;
 
   _ViewModel({
     @required this.files,
@@ -149,8 +150,8 @@ class _ViewModel {
       onRemove: (file) {
         store.dispatch(new DeleteFileAction(file.name));
       },
-      onUndoRemove: (file) {
-        store.dispatch(new AddFileAction(file));
+      onUndoRemove: (name) {
+        store.dispatch(new RestoreFileAction(name));
       },
     );
   }

@@ -16,6 +16,12 @@ class DeleteFileAction {
   DeleteFileAction(this.name);
 }
 
+class RestoreFileAction {
+  final String name;
+
+  RestoreFileAction(this.name);
+}
+
 class AddFileAction {
   final StoredFile file;
 

@@ -13,12 +13,15 @@ import 'package:word_study/words/quiz_provider.dart';
 
 List<Middleware<AppState>> createMiddleware([
   QuizProvider quizProvider = const QuizProvider(const FileService()),
+  FileService fileService = const FileService(),
   GoogleDriveService googleDriveService
 ]) {
   final saveQuizzes = _createSaveQuizzes(quizProvider);
   final loadQuizzes = _createLoadQuizzes(quizProvider);
   final calculateWordCount = _createCalculateWordCount();
   final loadFiles = _createLoadFiles();
+  final deleteFile = _deleteFile(fileService);
+  final restoreFile = _restoreFile(fileService);
   final googleDriveInit = _googleDriveInit(googleDriveService);
   final googleDriveSignIn = _googleDriveSignIn(googleDriveService);
   final googleDriveSignOut = _googleDriveSignOut(googleDriveService);
@@ -32,6 +35,8 @@ List<Middleware<AppState>> createMiddleware([
     new TypedMiddleware<AppState, QuizzesLoadedAction>(saveQuizzes),
     new TypedMiddleware<AppState, CalculateTotalWordsCountAction>(calculateWordCount),
     new TypedMiddleware<AppState, LoadFilesAction>(loadFiles),
+    new TypedMiddleware<AppState, DeleteFileAction>(deleteFile),
+    new TypedMiddleware<AppState, RestoreFileAction>(restoreFile),
     new TypedMiddleware<AppState, GoogleDriveInitAction>(googleDriveInit),
     new TypedMiddleware<AppState, GoogleDriveSignInAction>(googleDriveSignIn),
     new TypedMiddleware<AppState, GoogleDriveSignOutAction>(googleDriveSignOut),
@@ -103,6 +108,33 @@ Middleware<AppState> _createLoadFiles() {
     }).catchError((e) {
       print(e);
       store.dispatch(new FilesNotLoadedAction());
+    });
+
+    next(action);
+  };
+}
+
+Middleware<AppState> _deleteFile(FileService fileService) {
+  return (Store<AppState> store, action, NextDispatcher next) {
+
+    String filename = (action as DeleteFileAction).name;
+
+    fileService.deleteFile(filename).then((ok) {
+      if (ok) {
+        next(action);
+      }
+    });
+  };
+}
+
+Middleware<AppState> _restoreFile(FileService fileService) {
+  return (Store<AppState> store, action, NextDispatcher next) {
+
+    String filename = (action as RestoreFileAction).name;
+    fileService.undeleteFile(filename).then((ok) {
+      if (ok) {
+        store.dispatch(new AddFileAction(new StoredFile(name: filename, created: DateTime.now())));
+      }
     });
 
     next(action);

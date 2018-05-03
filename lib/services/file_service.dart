@@ -5,6 +5,8 @@ import 'package:word_study/models/stored_file.dart';
 
 class FileService {
 
+  final String undeleteFolder = 'undelete';
+
   const FileService();
 
   Future<String> get localPath async {
@@ -69,5 +71,25 @@ class FileService {
     });
 
     return '$name-${max + 1}';
+  }
+
+  Future<bool> deleteFile(String filename) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final tempDirectory = await getTemporaryDirectory();
+
+    File file = new File('$directory/$filename');
+    if ((await file.exists())) {
+      File tempFile = await file.copy('$tempDirectory/$undeleteFolder/$filename');
+      print(tempFile.path);
+      await file.delete();
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  Future<bool> undeleteFile(String filename) async {
+    return false;
   }
 }

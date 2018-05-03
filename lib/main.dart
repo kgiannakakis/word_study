@@ -21,6 +21,7 @@ void main() {
       initialState: new AppState.loading(),
       middleware: createMiddleware(
           const QuizProvider(const FileService()),
+          const FileService(),
           googleDriveService)
   )));
 }
