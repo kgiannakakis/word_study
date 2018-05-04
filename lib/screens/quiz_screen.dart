@@ -25,6 +25,8 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
 
   final List<OptionWidget> _options = <OptionWidget>[];
 
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+
   WordStudyState(this.quizInstance, this.currentWord);
 
   @override
@@ -161,7 +163,10 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
   Widget _buildScreen(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(_quizWord.word), 
+        title: new Text(
+          WordStudyLocalizations.of(context).questionNumber(
+              currentWord + 1, quizInstance.quiz.settings.wordsCount)
+        ),
         actions: <Widget>[
           new IconButton(
             icon: new Icon(Icons.close),
@@ -173,11 +178,11 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
       ),
       body: new Stack(
         children: <Widget>[new ListView.builder(
-          itemCount: _quizWord.options.length * 2,
+          itemCount: 1 + _quizWord.options.length * 2,
           itemBuilder: (BuildContext context, int position) {
-            if (position.isOdd) return new Divider();
+            if (position.isEven && position > 0) return new Divider();
 
-            final index = position ~/ 2;
+            final int index = (position + 1) ~/ 2;
 
             return _buildRow(index);
           }),
@@ -206,20 +211,39 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildRow(int i) {
+
+    if (i == 0) {
+      return new Stack(
+        children: [
+          new Container(
+            decoration: new BoxDecoration(color: Colors.black12),
+            child: new Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: new Center(
+                    child: new Text(_quizWord.word, style: _biggerFont)
+                )
+            ),
+          ),
+        ]
+      );
+    }
+
+    int optionIndex = i - 1;
+
     OptionWidget option = new OptionWidget(
-        quizOption: _quizWord.options[i],
-        optionIndex: i,
+        quizOption: _quizWord.options[optionIndex],
+        optionIndex: optionIndex,
         onTap: _handleWordTapped,
         animationController: new AnimationController(
           duration: new Duration(milliseconds: 200),
           vsync: this,
         ));
 
-    if (_quizWord.options[i].isSelected && _quizWord.options[i].isEnabled) {
+    if (_quizWord.options[optionIndex].isSelected && _quizWord.options[optionIndex].isEnabled) {
       option.animationController
           .addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed)
-          _quizWord.options[i].isEnabled = false;
+          _quizWord.options[optionIndex].isEnabled = false;
       });
       option.animationController.forward();
     }
