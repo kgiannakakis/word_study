@@ -178,7 +178,7 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
       ),
       body: new Stack(
         children: <Widget>[new ListView.builder(
-          itemCount: 1 + _quizWord.options.length * 2,
+          itemCount: (_quizWord.options.length + 1) * 2,
           itemBuilder: (BuildContext context, int position) {
             if (position.isEven && position > 0) return new Divider();
 
@@ -213,22 +213,30 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
   Widget _buildRow(int i) {
 
     if (i == 0) {
-      return new Stack(
-        children: [
-          new Container(
-            decoration: new BoxDecoration(color: Colors.black12),
-            child: new Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: new Center(
-                    child: new Text(_quizWord.word, style: _biggerFont)
-                )
-            ),
-          ),
-        ]
-      );
+      return new Container(
+        decoration: new BoxDecoration(color: Colors.black12),
+        child: new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: new Center(
+                child: new Text(_quizWord.word, style: _biggerFont)
+            )
+        ),
+    );
     }
 
     int optionIndex = i - 1;
+
+    if (optionIndex >= _quizWord.options.length) {
+      // Empty container for scrolling under bottom buttons
+      return new Container(
+        child: new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: new Center(
+                child: new Text('')
+            )
+        ),
+      );
+    }
 
     OptionWidget option = new OptionWidget(
         quizOption: _quizWord.options[optionIndex],
