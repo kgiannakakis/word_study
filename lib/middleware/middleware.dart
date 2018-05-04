@@ -130,10 +130,13 @@ Middleware<AppState> _deleteFile(FileService fileService) {
 Middleware<AppState> _restoreFile(FileService fileService) {
   return (Store<AppState> store, action, NextDispatcher next) {
 
-    String filename = (action as RestoreFileAction).name;
-    fileService.undeleteFile(filename).then((ok) {
+    StoredFile deletedFile = (action as RestoreFileAction).file;
+    fileService.undeleteFile(deletedFile.name).then((ok) {
       if (ok) {
-        store.dispatch(new AddFileAction(new StoredFile(name: filename, created: DateTime.now())));
+        store.dispatch(new AddFileAction(new StoredFile(
+            name: deletedFile.name,
+            created: deletedFile.created
+        )));
       }
     });
 

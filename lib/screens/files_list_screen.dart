@@ -1,13 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter/material.dart';
-import 'package:word_study/models/app_state.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/screens/file_downloader_screen.dart';
 import 'package:word_study/containers/create_quiz.dart';
-import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/localizations.dart';
+import 'package:word_study/models/app_state.dart';
+import 'package:word_study/models/stored_file.dart';
+import 'package:word_study/screens/file_downloader_screen.dart';
 
 class FilesListScreen extends StatelessWidget {
 
@@ -33,7 +33,7 @@ class FilesListScreen extends StatelessWidget {
         ),
         key: new ObjectKey('quiz_$i'),
         onDismissed: (direction) {
-          String filename = vm.files[i].name;
+          StoredFile deletedFile = vm.files[i];
           vm.onRemove(vm.files[i]);
 
           Scaffold.of(context).showSnackBar(
@@ -45,7 +45,7 @@ class FilesListScreen extends StatelessWidget {
                 action: new SnackBarAction(
                     label: WordStudyLocalizations.of(context).undo,
                     onPressed: () {
-                      vm.onUndoRemove(filename);
+                      vm.onUndoRemove(deletedFile);
                     }),
               )
           );
@@ -129,7 +129,7 @@ class _ViewModel {
   final bool isLoading;
   final Function(String) onAddSelectedFile;
   final Function(StoredFile) onRemove;
-  final Function(String) onUndoRemove;
+  final Function(StoredFile) onUndoRemove;
 
   _ViewModel({
     @required this.files,
@@ -150,8 +150,8 @@ class _ViewModel {
       onRemove: (file) {
         store.dispatch(new DeleteFileAction(file.name));
       },
-      onUndoRemove: (name) {
-        store.dispatch(new RestoreFileAction(name));
+      onUndoRemove: (file) {
+        store.dispatch(new RestoreFileAction(file));
       },
     );
   }

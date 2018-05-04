@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:word_study/models/stored_file.dart';
 
 class FileService {
-
-  final String undeleteFolder = 'undelete';
 
   const FileService();
 
@@ -13,6 +12,12 @@ class FileService {
     final directory = await getApplicationDocumentsDirectory();
 
     return '${directory.path}/wordfiles';
+  }
+
+  Future<String> get tempPath async {
+    final directory = await getTemporaryDirectory();
+
+    return '${directory.path}';
   }
 
   Future<List<FileSystemEntity>> _dirContents(Directory dir) {
@@ -74,22 +79,36 @@ class FileService {
   }
 
   Future<bool> deleteFile(String filename) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final tempDirectory = await getTemporaryDirectory();
+    final directory = await localPath;
+    final tempDirectory = await tempPath;
 
+    print('$directory/$filename');
     File file = new File('$directory/$filename');
     if ((await file.exists())) {
-      File tempFile = await file.copy('$tempDirectory/$undeleteFolder/$filename');
-      print(tempFile.path);
+      File tempFile = await file.copy('$tempDirectory/$filename');
+      print('Copied deleted file to ${tempFile.path}');
+      await file.delete();
+      return true;
+    }
+    else {
+      print('File $filename not found!');
+      return false;
+    }
+  }
+
+  Future<bool> undeleteFile(String filename) async {
+    final directory = await localPath;
+    final tempDirectory = await tempPath;
+
+    File file = new File('$tempDirectory/$filename');
+    if ((await file.exists())) {
+      File restoredFile = await file.copy('$directory/$filename');
+      print('Restored file ${restoredFile.path}');
       await file.delete();
       return true;
     }
     else {
       return false;
     }
-  }
-
-  Future<bool> undeleteFile(String filename) async {
-    return false;
   }
 }
