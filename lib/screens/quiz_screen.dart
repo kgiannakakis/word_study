@@ -37,12 +37,14 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
     });
   }
 
+  bool _solutionFound() {
+    return _quizWord.options.where((o) => o.isCorrect && o.isSelected).length > 0;
+  }
+
   void _handleWordTapped(int wordIndex) {
 
-    bool solutionFound =
-        _quizWord.options.where((o) => o.isCorrect && o.isSelected).length > 0;
 
-    if (!solutionFound && _quizWord.options[wordIndex].isEnabled) {
+    if (!_solutionFound() && _quizWord.options[wordIndex].isEnabled) {
       setState(() {
         _quizWord.options[wordIndex].isSelected = true;
       });
@@ -92,6 +94,10 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
   }
 
   VoidCallback _getNextCallback() {
+    if (!_solutionFound()) {
+      return null;
+    }
+
     int wordsCount = quizInstance.quiz.settings.wordsCount;
 
     if (currentWord < wordsCount - 1) {
