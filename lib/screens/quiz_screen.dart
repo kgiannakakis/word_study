@@ -36,7 +36,11 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
   }
 
   void _handleWordTapped(int wordIndex) {
-    if (_quizWord.options[wordIndex].isEnabled) {
+
+    bool solutionFound =
+        _quizWord.options.where((o) => o.isCorrect && o.isSelected).length > 0;
+
+    if (!solutionFound && _quizWord.options[wordIndex].isEnabled) {
       setState(() {
         _quizWord.options[wordIndex].isSelected = true;
       });
