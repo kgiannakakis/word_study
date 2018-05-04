@@ -131,7 +131,7 @@ Middleware<AppState> _restoreFile(FileService fileService) {
   return (Store<AppState> store, action, NextDispatcher next) {
 
     StoredFile deletedFile = (action as RestoreFileAction).file;
-    fileService.undeleteFile(deletedFile.name).then((ok) {
+    fileService.undeleteFile(deletedFile).then((ok) {
       if (ok) {
         store.dispatch(new AddFileAction(new StoredFile(
             name: deletedFile.name,

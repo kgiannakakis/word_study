@@ -50,7 +50,7 @@ class FileService {
       var f = fileSystemEntities[i];
       var stat = await f.stat();
       var match = regexp.firstMatch(f.path);
-      files.add(new StoredFile(name: match[0], created: stat.changed));
+      files.add(new StoredFile(name: match[0], created: stat.modified));
     }
     return files;
   }
@@ -96,13 +96,14 @@ class FileService {
     }
   }
 
-  Future<bool> undeleteFile(String filename) async {
+  Future<bool> undeleteFile(StoredFile storedFile) async {
     final directory = await localPath;
     final tempDirectory = await tempPath;
 
-    File file = new File('$tempDirectory/$filename');
+    File file = new File('$tempDirectory/${storedFile.name}');
     if ((await file.exists())) {
-      File restoredFile = await file.copy('$directory/$filename');
+      File restoredFile = await file.copy('$directory/${storedFile.name}');
+      await restoredFile.setLastModified(storedFile.created);
       print('Restored file ${restoredFile.path}');
       await file.delete();
       return true;
