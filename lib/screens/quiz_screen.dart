@@ -43,10 +43,43 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
     }
   }
 
+  void _goToNext() {
+    Navigator.of(context).push(new PageRouteBuilder(
+      opaque: true,
+      // 2
+      transitionDuration: const Duration(milliseconds: 400),
+      // 3
+      pageBuilder: (BuildContext context, _, __) {
+        return new QuizScreen(
+            quizInstance: quizInstance,
+            currentWord: currentWord + 1);
+      },
+      // 4
+      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+        return new SlideTransition(
+          position: Tween<Offset>(
+            begin: new Offset(1.0, 0.0),
+            end: new Offset(0.0, 0.0),
+          ).animate(
+              new CurvedAnimation(
+                parent: animation,
+                curve: Curves.ease,
+              )
+          ),
+          child: child,
+        );
+      }
+    ));
+  }
+
+  void _goToPrev() {
+    Navigator.of(context).pop();
+  }
+
   VoidCallback _getPreviousCallback() {
     if (currentWord > 0) {
       return () {
-        Navigator.of(context).pop();
+        _goToPrev();
       };
     }
     return null;
@@ -57,12 +90,7 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
 
     if (currentWord < wordsCount - 1) {
       return () {
-        Navigator.of(context).push(
-            new MaterialPageRoute(
-                builder: (context) => new QuizScreen(quizInstance: quizInstance,
-                  currentWord: currentWord + 1)
-            )
-        );
+        _goToNext();
       };
     }
     else {
@@ -205,3 +233,4 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 }
+
