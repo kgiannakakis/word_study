@@ -5,19 +5,28 @@ import 'package:word_study/screens/home_screen.dart';
 
 class ResultsScreen extends StatelessWidget {
 
-  final List<charts.Series<QuizResults, int>> seriesList = [
-    new charts.Series<QuizResults, int>(
-      id: 'Results',
-      domainFn: (QuizResults results, _) => results.category,
-      measureFn: (QuizResults results, _) => results.count,
-      //colorFn: (QuizResults results, _) => results.category == 1 ?
-      //  charts.Color.fromHex(code: '#00C853') : charts.Color.fromHex(code: '#FF1744'),
-      data: <QuizResults>[ new QuizResults(0, 10), new QuizResults(1, 20)],
-    )
-  ];
+  final int wordsCount;
+
+  final int correctCount;
+
+  ResultsScreen(this.wordsCount, this.correctCount);
 
   @override
   Widget build(BuildContext context) {
+
+    List<charts.Series<_QuizResults, int>> seriesList = [
+      new charts.Series<_QuizResults, int>(
+        id: 'Results',
+        domainFn: (_QuizResults results, _) => results.category,
+        measureFn: (_QuizResults results, _) => results.count,
+        //colorFn: (QuizResults results, _) => results.category == 1 ?
+        //  charts.Color.fromHex(code: '#00C853') : charts.Color.fromHex(code: '#FF1744'),
+        data: <_QuizResults>[
+          new _QuizResults(0, correctCount),
+          new _QuizResults(1, wordsCount - correctCount)],
+      )
+    ];
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(WordStudyLocalizations.of(context).results),
@@ -35,16 +44,16 @@ class ResultsScreen extends StatelessWidget {
       ),
       body: new Stack(
         children: <Widget>[
-          new charts.PieChart<QuizResults, int>(seriesList,
+          new charts.PieChart<_QuizResults, int>(seriesList,
             animate: true,
             defaultRenderer: new charts.ArcRendererConfig(arcWidth: 60)
           ),
-          new Center(child: new Text('23%')),
+          new Center(child: new Text('${100.0*correctCount/wordsCount}%')),
           new Padding(
               padding: EdgeInsets.all(10.0),
               child: new Align(
                 alignment: Alignment.topCenter,
-                child: new Text(WordStudyLocalizations.of(context).resultsMessage(10, 30)),
+                child: new Text(WordStudyLocalizations.of(context).resultsMessage(correctCount, wordsCount)),
               )
           ),
           //new Text('You got 20 out of 30 correct!')
@@ -54,9 +63,9 @@ class ResultsScreen extends StatelessWidget {
   }
 }
 
-class QuizResults {
+class _QuizResults {
   final int category;
   final int count;
 
-  QuizResults(this.category, this.count);
+  _QuizResults(this.category, this.count);
 }

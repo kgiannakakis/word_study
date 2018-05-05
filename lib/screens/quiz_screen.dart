@@ -106,10 +106,21 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
       };
     }
     else {
+      int correctCount = 0;
+      int wordsCount = quizInstance.quiz.settings.wordsCount;
+
+      for(int i=0; i<wordsCount; i++) {
+        var qw = quizInstance.getQuizWord(i);
+        int wrong = qw.options.where((o) => o.isSelected && !o.isCorrect).length;
+        if (wrong == 0) {
+          correctCount++;
+        }
+      }
+
       return () {
         Navigator.of(context).push(
             new MaterialPageRoute(
-                builder: (context) => new ResultsScreen()
+                builder: (context) => new ResultsScreen(wordsCount, correctCount)
             )
         );
       };
