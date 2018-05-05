@@ -27,6 +27,8 @@ class ResultsScreen extends StatelessWidget {
       )
     ];
 
+    String percent = (100.0*correctCount/wordsCount).toStringAsFixed(1);
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(WordStudyLocalizations.of(context).results),
@@ -48,7 +50,7 @@ class ResultsScreen extends StatelessWidget {
             animate: true,
             defaultRenderer: new charts.ArcRendererConfig(arcWidth: 60)
           ),
-          new Center(child: new Text('${100.0*correctCount/wordsCount}%')),
+          new Center(child: new Text('$percent%')),
           new Padding(
               padding: EdgeInsets.all(10.0),
               child: new Align(
