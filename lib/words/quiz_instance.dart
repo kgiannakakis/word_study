@@ -17,7 +17,7 @@ class QuizInstance {
     bool ok = await wordProvider.init();
     if (ok) {
       _quizWords = wordProvider.getWords(quiz.settings.wordsCount,
-          quiz.settings.optionsCount, quiz.settings.inverse);
+          quiz.settings.optionsCount, quiz.settings.inverse ?? false);
     }
     return ok;
   }
