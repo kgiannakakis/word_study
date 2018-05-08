@@ -135,8 +135,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
               if (value.isEmpty) {
                 return WordStudyLocalizations.of(context).pleaseEnterANumber;
               }
-              var v = int.parse(
-                  value, onError: (source) => 0);
+              var v = int.tryParse(value) ?? 0;
               if (v < 1) {
                 return WordStudyLocalizations.of(context).pleaseEnterANumberGreaterThan0;
               }
@@ -163,8 +162,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
               if (value.isEmpty) {
                 return WordStudyLocalizations.of(context).pleaseEnterANumber;
               }
-              var v = int.parse(
-                  value, onError: (source) => 0);
+              var v = int.tryParse(value) ?? 0;
               if (v < 1) {
                 return WordStudyLocalizations.of(context).pleaseEnterANumberGreaterThan0;
               }
