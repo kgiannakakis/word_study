@@ -42,6 +42,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
   int _wordsCount;
   int _optionsCount;
   int totalWordsCount;
+  bool _inverse;
 
   TextEditingController _wordEditingController;
 
@@ -49,6 +50,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
     super.initState();
 
     setState(() {
+      _inverse  = false;
       _filesList = files.join(',');
       totalWordsCount = getTotalWordsCount();
       _wordEditingController = new TextEditingController(text: '$totalWordsCount');
@@ -176,6 +178,13 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
             },
           ),
         ),
+        new ListTile(
+          leading: const Icon(Icons.cached),
+          title: new Text(WordStudyLocalizations.of(context).inverse),
+          trailing: new Checkbox(
+              value: _inverse,
+              onChanged: (value) => _inverse = value),
+        ),
         const Divider(
           height: 1.0,
         ),
@@ -210,7 +219,8 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
                     Quiz quiz = new Quiz(name: _name,
                         filenames: files,
                         settings: new QuizSettings(wordsCount: _wordsCount,
-                            optionsCount: _optionsCount));
+                            optionsCount: _optionsCount,
+                            inverse: _inverse));
                     onSave(quiz);
                     Navigator.of(context).pop();
                   }

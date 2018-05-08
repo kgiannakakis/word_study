@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-05-03T10:11:54.105978",
+  "@@last_modified": "2018-05-08T11:21:21.175523",
   "title": "Word Study",
   "@title": {
     "description": "Title for Word Study application",
@@ -291,5 +291,11 @@
       "correct": {},
       "total": {}
     }
+  },
+  "inverse": "Inverse",
+  "@inverse": {
+    "description": "Inverse label",
+    "type": "text",
+    "placeholders": {}
   }
 }

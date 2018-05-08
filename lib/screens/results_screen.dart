@@ -58,7 +58,6 @@ class ResultsScreen extends StatelessWidget {
                 child: new Text(WordStudyLocalizations.of(context).resultsMessage(correctCount, wordsCount)),
               )
           ),
-          //new Text('You got 20 out of 30 correct!')
         ],
       )
     );

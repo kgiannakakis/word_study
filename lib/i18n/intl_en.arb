@@ -291,5 +291,11 @@
         "correct": {},
         "total": {}
       }
+    },
+    "inverse": "Inverse",
+    "@inverse": {
+      "description": "Inverse label",
+      "type": "text",
+      "placeholders": {}
     }
 }

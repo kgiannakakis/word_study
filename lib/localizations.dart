@@ -397,6 +397,14 @@ class WordStudyLocalizations {
       desc: 'Results message',
     );
   }
+
+  String get inverse {
+    return Intl.message(
+      'Inverse',
+      name: 'inverse',
+      desc: 'Inverse label',
+    );
+  }
 }
 
 class WordStudyLocalizationsDelegate extends LocalizationsDelegate<WordStudyLocalizations> {

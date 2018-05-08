@@ -78,7 +78,7 @@ void main() {
 
   testWidgets('Home screen shows list of quizzes when loading is false', (WidgetTester tester) async {
     var quiz = new Quiz(filenames: <String>['file1'], name: 'My quiz',
-        settings: new QuizSettings(wordsCount: 10, optionsCount: 4));
+        settings: new QuizSettings(wordsCount: 10, optionsCount: 4, inverse: false));
     List<Quiz> quizzes = [quiz];
 
     var store = new Store<AppState>(

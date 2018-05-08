@@ -49,8 +49,9 @@ class QuizProvider {
   Quiz _getDemoQuiz() {
     const int wordsCount = 10;
     const int optionsCount = 4;
+    const bool inverse = false;
     QuizSettings quizSettings = new QuizSettings(
-        wordsCount: wordsCount, optionsCount: optionsCount);
+        wordsCount: wordsCount, optionsCount: optionsCount, inverse: inverse);
     Quiz builtin = new Quiz(
         name: "Demo", settings: quizSettings, filenames: [builtinFilename]);
     return builtin;

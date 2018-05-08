@@ -16,7 +16,8 @@ class QuizInstance {
     WordProvider wordProvider = new FileWordProvider(quiz.filenames[0]);
     bool ok = await wordProvider.init();
     if (ok) {
-      _quizWords = wordProvider.getWords(quiz.settings.wordsCount, quiz.settings.optionsCount);
+      _quizWords = wordProvider.getWords(quiz.settings.wordsCount,
+          quiz.settings.optionsCount, quiz.settings.inverse);
     }
     return ok;
   }

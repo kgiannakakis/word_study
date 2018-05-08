@@ -30,7 +30,7 @@ class WordProvider {
     return true;
   }
 
-  QuizWord getWordFromList(List<Word> words, int optionsCount) {
+  QuizWord getWordFromList(List<Word> words, int optionsCount, bool inverse) {
 
     if (optionsCount > words.length) {
       throw new ArgumentError("Available words less than options count");
@@ -44,7 +44,8 @@ class WordProvider {
 
     for(int i=0; i<optionsCount; i++) {
       if (i == correct) {
-        quizOptions.add(new QuizOption(words[w].meaning, true));
+        String text = inverse ? words[w].word : words[w].meaning;
+        quizOptions.add(new QuizOption(text, true));
       }
       else {
         int o = _random.nextInt(words.length);
@@ -52,31 +53,32 @@ class WordProvider {
           o = _random.nextInt(words.length);
         }
         optionIndices.add(o);
-        quizOptions.add(new QuizOption(words[o].meaning, false));
+        String text = inverse ? words[o].word : words[o].meaning;
+        quizOptions.add(new QuizOption(text, false));
       }
     }
-
-    return new QuizWord(words[w].word, quizOptions);
+    String word = inverse ? words[w].meaning : words[w].word;
+    return new QuizWord(word, quizOptions);
   }
 
-  QuizWord getWord(int optionsCount) {
-    return getWordFromList(_words, optionsCount);
+  QuizWord getWord(int optionsCount, bool inverse) {
+    return getWordFromList(_words, optionsCount, inverse);
   }
 
-  List<QuizWord> getWords(int wordsCount, int optionsCount) {
-    return getWordsFromList(_words, wordsCount, optionsCount);
+  List<QuizWord> getWords(int wordsCount, int optionsCount, bool inverse) {
+    return getWordsFromList(_words, wordsCount, optionsCount, inverse);
   }
 
-  List<QuizWord> getWordsFromList(List<Word> words, int wordsCount, int optionsCount) {
+  List<QuizWord> getWordsFromList(List<Word> words, int wordsCount, int optionsCount, bool inverse) {
     if (wordsCount > words.length) {
       throw new ArgumentError("Available words less than words count");
     }
     List<QuizWord> quizWords = [];
     List<String> wordsLabels = [];
     for(int i=0; i<wordsCount; i++) {
-      QuizWord quizWord = getWord(optionsCount);
+      QuizWord quizWord = getWord(optionsCount, inverse);
       while(wordsLabels.contains(quizWord.word)) {
-        quizWord = getWord(optionsCount);
+        quizWord = getWord(optionsCount, inverse);
       }
       wordsLabels.add(quizWord.word);
       quizWords.add(quizWord);

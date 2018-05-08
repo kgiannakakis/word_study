@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "folderNotFound" : m2,
     "googleDriveError" : MessageLookupByLibrary.simpleMessage("Αποτυχία σύνδεσης στο Google Drive"),
     "googleDriveInstructions" : m3,
+    "inverse" : MessageLookupByLibrary.simpleMessage("Αντίστροφα"),
     "loadingFiles" : MessageLookupByLibrary.simpleMessage("Φόρτωση αρχείων..."),
     "name" : MessageLookupByLibrary.simpleMessage("\'Ονομα"),
     "next" : MessageLookupByLibrary.simpleMessage("Επόμενο"),

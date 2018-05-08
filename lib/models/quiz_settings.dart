@@ -5,19 +5,21 @@ class QuizSettings {
 
   final int wordsCount;
   final int optionsCount;
+  final bool inverse;
 
-  QuizSettings({this.wordsCount, this.optionsCount});
+  QuizSettings({this.wordsCount, this.optionsCount, this.inverse});
 
-  QuizSettings copyWith({int wordsCount, int optionsCount}) {
+  QuizSettings copyWith({int wordsCount, int optionsCount, bool inverse}) {
     return new QuizSettings(
       wordsCount: wordsCount ?? this.wordsCount,
       optionsCount: optionsCount ?? this.optionsCount,
+      inverse: inverse ?? this.inverse
     );
   }
 
   @override
   int get hashCode =>
-      wordsCount.hashCode ^ optionsCount.hashCode;
+      wordsCount.hashCode ^ optionsCount.hashCode ^ inverse.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -25,16 +27,19 @@ class QuizSettings {
           other is QuizSettings &&
               runtimeType == other.runtimeType &&
               wordsCount == other.wordsCount &&
-              optionsCount == other.optionsCount;
+              optionsCount == other.optionsCount &&
+              inverse == other.inverse;
 
   QuizSettings.fromJson(Map<String, dynamic> json)
       : wordsCount = json['wordsCount'],
-        optionsCount = json['optionsCount'];
+        optionsCount = json['optionsCount'],
+        inverse = json['inverse'];
 
   Map<String, dynamic> toJson() =>
       {
         'wordsCount': wordsCount,
         'optionsCount': optionsCount,
+        'inverse': inverse
       };
 
 }

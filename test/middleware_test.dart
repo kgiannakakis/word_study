@@ -22,7 +22,7 @@ main() {
       );
       final quizzes = [
         new Quiz(filenames: <String>['file1'],
-            settings: new QuizSettings(wordsCount: 10, optionsCount: 4)),
+            settings: new QuizSettings(wordsCount: 10, optionsCount: 4, inverse: false)),
       ];
 
       when(provider.loadQuizzes()).thenReturn(new Future.value(quizzes));
@@ -40,7 +40,7 @@ main() {
         middleware: createMiddleware(provider),
       );
       var quiz = new Quiz(filenames: <String>['file1'],
-            settings: new QuizSettings(wordsCount: 10, optionsCount: 4));
+            settings: new QuizSettings(wordsCount: 10, optionsCount: 4, inverse: false));
 
       when(provider.saveQuizzes(<Quiz>[])).thenReturn(new Future.value(true));
       when(provider.saveQuizzes(<Quiz>[quiz])).thenReturn(new Future.value(true));

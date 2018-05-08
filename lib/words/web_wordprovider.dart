@@ -52,13 +52,13 @@ class WebWordProvider extends WordProvider {
   }
 
   @override
-  QuizWord getWord(int optionsCount) {
-    return super.getWordFromList(_words, optionsCount);
+  QuizWord getWord(int optionsCount, bool inverse) {
+    return super.getWordFromList(_words, optionsCount, inverse);
   }
 
   @override
-  List<QuizWord> getWords(int wordsCount, int optionsCount) {
-    return super.getWordsFromList(_words, wordsCount, optionsCount);
+  List<QuizWord> getWords(int wordsCount, int optionsCount, bool inverse) {
+    return super.getWordsFromList(_words, wordsCount, optionsCount, inverse);
   }
 
   int get length {
