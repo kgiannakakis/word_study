@@ -42,13 +42,14 @@ main() {
       var quiz = new Quiz(filenames: <String>['file1'],
             settings: new QuizSettings(wordsCount: 10, optionsCount: 4, inverse: false));
 
-      when(provider.saveQuizzes(<Quiz>[])).thenReturn(new Future.value(true));
-      when(provider.saveQuizzes(<Quiz>[quiz])).thenReturn(new Future.value(true));
+      when(provider.addQuiz(quiz)).thenReturn(new Future.value(1));
+      when(provider.deleteQuiz('file1')).thenReturn(new Future.value(1));
 
       store.dispatch(new AddQuizAction(quiz));
-      store.dispatch(new DeleteQuizAction('file1'));
+      verify(provider.addQuiz(quiz)).called(1);
 
-      verify(provider.saveQuizzes(typed(any))).called(2);
+      store.dispatch(new DeleteQuizAction('file1'));
+      verify(provider.deleteQuiz('file1')).called(1);
     });
   });
 }

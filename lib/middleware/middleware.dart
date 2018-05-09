@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
+import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/google_drive_file.dart';
 import 'package:word_study/models/google_drive_state.dart';
@@ -18,6 +19,8 @@ List<Middleware<AppState>> createMiddleware([
 ]) {
   final saveQuizzes = _createSaveQuizzes(quizProvider);
   final loadQuizzes = _createLoadQuizzes(quizProvider);
+  final addQuiz = _createAddQuiz(quizProvider);
+  final deleteQuiz = _createDeleteQuiz(quizProvider);
   final calculateWordCount = _createCalculateWordCount();
   final loadFiles = _createLoadFiles();
   final deleteFile = _deleteFile(fileService);
@@ -30,8 +33,8 @@ List<Middleware<AppState>> createMiddleware([
 
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, LoadQuizzesAction>(loadQuizzes),
-    new TypedMiddleware<AppState, AddQuizAction>(saveQuizzes),
-    new TypedMiddleware<AppState, DeleteQuizAction>(saveQuizzes),
+    new TypedMiddleware<AppState, AddQuizAction>(addQuiz),
+    new TypedMiddleware<AppState, DeleteQuizAction>(deleteQuiz),
     new TypedMiddleware<AppState, QuizzesLoadedAction>(saveQuizzes),
     new TypedMiddleware<AppState, CalculateTotalWordsCountAction>(calculateWordCount),
     new TypedMiddleware<AppState, LoadFilesAction>(loadFiles),
@@ -51,11 +54,45 @@ Middleware<AppState> _createSaveQuizzes(QuizProvider quizProvider) {
 
     quizProvider.saveQuizzes(store.state.quizzes)
         .then((ok) {
-        if (!ok) {
-          print('Failed to save quizzes!');
-          store.dispatch(LoadQuizzesAction);
-        }
+      if (!ok) {
+        print('Failed to save quizzes!');
+        store.dispatch(LoadQuizzesAction);
       }
+    }
+    );
+  };
+}
+
+Middleware<AppState> _createAddQuiz(QuizProvider quizProvider) {
+  return (Store<AppState> store, action, NextDispatcher next) {
+    next(action);
+
+    Quiz quiz = (action as AddQuizAction).quiz;
+
+    quizProvider.addQuiz(quiz)
+        .then((id) {
+      if (id <= 0) {
+        print('Failed to add quiz!');
+        store.dispatch(LoadQuizzesAction);
+      }
+    }
+    );
+  };
+}
+
+Middleware<AppState> _createDeleteQuiz(QuizProvider quizProvider) {
+  return (Store<AppState> store, action, NextDispatcher next) {
+    next(action);
+
+    String quizName = (action as DeleteQuizAction).name;
+
+    quizProvider.deleteQuiz(quizName)
+        .then((count) {
+      if (count <=0 ) {
+        print('Failed to delete quiz $quizName');
+        store.dispatch(LoadQuizzesAction);
+      }
+    }
     );
   };
 }
