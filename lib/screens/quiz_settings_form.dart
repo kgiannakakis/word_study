@@ -181,7 +181,8 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
           title: new Text(WordStudyLocalizations.of(context).inverse),
           trailing: new Checkbox(
               value: _inverse,
-              onChanged: (value) => _inverse = value),
+              onChanged: (value) => setState(() {_inverse = value;})
+          ),
         ),
         const Divider(
           height: 1.0,
