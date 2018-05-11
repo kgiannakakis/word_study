@@ -21,3 +21,9 @@ class AddQuizAction {
 
   AddQuizAction(this.quiz);
 }
+
+class SelectQuizAction {
+  final int quizIndex;
+
+  SelectQuizAction(this.quizIndex);
+}
