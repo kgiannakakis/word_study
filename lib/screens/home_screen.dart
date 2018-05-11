@@ -112,9 +112,24 @@ class HomeScreen extends StatelessWidget {
                 ));
           }
 
+          List<Widget> actions;
+          if (vm.selectedQuiz >= 0) {
+            actions = <Widget>[
+              new IconButton(
+                icon: new Icon(Icons.equalizer),
+                onPressed: () {},
+              ),
+              new IconButton(
+                icon: new Icon(Icons.edit),
+                onPressed: () {},
+              ),
+            ];
+          }
+
           return new Scaffold(
               appBar: new AppBar(
                 title: new Text(WordStudyLocalizations.of(context).title),
+                actions: actions,
               ),
               body: new Builder(builder: (BuildContext context) {
                 return new ListView.builder(
