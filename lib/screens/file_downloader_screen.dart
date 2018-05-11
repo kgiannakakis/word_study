@@ -7,6 +7,7 @@ import 'package:word_study/localizations.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/screens/file_downloader_view_model.dart';
 import 'package:word_study/screens/google_drive_downloader_widget.dart';
+import 'package:word_study/screens/dropbox_downloader_widget.dart';
 import 'package:word_study/screens/web_downloader_widget.dart';
 
 class FileDownloaderScreen extends StatelessWidget {
@@ -17,15 +18,19 @@ class FileDownloaderScreen extends StatelessWidget {
       converter: (Store<AppState> store) {
         return FileDownloaderViewModel.fromStore(store);
       },
-      onInit: (store) => store.dispatch(new GoogleDriveInitAction()),
+      onInit: (store) {
+        store.dispatch(new GoogleDriveInitAction());
+        store.dispatch(new DropBoxInitAction());
+      },
       builder: (BuildContext context, FileDownloaderViewModel viewModel) {
         return new DefaultTabController(
-          length: 2,
+          length: 3,
           child: new Scaffold(
             appBar: new AppBar(
               bottom: new TabBar(
                 tabs: [
                   new Tab(icon: new Icon(FontAwesomeIcons.googleDrive)),
+                  new Tab(icon: new Icon(FontAwesomeIcons.dropbox)),
                   new Tab(icon: new Icon(FontAwesomeIcons.globe)),
                 ],
               ),
@@ -34,6 +39,7 @@ class FileDownloaderScreen extends StatelessWidget {
             body: new TabBarView(
               children: [
                 new GoogleDriveDownloader(viewModel: viewModel),
+                new DropBoxDownloader(viewModel: viewModel),
                 new WebDownloaderWidget(onAddFile: viewModel.onAddFile),
               ],
             ),

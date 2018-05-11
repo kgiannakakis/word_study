@@ -9,6 +9,7 @@ import 'package:word_study/models/google_drive_state.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/services/file_service.dart';
 import 'package:word_study/services/google_drive_service.dart';
+import 'package:word_study/services/dropbox_service.dart';
 import 'package:word_study/words/file_word_provider.dart';
 import 'package:word_study/words/quiz_provider.dart';
 
@@ -30,6 +31,7 @@ List<Middleware<AppState>> createMiddleware([
   final googleDriveSignOut = _googleDriveSignOut(googleDriveService);
   final googleDriveRefreshFiles = _googleDriveRefreshFiles(googleDriveService);
   final googleDriveDownloadFile = _googleDriveDownloadFile(googleDriveService);
+  final dropBoxInit = _dropBoxInit();
 
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, LoadQuizzesAction>(loadQuizzes),
@@ -45,6 +47,7 @@ List<Middleware<AppState>> createMiddleware([
     new TypedMiddleware<AppState, GoogleDriveSignOutAction>(googleDriveSignOut),
     new TypedMiddleware<AppState, GoogleDriveRefreshFilesAction>(googleDriveRefreshFiles),
     new TypedMiddleware<AppState, GoogleDriveDownloadFileAction>(googleDriveDownloadFile),
+    new TypedMiddleware<AppState, DropBoxInitAction>(dropBoxInit),
   ];
 }
 
@@ -251,5 +254,14 @@ Middleware<AppState> _googleDriveDownloadFile(GoogleDriveService googleDriveServ
     });
 
     next(action);
+  };
+}
+
+Middleware<AppState> _dropBoxInit() {
+  return (Store<AppState> store, action, NextDispatcher next) {
+
+    DropBoxService dropBoxService = new DropBoxService();
+
+    dropBoxService.init().then((_) => next(action));
   };
 }
