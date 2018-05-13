@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_study/models/quiz_option.dart';
+import 'package:word_study/screens/list_item_text_style.dart';
 
 typedef void OptionTapped(int index);
 
@@ -8,9 +9,6 @@ class OptionWidget extends StatelessWidget {
   final OptionTapped onTap;
   final AnimationController animationController;
   final int optionIndex;
-
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-  final _biggerInvisibleFont = const TextStyle(fontSize: 18.0, color: Colors.transparent);
 
   OptionWidget({this.quizOption, this.onTap, this.optionIndex, this.animationController});
 
@@ -24,7 +22,7 @@ class OptionWidget extends StatelessWidget {
     return Colors.transparent;
   }
 
-  Widget _buildEnabled() {
+  Widget _buildEnabled(BuildContext context) {
     return new Padding(
         padding: const EdgeInsets.all(8.0),
         child: new GestureDetector(
@@ -40,7 +38,9 @@ class OptionWidget extends StatelessWidget {
                     child: new Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: new Center(
-                            child: new Text(quizOption.meaning, style: _biggerInvisibleFont)
+                            child: new Text(quizOption.meaning,
+                                style: ListItemTextStyle.display5(context).copyWith(color: Colors.transparent)
+                            )
                         )
                     ),
                   )
@@ -51,7 +51,8 @@ class OptionWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: new Container(
                         //decoration: new BoxDecoration(color: Colors.yellow),
-                          child: new Text(quizOption.meaning, style: _biggerFont)
+                          child: new Text(quizOption.meaning,
+                              style: ListItemTextStyle.display5(context))
                       )
                 ))]
               )
@@ -64,7 +65,7 @@ class OptionWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildDisabled() {
+  Widget _buildDisabled(BuildContext context) {
     return new Padding(
         padding: const EdgeInsets.all(8.0),
         child: new Stack(
@@ -74,13 +75,15 @@ class OptionWidget extends StatelessWidget {
                 child: new Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: new Center(
-                      child: new Text(quizOption.meaning, style: _biggerInvisibleFont)
+                      child: new Text(quizOption.meaning,
+                          style: ListItemTextStyle.display5(context).copyWith(color: Colors.transparent))
                     )
                 ),
               ),
               new Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: new Text(quizOption.meaning, style: _biggerFont)
+                  child: new Text(quizOption.meaning,
+                      style: ListItemTextStyle.display5(context))
               )
             ]
         )
@@ -90,10 +93,10 @@ class OptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (quizOption.isEnabled) {
-      return _buildEnabled();
+      return _buildEnabled(context);
     }
     else {
-      return _buildDisabled();
+      return _buildDisabled(context);
     }
   }
 }

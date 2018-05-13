@@ -6,11 +6,11 @@ import 'package:word_study/models/google_drive_file.dart';
 import 'package:word_study/models/google_drive_state.dart';
 import 'package:word_study/screens/file_downloader_view_model.dart';
 import 'package:word_study/services/google_drive_service.dart';
+import 'package:word_study/screens/list_item_text_style.dart';
 
 class GoogleDriveDownloader extends StatelessWidget {
   final FileDownloaderViewModel viewModel;
 
-  final _biggerFont = const TextStyle(fontSize: 18.0);
   GoogleDriveDownloader({@required this.viewModel});
 
   void onUpdateState({GoogleDriveServiceMessage msg, List<GoogleDriveFile> files}) {
@@ -171,7 +171,8 @@ class GoogleDriveDownloader extends StatelessWidget {
     return new Padding(
         padding: const EdgeInsets.all(16.0),
         child: new ListTile(
-            title: new Text(viewModel.googleDriveState.files[i].name, style: _biggerFont),
+            title: new Text(viewModel.googleDriveState.files[i].name,
+                style: ListItemTextStyle.display5(context)),
             onTap: () async {
               viewModel.onDownloadFile(viewModel.googleDriveState.files[i],
               () => _onDownloaded(context),

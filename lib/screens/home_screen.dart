@@ -9,9 +9,9 @@ import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/screens/quiz_screen.dart';
 import 'package:word_study/words/quiz_instance.dart';
+import 'package:word_study/screens/list_item_text_style.dart';
 
 class HomeScreen extends StatelessWidget {
-  final _biggerFont = const TextStyle(fontSize: 18.0);
 
   void _start(BuildContext context, Quiz quiz) async {
     QuizInstance quizInstance = new QuizInstance(quiz);
@@ -76,7 +76,8 @@ class HomeScreen extends StatelessWidget {
             child: new Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: new ListTile(
-                  title: new Text(vm.quizzes[i].name, style: _biggerFont),
+                  title: new Text(vm.quizzes[i].name,
+                      style: ListItemTextStyle.display5(context)),
                   onTap: () {
                     vm.onSelectQuiz(-1);
                     _start(context, vm.quizzes[i]);

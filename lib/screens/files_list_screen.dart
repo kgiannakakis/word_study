@@ -8,10 +8,9 @@ import 'package:word_study/localizations.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/screens/file_downloader_screen.dart';
+import 'package:word_study/screens/list_item_text_style.dart';
 
 class FilesListScreen extends StatelessWidget {
-
-  final _biggerFont = const TextStyle(fontSize: 18.0);
 
   Widget _buildRow(BuildContext context, _ViewModel vm, int i) {
     return new Dismissible(
@@ -53,7 +52,8 @@ class FilesListScreen extends StatelessWidget {
         child: new Padding(
             padding: const EdgeInsets.all(16.0),
             child: new ListTile(
-                title: new Text(vm.files[i].name, style: _biggerFont),
+                title: new Text(vm.files[i].name,
+                    style: ListItemTextStyle.display5(context)),
                 subtitle: new Text(vm.files[i].created.toString()),
                 onTap: () {
                   Navigator.of(context).pop();
