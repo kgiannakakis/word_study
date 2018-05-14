@@ -27,3 +27,16 @@ class SelectQuizAction {
 
   SelectQuizAction(this.quizIndex);
 }
+
+class SetAddedQuizId {
+  final int id;
+
+  SetAddedQuizId(this.id);
+}
+
+class UpdateQuiz {
+  final int id;
+  final Quiz quiz;
+
+  UpdateQuiz(this.id, this.quiz);
+}

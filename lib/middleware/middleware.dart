@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/google_drive_file.dart';
 import 'package:word_study/models/google_drive_state.dart';
+import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/services/file_service.dart';
 import 'package:word_study/services/google_drive_service.dart';
@@ -74,6 +74,9 @@ Middleware<AppState> _createAddQuiz(QuizProvider quizProvider) {
       if (id <= 0) {
         print('Failed to add quiz!');
         store.dispatch(LoadQuizzesAction);
+      }
+      else {
+        store.dispatch(SetAddedQuizId(id));
       }
     }
     );
