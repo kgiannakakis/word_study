@@ -55,7 +55,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
     if (quiz != null) {
       setState(() {
 
-        print(quiz.settings.wordsCount);
+        print('Id: ${quiz.id}, words count: ${quiz.settings.wordsCount}');
 
         _inverse = quiz.settings.inverse;
         _filesList = quiz.filenames.join(',');
