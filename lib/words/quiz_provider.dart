@@ -128,6 +128,16 @@ class QuizProvider {
     return await database.rawDelete('DELETE FROM Quiz WHERE name=?', [name]);
   }
 
+  Future<int> updateQuiz(Quiz quiz) async {
+    Database database = await _openDatabase();
+
+    return await database.rawUpdate(
+        'UPDATE Quiz SET name=?, wordsCount=?, optionsCount=?, inverse=?, filenames=? '
+        'WHERE id=?',
+        [quiz.name, quiz.settings.wordsCount, quiz.settings.optionsCount,
+         quiz.settings.inverse, quiz.filenames, quiz.id]);
+  }
+
   Future<bool> saveQuizzes(List<Quiz> quizzes) async {
     String allQuizzesStr = json.encode(quizzes);
 

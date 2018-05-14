@@ -35,8 +35,7 @@ class SetAddedQuizIdAction {
 }
 
 class UpdateQuizAction {
-  final int id;
   final Quiz quiz;
 
-  UpdateQuizAction(this.id, this.quiz);
+  UpdateQuizAction(this.quiz);
 }

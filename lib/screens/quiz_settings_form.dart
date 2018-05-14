@@ -5,12 +5,12 @@ import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/screens/files_list_screen.dart';
 
-typedef OnSaveCallback = Function(Quiz quiz);
+typedef OnSaveOrUpdateCallback = Function(Quiz quiz);
 typedef QuizExists = bool Function(String name);
 typedef GetTotalWordsCount = int Function();
 
 class QuizSettingsForm extends StatefulWidget {
-  final OnSaveCallback onSave;
+  final OnSaveOrUpdateCallback onSaveOrUpdate;
   final QuizExists quizExists;
   final List<String> files;
   final GetTotalWordsCount getTotalWordsCount;
@@ -18,10 +18,10 @@ class QuizSettingsForm extends StatefulWidget {
   final String name;
   final Quiz quiz;
 
-  QuizSettingsForm({@required this.onSave, @required this.quizExists,
+  QuizSettingsForm({@required this.onSaveOrUpdate, @required this.quizExists,
     this.files, this.name, this.getTotalWordsCount, this.totalWordsCount, this.quiz});
 
-  @override State createState() => new QuizSettingsScreenState(onSave: onSave,
+  @override State createState() => new QuizSettingsScreenState(onSaveOrUpdate: onSaveOrUpdate,
       quizExists: quizExists, files: files, name: name, getTotalWordsCount: getTotalWordsCount,
       quiz: quiz);
 }
@@ -30,14 +30,14 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-  final OnSaveCallback onSave;
+  final OnSaveOrUpdateCallback onSaveOrUpdate;
   final QuizExists quizExists;
   final GetTotalWordsCount getTotalWordsCount;
   final List<String> files;
   final String name;
   final Quiz quiz;
 
-  QuizSettingsScreenState({@required this.onSave, @required this.quizExists,
+  QuizSettingsScreenState({@required this.onSaveOrUpdate, @required this.quizExists,
                       this.files, this.name, this.getTotalWordsCount, this.quiz});
 
   String _filesList;
@@ -241,12 +241,14 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
                                 .redAccent));
                   }
                   else {
-                    Quiz quiz = new Quiz(name: _name,
+                    Quiz quiz = new Quiz(
+                        id: this.quiz == null ? -1: this.quiz.id,
+                        name: _name,
                         filenames: files,
                         settings: new QuizSettings(wordsCount: _wordsCount,
                             optionsCount: _optionsCount,
                             inverse: _inverse));
-                    onSave(quiz);
+                    onSaveOrUpdate(quiz);
                     Navigator.of(context).pop();
                   }
                 }

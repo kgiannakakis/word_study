@@ -21,6 +21,7 @@ List<Middleware<AppState>> createMiddleware([
   final loadQuizzes = _createLoadQuizzes(quizProvider);
   final addQuiz = _createAddQuiz(quizProvider);
   final deleteQuiz = _createDeleteQuiz(quizProvider);
+  final updateQuiz = _createUpdateQuiz(quizProvider);
   final calculateWordCount = _createCalculateWordCount();
   final loadFiles = _createLoadFiles();
   final deleteFile = _deleteFile(fileService);
@@ -35,6 +36,7 @@ List<Middleware<AppState>> createMiddleware([
     new TypedMiddleware<AppState, LoadQuizzesAction>(loadQuizzes),
     new TypedMiddleware<AppState, AddQuizAction>(addQuiz),
     new TypedMiddleware<AppState, DeleteQuizAction>(deleteQuiz),
+    new TypedMiddleware<AppState, UpdateQuizAction>(updateQuiz),
     new TypedMiddleware<AppState, QuizzesLoadedAction>(saveQuizzes),
     new TypedMiddleware<AppState, CalculateTotalWordsCountAction>(calculateWordCount),
     new TypedMiddleware<AppState, LoadFilesAction>(loadFiles),
@@ -76,7 +78,7 @@ Middleware<AppState> _createAddQuiz(QuizProvider quizProvider) {
         store.dispatch(LoadQuizzesAction);
       }
       else {
-        store.dispatch(SetAddedQuizId(id));
+        store.dispatch(SetAddedQuizIdAction(id));
       }
     }
     );
@@ -94,6 +96,22 @@ Middleware<AppState> _createDeleteQuiz(QuizProvider quizProvider) {
       if (count <=0 ) {
         print('Failed to delete quiz $quizName');
         store.dispatch(LoadQuizzesAction);
+      }
+    }
+    );
+  };
+}
+
+Middleware<AppState> _createUpdateQuiz(QuizProvider quizProvider) {
+  return (Store<AppState> store, action, NextDispatcher next) {
+    next(action);
+
+    Quiz quiz = (action as UpdateQuizAction).quiz;
+
+    quizProvider.updateQuiz(quiz)
+        .then((count) {
+      if (count < 1) {
+        print('Failed to update quiz ${quiz}');
       }
     }
     );

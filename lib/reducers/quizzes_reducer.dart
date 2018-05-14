@@ -48,7 +48,7 @@ List<Quiz> _setAddedQuizId(List<Quiz> quizzes, SetAddedQuizIdAction action) {
 List<Quiz> _updateQuiz(List<Quiz> quizzes, UpdateQuizAction action) {
   var newQuizzes = List<Quiz>.from(quizzes);
   for(int i=0; i<newQuizzes.length; i++) {
-    if (newQuizzes[i].id == null) {
+    if (newQuizzes[i].id == action.quiz.id) {
       newQuizzes[i] = action.quiz;
       break;
     }

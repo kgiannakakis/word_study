@@ -132,7 +132,6 @@ class HomeScreen extends StatelessWidget {
                 icon: new Icon(Icons.edit),
                 onPressed: () {
                   var selectedQuiz = vm.quizzes[vm.selectedQuiz];
-                  vm.onSelectQuiz(-1);
                   _gotoEditQuiz(context, selectedQuiz, vm);
                 },
               ),

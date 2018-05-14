@@ -31,7 +31,7 @@ class EditQuiz extends StatelessWidget {
                 builder: (BuildContext context) {
                   return new SingleChildScrollView (
                       child: new QuizSettingsForm(
-                        onSave: vm.onSave,
+                        onSaveOrUpdate: vm.onSaveOrUpdate,
                         quizExists: vm.quizExists,
                         getTotalWordsCount: vm.getTotalWordsCount,
                         totalWordsCount: vm.totalWordsCount,

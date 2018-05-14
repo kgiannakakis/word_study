@@ -9,13 +9,13 @@ class QuizFormViewModel {
   final String name;
   final GetTotalWordsCount getTotalWordsCount;
   final int totalWordsCount;
-  final OnSaveCallback onSave;
+  final OnSaveOrUpdateCallback onSaveOrUpdate;
   final QuizExists quizExists;
 
   QuizFormViewModel({
     @required this.files,
     @required this.name,
-    @required this.onSave,
+    @required this.onSaveOrUpdate,
     @required this.getTotalWordsCount,
     @required this.totalWordsCount,
     @required this.quizExists
@@ -25,14 +25,19 @@ class QuizFormViewModel {
     return new QuizFormViewModel(
         files: store.state.selectedFiles,
         name: store.state.selectedFiles.length > 0 ? store.state.selectedFiles[0] : '',
-        onSave: (quiz) {
-          store.dispatch(new AddQuizAction(quiz));
+        onSaveOrUpdate: (quiz) {
+          if (store.state.selectedQuiz >= 0) {
+            store.dispatch(new UpdateQuizAction(quiz));
+          }
+          else {
+            store.dispatch(new AddQuizAction(quiz));
+          }
         },
         totalWordsCount: store.state.totalWordsCount,
         getTotalWordsCount: () => store.state.totalWordsCount,
         quizExists: (name) {
           return store.state.quizzes.where((q) => q.name == name).length > 0;
-        }
+        },
     );
   }
 }
