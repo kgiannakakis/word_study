@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "create" : MessageLookupByLibrary.simpleMessage("Δημιουργία"),
     "dismissed" : m0,
     "download" : MessageLookupByLibrary.simpleMessage("Λήψη"),
+    "edit" : MessageLookupByLibrary.simpleMessage("Επεξεργασία"),
     "exit" : MessageLookupByLibrary.simpleMessage("Έξοδος"),
     "exitQuiz" : MessageLookupByLibrary.simpleMessage("Έξοδος"),
     "exitQuizWarning" : MessageLookupByLibrary.simpleMessage("Είστε σίγουροι ότι θέλετε να τερματίσετε το τεστ;"),

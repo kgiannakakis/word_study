@@ -94,6 +94,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "edit": "Επεξεργασία",
+  "@edit": {
+    "description": "Edit label",
+    "type": "text",
+    "placeholders": {}
+  },
   "optionsCountMustBeLessThanWordsCount": "Ο αριθμός των επιλογών πρέπει να είναι μικρότερος από τον αριθμό των λέξεων",
   "@optionsCountMustBeLessThanWordsCount": {
     "description": "Options count must be less than words count validation message",

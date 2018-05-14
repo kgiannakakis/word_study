@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-05-08T11:21:21.175523",
+  "@@last_modified": "2018-05-14T09:48:07.353635",
   "title": "Word Study",
   "@title": {
     "description": "Title for Word Study application",
@@ -91,6 +91,12 @@
   "create": "Create",
   "@create": {
     "description": "Create label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit label",
     "type": "text",
     "placeholders": {}
   },

@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "create" : MessageLookupByLibrary.simpleMessage("Create"),
     "dismissed" : m0,
     "download" : MessageLookupByLibrary.simpleMessage("Download"),
+    "edit" : MessageLookupByLibrary.simpleMessage("Edit"),
     "exit" : MessageLookupByLibrary.simpleMessage("Exit"),
     "exitQuiz" : MessageLookupByLibrary.simpleMessage("Exit Quiz"),
     "exitQuizWarning" : MessageLookupByLibrary.simpleMessage("Are you sure you want to exit the quiz?"),
