@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:word_study/actions/actions.dart';
 import 'package:word_study/containers/quiz_form_view_model.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/models/app_state.dart';
@@ -17,8 +16,8 @@ class EditQuiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StoreBuilder<AppState>(
       onInit: (store) {
-        store.dispatch(new AddSelectedFileAction(quiz.filenames[0]));
-        store.dispatch(new CalculateTotalWordsCountAction());
+        //store.dispatch(new AddSelectedFileAction(quiz.filenames[0]));
+        //store.dispatch(new CalculateTotalWordsCountAction());
       },
       builder: (BuildContext context, Store<AppState> store) {
         QuizFormViewModel vm = QuizFormViewModel.fromStore(store);

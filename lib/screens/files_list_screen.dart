@@ -4,8 +4,10 @@ import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/containers/create_quiz.dart';
+import 'package:word_study/containers/edit_quiz.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/models/app_state.dart';
+import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/screens/file_downloader_screen.dart';
 import 'package:word_study/screens/list_item_text_style.dart';
@@ -59,7 +61,12 @@ class FilesListScreen extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.of(context).pushReplacement(
                       new MaterialPageRoute(
-                          builder: (context) => new CreateQuiz()
+                          builder: (context) {
+                            if (vm.isEditing) {
+                              return new EditQuiz(quiz: vm.quiz);
+                            }
+                            return new CreateQuiz();
+                          }
                       )
                   );
                   vm.onAddSelectedFile(vm.files[i].name);
@@ -131,6 +138,8 @@ class _ViewModel {
   final Function(String) onAddSelectedFile;
   final Function(StoredFile) onRemove;
   final Function(StoredFile) onUndoRemove;
+  final bool isEditing;
+  final Quiz quiz;
 
   _ViewModel({
     @required this.files,
@@ -138,13 +147,18 @@ class _ViewModel {
     @required this.onAddSelectedFile,
     @required this.onRemove,
     @required this.onUndoRemove,
+    @required this.isEditing,
+    @required this.quiz
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return new _ViewModel(
       files: store.state.files,
       isLoading: store.state.isLoading,
+      isEditing: store.state.selectedQuiz >= 0,
+      quiz: store.state.selectedQuiz >= 0 ? store.state.quizzes[store.state.selectedQuiz] : null,
       onAddSelectedFile: (file) {
+        print('adding ${file}');
         store.dispatch(new AddSelectedFileAction(file));
         store.dispatch(new CalculateTotalWordsCountAction());
       },

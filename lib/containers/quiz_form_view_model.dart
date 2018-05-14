@@ -22,9 +22,18 @@ class QuizFormViewModel {
   });
 
   static QuizFormViewModel fromStore(Store<AppState> store) {
+    String name;
+
+    if (store.state.selectedQuiz >= 0) {
+      name = store.state.quizzes[store.state.selectedQuiz].name;
+    }
+    else {
+      name = store.state.selectedFiles.length > 0 ? store.state.selectedFiles[0] : '';
+    }
+
     return new QuizFormViewModel(
         files: store.state.selectedFiles,
-        name: store.state.selectedFiles.length > 0 ? store.state.selectedFiles[0] : '',
+        name: name,
         onSaveOrUpdate: (quiz) {
           if (store.state.selectedQuiz >= 0) {
             store.dispatch(new UpdateQuizAction(quiz));

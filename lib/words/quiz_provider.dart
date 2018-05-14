@@ -135,7 +135,7 @@ class QuizProvider {
         'UPDATE Quiz SET name=?, wordsCount=?, optionsCount=?, inverse=?, filenames=? '
         'WHERE id=?',
         [quiz.name, quiz.settings.wordsCount, quiz.settings.optionsCount,
-         quiz.settings.inverse, quiz.filenames, quiz.id]);
+         quiz.settings.inverse, quiz.filenames[0], quiz.id]);
   }
 
   Future<bool> saveQuizzes(List<Quiz> quizzes) async {
