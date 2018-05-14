@@ -110,6 +110,7 @@ class FilesListScreen extends StatelessWidget {
             return _buildRow(context, vm, index);
           }),
           floatingActionButton: new FloatingActionButton(
+            heroTag: '__AddFileTag__',
             onPressed: () {
               Navigator.of(context).push(
                   new MaterialPageRoute(

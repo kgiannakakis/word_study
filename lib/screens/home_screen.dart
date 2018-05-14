@@ -161,7 +161,7 @@ class HomeScreen extends StatelessWidget {
                     });
               }),
               floatingActionButton: new FloatingActionButton(
-                  key: const Key('AddQuizKey'),
+                  heroTag: '__AddQuizTag__',
                   onPressed: () {
                     vm.onSelectQuiz(-1);
                     _gotoCreateQuiz(context, vm);
