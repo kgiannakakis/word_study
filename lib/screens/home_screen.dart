@@ -4,12 +4,13 @@ import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/containers/create_quiz.dart';
+import 'package:word_study/containers/edit_quiz.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/quiz.dart';
+import 'package:word_study/screens/list_item_text_style.dart';
 import 'package:word_study/screens/quiz_screen.dart';
 import 'package:word_study/words/quiz_instance.dart';
-import 'package:word_study/screens/list_item_text_style.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -33,6 +34,13 @@ class HomeScreen extends StatelessWidget {
     Navigator
         .of(context)
         .push(new MaterialPageRoute(builder: (context) => new CreateQuiz()));
+  }
+
+  void _gotoEditQuiz(BuildContext context, Quiz quiz, _ViewModel vm) async {
+    vm.onClearSelectedFiles();
+    Navigator
+        .of(context)
+        .push(new MaterialPageRoute(builder: (context) => new EditQuiz(quiz: quiz,)));
   }
 
   Widget _buildRow(_ViewModel vm, int i, BuildContext context) {
@@ -116,13 +124,17 @@ class HomeScreen extends StatelessWidget {
           List<Widget> actions;
           if (vm.selectedQuiz >= 0) {
             actions = <Widget>[
-              new IconButton(
-                icon: new Icon(Icons.equalizer),
-                onPressed: () {},
-              ),
+//              new IconButton(
+//                icon: new Icon(Icons.equalizer),
+//                onPressed: () {},
+//              ),
               new IconButton(
                 icon: new Icon(Icons.edit),
-                onPressed: () {},
+                onPressed: () {
+                  var selectedQuiz = vm.quizzes[vm.selectedQuiz];
+                  vm.onSelectQuiz(-1);
+                  _gotoEditQuiz(context, selectedQuiz, vm);
+                },
               ),
             ];
           }

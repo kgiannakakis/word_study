@@ -54,6 +54,9 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
 
     if (quiz != null) {
       setState(() {
+
+        print(quiz.settings.wordsCount);
+
         _inverse = quiz.settings.inverse;
         _filesList = quiz.filenames.join(',');
         _name = quiz.name;
@@ -61,7 +64,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
         _optionsCount = quiz.settings.optionsCount;
         _totalWordsCount = getTotalWordsCount();
         _wordEditingController =
-        new TextEditingController(text: '$_totalWordsCount');
+          new TextEditingController(text: '${quiz.settings.wordsCount}');
       });
     }
     else {
@@ -70,7 +73,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
         _filesList = files.join(',');
         _totalWordsCount = getTotalWordsCount();
         _wordEditingController =
-        new TextEditingController(text: '$_totalWordsCount');
+          new TextEditingController(text: '$_totalWordsCount');
       });
     }
   }
@@ -81,9 +84,12 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
 
     if (oldWidget.totalWordsCount != getTotalWordsCount()) {
       setState(() {
+
+        print('Update');
+
         _totalWordsCount = getTotalWordsCount();
         _wordEditingController =
-        new TextEditingController(text: '$_totalWordsCount');
+          new TextEditingController(text: '$_totalWordsCount');
       });
     }
   }
@@ -171,7 +177,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
           leading: const Icon(Icons.grain),
           title: new TextFormField(
             keyboardType: TextInputType.number,
-            initialValue: '4',
+            initialValue: this.quiz == null ? '4' : '${this.quiz.settings.optionsCount}',
             decoration: new InputDecoration(
               labelText: WordStudyLocalizations.of(context).optionsCount,
               hintText: WordStudyLocalizations.of(context).optionsCount,

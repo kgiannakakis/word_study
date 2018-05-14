@@ -5,15 +5,19 @@ import 'package:word_study/actions/actions.dart';
 import 'package:word_study/containers/quiz_form_view_model.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/models/app_state.dart';
+import 'package:word_study/models/quiz.dart';
 import 'package:word_study/screens/quiz_settings_form.dart';
 
-class CreateQuiz extends StatelessWidget {
-  CreateQuiz({Key key}) : super(key: key);
+class EditQuiz extends StatelessWidget {
+  final Quiz quiz;
+
+  EditQuiz({this.quiz});
 
   @override
   Widget build(BuildContext context) {
     return new StoreBuilder<AppState>(
       onInit: (store) {
+        store.dispatch(new AddSelectedFileAction(quiz.filenames[0]));
         store.dispatch(new CalculateTotalWordsCountAction());
       },
       builder: (BuildContext context, Store<AppState> store) {
@@ -33,6 +37,7 @@ class CreateQuiz extends StatelessWidget {
                         totalWordsCount: vm.totalWordsCount,
                         name: vm.name,
                         files: vm.files,
+                        quiz: quiz
                       )
                   );
                 }

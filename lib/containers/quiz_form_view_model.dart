@@ -1,0 +1,38 @@
+import 'package:meta/meta.dart';
+import 'package:redux/redux.dart';
+import 'package:word_study/actions/actions.dart';
+import 'package:word_study/models/app_state.dart';
+import 'package:word_study/screens/quiz_settings_form.dart';
+
+class QuizFormViewModel {
+  final List<String> files;
+  final String name;
+  final GetTotalWordsCount getTotalWordsCount;
+  final int totalWordsCount;
+  final OnSaveCallback onSave;
+  final QuizExists quizExists;
+
+  QuizFormViewModel({
+    @required this.files,
+    @required this.name,
+    @required this.onSave,
+    @required this.getTotalWordsCount,
+    @required this.totalWordsCount,
+    @required this.quizExists
+  });
+
+  static QuizFormViewModel fromStore(Store<AppState> store) {
+    return new QuizFormViewModel(
+        files: store.state.selectedFiles,
+        name: store.state.selectedFiles.length > 0 ? store.state.selectedFiles[0] : '',
+        onSave: (quiz) {
+          store.dispatch(new AddQuizAction(quiz));
+        },
+        totalWordsCount: store.state.totalWordsCount,
+        getTotalWordsCount: () => store.state.totalWordsCount,
+        quizExists: (name) {
+          return store.state.quizzes.where((q) => q.name == name).length > 0;
+        }
+    );
+  }
+}
