@@ -7,8 +7,8 @@ final Reducer<List<Quiz>> quizzesReducer = combineReducers([
   new TypedReducer<List<Quiz>, DeleteQuizAction>(_deleteQuiz),
   new TypedReducer<List<Quiz>, QuizzesLoadedAction>(_setLoadedQuizzes),
   new TypedReducer<List<Quiz>, QuizzesNotLoadedAction>(_setNoQuizzes),
-  new TypedReducer<List<Quiz>, SetAddedQuizId>(_setAddedQuizId),
-  new TypedReducer<List<Quiz>, UpdateQuiz>(_updateQuiz)
+  new TypedReducer<List<Quiz>, SetAddedQuizIdAction>(_setAddedQuizId),
+  new TypedReducer<List<Quiz>, UpdateQuizAction>(_updateQuiz)
 ]);
 
 final Reducer<int> selectQuizReducer =
@@ -34,7 +34,7 @@ List<Quiz> _setNoQuizzes(List<Quiz> quizzes, QuizzesNotLoadedAction action) {
   return [];
 }
 
-List<Quiz> _setAddedQuizId(List<Quiz> quizzes, SetAddedQuizId action) {
+List<Quiz> _setAddedQuizId(List<Quiz> quizzes, SetAddedQuizIdAction action) {
   var newQuizzes = List<Quiz>.from(quizzes);
   for(int i=0; i<newQuizzes.length; i++) {
     if (newQuizzes[i].id == null) {
@@ -45,7 +45,7 @@ List<Quiz> _setAddedQuizId(List<Quiz> quizzes, SetAddedQuizId action) {
   return newQuizzes;
 }
 
-List<Quiz> _updateQuiz(List<Quiz> quizzes, UpdateQuiz action) {
+List<Quiz> _updateQuiz(List<Quiz> quizzes, UpdateQuizAction action) {
   var newQuizzes = List<Quiz>.from(quizzes);
   for(int i=0; i<newQuizzes.length; i++) {
     if (newQuizzes[i].id == null) {
