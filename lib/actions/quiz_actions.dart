@@ -39,3 +39,9 @@ class UpdateQuizAction {
 
   UpdateQuizAction(this.quiz);
 }
+
+class EditQuizAction {
+  final Quiz quiz;
+
+  EditQuizAction(this.quiz);
+}

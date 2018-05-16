@@ -2,9 +2,11 @@ import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/app_state.dart';
+import 'package:word_study/models/quiz.dart';
 import 'package:word_study/screens/quiz_settings_form.dart';
 
 class QuizFormViewModel {
+  final Quiz quiz;
   final List<String> files;
   final String name;
   final GetTotalWordsCount getTotalWordsCount;
@@ -18,7 +20,8 @@ class QuizFormViewModel {
     @required this.onSaveOrUpdate,
     @required this.getTotalWordsCount,
     @required this.totalWordsCount,
-    @required this.quizExists
+    @required this.quizExists,
+    @required this.quiz
   });
 
   static QuizFormViewModel fromStore(Store<AppState> store) {
@@ -32,6 +35,7 @@ class QuizFormViewModel {
     }
 
     return new QuizFormViewModel(
+        quiz: store.state.quiz,
         files: store.state.selectedFiles,
         name: name,
         onSaveOrUpdate: (quiz) {

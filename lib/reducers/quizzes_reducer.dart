@@ -37,7 +37,7 @@ List<Quiz> _setNoQuizzes(List<Quiz> quizzes, QuizzesNotLoadedAction action) {
 List<Quiz> _setAddedQuizId(List<Quiz> quizzes, SetAddedQuizIdAction action) {
   var newQuizzes = List<Quiz>.from(quizzes);
   for(int i=0; i<newQuizzes.length; i++) {
-    if (newQuizzes[i].id == null) {
+    if (newQuizzes[i].id == null || newQuizzes[i].id < 0) {
       newQuizzes[i] = newQuizzes[i].copyWith(id: action.id);
       break;
     }

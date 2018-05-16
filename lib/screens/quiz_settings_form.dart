@@ -68,6 +68,9 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
       });
     }
     else {
+
+      print('Quiz is null');
+
       setState(() {
         _inverse = false;
         _filesList = files.join(',');
@@ -232,7 +235,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
                               .redAccent));
                 }
                 else {
-                  if (quizExists(_name)) {
+                  if (quiz == null && quizExists(_name)) {
                     Scaffold.of(context).showSnackBar(
                         new SnackBar(
                             content: new Text(

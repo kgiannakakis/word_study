@@ -63,7 +63,8 @@ class FilesListScreen extends StatelessWidget {
                       new MaterialPageRoute(
                           builder: (context) {
                             if (vm.isEditing) {
-                              return new EditQuiz(quiz: vm.quiz);
+                              vm.onEditQuiz(new Quiz(filenames: <String>[vm.files[i].name]));
+                              return new EditQuiz();
                             }
                             return new CreateQuiz();
                           }
@@ -138,8 +139,8 @@ class _ViewModel {
   final Function(String) onAddSelectedFile;
   final Function(StoredFile) onRemove;
   final Function(StoredFile) onUndoRemove;
+  final Function(Quiz) onEditQuiz;
   final bool isEditing;
-  final Quiz quiz;
 
   _ViewModel({
     @required this.files,
@@ -148,7 +149,7 @@ class _ViewModel {
     @required this.onRemove,
     @required this.onUndoRemove,
     @required this.isEditing,
-    @required this.quiz
+    @required this.onEditQuiz
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -156,7 +157,6 @@ class _ViewModel {
       files: store.state.files,
       isLoading: store.state.isLoading,
       isEditing: store.state.selectedQuiz >= 0,
-      quiz: store.state.selectedQuiz >= 0 ? store.state.quizzes[store.state.selectedQuiz] : null,
       onAddSelectedFile: (file) {
         print('adding ${file}');
         store.dispatch(new AddSelectedFileAction(file));
@@ -168,6 +168,9 @@ class _ViewModel {
       onUndoRemove: (file) {
         store.dispatch(new RestoreFileAction(file));
       },
+      onEditQuiz: (quiz) {
+        store.dispatch(new EditQuizAction(quiz));
+      }
     );
   }
 }

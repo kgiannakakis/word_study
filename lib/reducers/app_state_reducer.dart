@@ -2,6 +2,7 @@ import 'package:word_study/models/app_state.dart';
 import 'package:word_study/reducers/files_reducer.dart';
 import 'package:word_study/reducers/google_drive_reducer.dart';
 import 'package:word_study/reducers/loading_reducer.dart';
+import 'package:word_study/reducers/quiz_reducer.dart';
 import 'package:word_study/reducers/quizzes_reducer.dart';
 import 'package:word_study/reducers/selected_files_reducer.dart';
 
@@ -13,6 +14,7 @@ AppState appReducer(AppState state, action) {
     selectedFiles: selectedFilesReducer(state.selectedFiles, action),
     files: filesReducer(state.files, action),
     totalWordsCount: totalWordsCountReducer(state.totalWordsCount, action),
-    googleDriveState: googleDriveReducer(state.googleDriveState, action)
+    googleDriveState: googleDriveReducer(state.googleDriveState, action),
+    quiz: quizReducer(state.quiz, action)
   );
 }

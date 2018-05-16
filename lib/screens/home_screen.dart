@@ -38,9 +38,10 @@ class HomeScreen extends StatelessWidget {
 
   void _gotoEditQuiz(BuildContext context, Quiz quiz, _ViewModel vm) async {
     vm.onClearSelectedFiles();
+    vm.onEditQuiz(quiz);
     Navigator
         .of(context)
-        .push(new MaterialPageRoute(builder: (context) => new EditQuiz(quiz: quiz,)));
+        .push(new MaterialPageRoute(builder: (context) => new EditQuiz()));
   }
 
   Widget _buildRow(_ViewModel vm, int i, BuildContext context) {
@@ -64,6 +65,7 @@ class HomeScreen extends StatelessWidget {
         key: new ObjectKey('quiz_$i'),
         onDismissed: (direction) {
           vm.onRemove(vm.quizzes[i]);
+          vm.onSelectQuiz(-1);
 
           Scaffold.of(context).showSnackBar(new SnackBar(
                 content: new Text(WordStudyLocalizations
@@ -177,6 +179,7 @@ class _ViewModel {
   final Function(Quiz) onRemove;
   final Function(Quiz) onUndoRemove;
   final Function onClearSelectedFiles;
+  final Function(Quiz) onEditQuiz;
   final Function(int) onSelectQuiz;
 
   _ViewModel(
@@ -186,7 +189,8 @@ class _ViewModel {
       @required this.onRemove,
       @required this.onUndoRemove,
       @required this.onClearSelectedFiles,
-      @required this.onSelectQuiz});
+      @required this.onSelectQuiz,
+      @required this.onEditQuiz});
 
   static _ViewModel fromStore(Store<AppState> store) {
     return new _ViewModel(
@@ -205,6 +209,11 @@ class _ViewModel {
       onSelectQuiz: (i) {
         store.dispatch(new SelectQuizAction(i));
       },
+      onEditQuiz: (quiz) {
+        store.dispatch(new AddSelectedFileAction(quiz.filenames[0]));
+        store.dispatch(new CalculateTotalWordsCountAction());
+        store.dispatch(new EditQuizAction(quiz));
+      }
     );
   }
 }
