@@ -32,7 +32,8 @@ class EditQuiz extends StatelessWidget {
                         totalWordsCount: vm.totalWordsCount,
                         name: vm.name,
                         files: vm.files,
-                        quiz: vm.quiz
+                        quiz: vm.quiz,
+                        onEditQuiz: vm.onEditQuiz,
                       )
                   );
                 }

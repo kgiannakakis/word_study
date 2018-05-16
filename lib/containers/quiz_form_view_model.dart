@@ -10,9 +10,10 @@ class QuizFormViewModel {
   final List<String> files;
   final String name;
   final GetTotalWordsCount getTotalWordsCount;
-  final int totalWordsCount;
+  final int totalWordsCount; // Do not remove this, it is needed to compare widget versions
   final OnSaveOrUpdateCallback onSaveOrUpdate;
   final QuizExists quizExists;
+  final Function(Quiz) onEditQuiz;
 
   QuizFormViewModel({
     @required this.files,
@@ -21,7 +22,8 @@ class QuizFormViewModel {
     @required this.getTotalWordsCount,
     @required this.totalWordsCount,
     @required this.quizExists,
-    @required this.quiz
+    @required this.quiz,
+    @required this.onEditQuiz
   });
 
   static QuizFormViewModel fromStore(Store<AppState> store) {
@@ -51,6 +53,7 @@ class QuizFormViewModel {
         quizExists: (name) {
           return store.state.quizzes.where((q) => q.name == name).length > 0;
         },
+        onEditQuiz: (quiz) => store.dispatch(new EditQuizAction(quiz)),
     );
   }
 }

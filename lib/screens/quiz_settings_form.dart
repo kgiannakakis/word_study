@@ -17,13 +17,15 @@ class QuizSettingsForm extends StatefulWidget {
   final int totalWordsCount;
   final String name;
   final Quiz quiz;
+  final Function(Quiz) onEditQuiz;
 
   QuizSettingsForm({@required this.onSaveOrUpdate, @required this.quizExists,
-    this.files, this.name, this.getTotalWordsCount, this.totalWordsCount, this.quiz});
+    this.files, this.name, this.getTotalWordsCount, this.totalWordsCount, this.quiz,
+    this.onEditQuiz});
 
   @override State createState() => new QuizSettingsScreenState(onSaveOrUpdate: onSaveOrUpdate,
       quizExists: quizExists, files: files, name: name, getTotalWordsCount: getTotalWordsCount,
-      quiz: quiz);
+      quiz: quiz, onEditQuiz: onEditQuiz);
 }
 
 class QuizSettingsScreenState extends State<QuizSettingsForm> {
@@ -36,9 +38,10 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
   final List<String> files;
   final String name;
   final Quiz quiz;
+  final Function(Quiz) onEditQuiz;
 
   QuizSettingsScreenState({@required this.onSaveOrUpdate, @required this.quizExists,
-                      this.files, this.name, this.getTotalWordsCount, this.quiz});
+                      this.files, this.name, this.getTotalWordsCount, this.quiz, this.onEditQuiz});
 
   String _filesList;
   String _name;
@@ -55,7 +58,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
     if (quiz != null) {
       setState(() {
 
-        print('Id: ${quiz.id}, words count: ${quiz.settings.wordsCount}');
+        print('Id: ${quiz.id}, words count: ${quiz.settings.wordsCount}, inverse: ${quiz.settings.inverse}');
 
         _inverse = quiz.settings.inverse;
         _filesList = quiz.filenames.join(',');
@@ -208,7 +211,12 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
           title: new Text(WordStudyLocalizations.of(context).inverse),
           trailing: new Checkbox(
               value: _inverse,
-              onChanged: (value) => setState(() {_inverse = value;})
+              onChanged: (value) => setState(() {
+                _inverse = value;
+                if (onEditQuiz != null) {
+                  onEditQuiz(new Quiz(settings: new QuizSettings(inverse: value)));
+                }
+              })
           ),
         ),
         const Divider(
