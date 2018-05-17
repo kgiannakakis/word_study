@@ -94,6 +94,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit label",
+    "type": "text",
+    "placeholders": {}
+  },
   "optionsCountMustBeLessThanWordsCount": "Options count must be less than words count",
   "@optionsCountMustBeLessThanWordsCount": {
     "description": "Options count must be less than words count validation message",

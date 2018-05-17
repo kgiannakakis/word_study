@@ -4,14 +4,15 @@ import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/containers/create_quiz.dart';
+import 'package:word_study/containers/edit_quiz.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/models/app_state.dart';
+import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/screens/file_downloader_screen.dart';
+import 'package:word_study/screens/list_item_text_style.dart';
 
 class FilesListScreen extends StatelessWidget {
-
-  final _biggerFont = const TextStyle(fontSize: 18.0);
 
   Widget _buildRow(BuildContext context, _ViewModel vm, int i) {
     return new Dismissible(
@@ -53,13 +54,20 @@ class FilesListScreen extends StatelessWidget {
         child: new Padding(
             padding: const EdgeInsets.all(16.0),
             child: new ListTile(
-                title: new Text(vm.files[i].name, style: _biggerFont),
+                title: new Text(vm.files[i].name,
+                    style: ListItemTextStyle.display5(context)),
                 subtitle: new Text(vm.files[i].created.toString()),
                 onTap: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).pushReplacement(
                       new MaterialPageRoute(
-                          builder: (context) => new CreateQuiz()
+                          builder: (context) {
+                            if (vm.isEditing) {
+                              vm.onEditQuiz(new Quiz(filenames: <String>[vm.files[i].name]));
+                              return new EditQuiz();
+                            }
+                            return new CreateQuiz();
+                          }
                       )
                   );
                   vm.onAddSelectedFile(vm.files[i].name);
@@ -110,6 +118,7 @@ class FilesListScreen extends StatelessWidget {
             return _buildRow(context, vm, index);
           }),
           floatingActionButton: new FloatingActionButton(
+            heroTag: '__AddFileTag__',
             onPressed: () {
               Navigator.of(context).push(
                   new MaterialPageRoute(
@@ -130,6 +139,8 @@ class _ViewModel {
   final Function(String) onAddSelectedFile;
   final Function(StoredFile) onRemove;
   final Function(StoredFile) onUndoRemove;
+  final Function(Quiz) onEditQuiz;
+  final bool isEditing;
 
   _ViewModel({
     @required this.files,
@@ -137,13 +148,17 @@ class _ViewModel {
     @required this.onAddSelectedFile,
     @required this.onRemove,
     @required this.onUndoRemove,
+    @required this.isEditing,
+    @required this.onEditQuiz
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return new _ViewModel(
       files: store.state.files,
       isLoading: store.state.isLoading,
+      isEditing: store.state.selectedQuiz >= 0,
       onAddSelectedFile: (file) {
+        print('adding ${file}');
         store.dispatch(new AddSelectedFileAction(file));
         store.dispatch(new CalculateTotalWordsCountAction());
       },
@@ -153,6 +168,9 @@ class _ViewModel {
       onUndoRemove: (file) {
         store.dispatch(new RestoreFileAction(file));
       },
+      onEditQuiz: (quiz) {
+        store.dispatch(new EditQuizAction(quiz));
+      }
     );
   }
 }

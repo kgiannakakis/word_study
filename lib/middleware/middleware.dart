@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
-import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/models/google_drive_file.dart';
 import 'package:word_study/models/google_drive_state.dart';
+import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/services/file_service.dart';
 import 'package:word_study/services/google_drive_service.dart';
@@ -22,6 +22,7 @@ List<Middleware<AppState>> createMiddleware([
   final loadQuizzes = _createLoadQuizzes(quizProvider);
   final addQuiz = _createAddQuiz(quizProvider);
   final deleteQuiz = _createDeleteQuiz(quizProvider);
+  final updateQuiz = _createUpdateQuiz(quizProvider);
   final calculateWordCount = _createCalculateWordCount();
   final loadFiles = _createLoadFiles();
   final deleteFile = _deleteFile(fileService);
@@ -37,6 +38,7 @@ List<Middleware<AppState>> createMiddleware([
     new TypedMiddleware<AppState, LoadQuizzesAction>(loadQuizzes),
     new TypedMiddleware<AppState, AddQuizAction>(addQuiz),
     new TypedMiddleware<AppState, DeleteQuizAction>(deleteQuiz),
+    new TypedMiddleware<AppState, UpdateQuizAction>(updateQuiz),
     new TypedMiddleware<AppState, QuizzesLoadedAction>(saveQuizzes),
     new TypedMiddleware<AppState, CalculateTotalWordsCountAction>(calculateWordCount),
     new TypedMiddleware<AppState, LoadFilesAction>(loadFiles),
@@ -78,6 +80,9 @@ Middleware<AppState> _createAddQuiz(QuizProvider quizProvider) {
         print('Failed to add quiz!');
         store.dispatch(LoadQuizzesAction);
       }
+      else {
+        store.dispatch(SetAddedQuizIdAction(id));
+      }
     }
     );
   };
@@ -94,6 +99,22 @@ Middleware<AppState> _createDeleteQuiz(QuizProvider quizProvider) {
       if (count <=0 ) {
         print('Failed to delete quiz $quizName');
         store.dispatch(LoadQuizzesAction);
+      }
+    }
+    );
+  };
+}
+
+Middleware<AppState> _createUpdateQuiz(QuizProvider quizProvider) {
+  return (Store<AppState> store, action, NextDispatcher next) {
+    next(action);
+
+    Quiz quiz = (action as UpdateQuizAction).quiz;
+
+    quizProvider.updateQuiz(quiz)
+        .then((count) {
+      if (count < 1) {
+        print('Failed to update quiz ${quiz}');
       }
     }
     );

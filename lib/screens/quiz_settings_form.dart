@@ -1,47 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:word_study/localizations.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/screens/files_list_screen.dart';
-import 'package:word_study/localizations.dart';
 
-typedef OnSaveCallback = Function(Quiz quiz);
+typedef OnSaveOrUpdateCallback = Function(Quiz quiz);
 typedef QuizExists = bool Function(String name);
 typedef GetTotalWordsCount = int Function();
 
 class QuizSettingsForm extends StatefulWidget {
-  final OnSaveCallback onSave;
+  final OnSaveOrUpdateCallback onSaveOrUpdate;
   final QuizExists quizExists;
   final List<String> files;
   final GetTotalWordsCount getTotalWordsCount;
   final int totalWordsCount;
   final String name;
+  final Quiz quiz;
+  final Function(Quiz) onEditQuiz;
 
-  QuizSettingsForm({@required this.onSave, @required this.quizExists,
-    this.files, this.name, this.getTotalWordsCount, this.totalWordsCount});
+  QuizSettingsForm({@required this.onSaveOrUpdate, @required this.quizExists,
+    this.files, this.name, this.getTotalWordsCount, this.totalWordsCount, this.quiz,
+    this.onEditQuiz});
 
-  @override State createState() => new QuizSettingsScreenState(onSave: onSave,
-      quizExists: quizExists, files: files, name: name, getTotalWordsCount: getTotalWordsCount);
+  @override State createState() => new QuizSettingsScreenState(onSaveOrUpdate: onSaveOrUpdate,
+      quizExists: quizExists, files: files, name: name, getTotalWordsCount: getTotalWordsCount,
+      quiz: quiz, onEditQuiz: onEditQuiz);
 }
 
 class QuizSettingsScreenState extends State<QuizSettingsForm> {
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-  final OnSaveCallback onSave;
+  final OnSaveOrUpdateCallback onSaveOrUpdate;
   final QuizExists quizExists;
   final GetTotalWordsCount getTotalWordsCount;
   final List<String> files;
   final String name;
+  final Quiz quiz;
+  final Function(Quiz) onEditQuiz;
 
-  QuizSettingsScreenState({@required this.onSave, @required this.quizExists,
-                      this.files, this.name, this.getTotalWordsCount});
+  QuizSettingsScreenState({@required this.onSaveOrUpdate, @required this.quizExists,
+                      this.files, this.name, this.getTotalWordsCount, this.quiz, this.onEditQuiz});
 
   String _filesList;
   String _name;
   int _wordsCount;
   int _optionsCount;
-  int totalWordsCount;
+  int _totalWordsCount;
   bool _inverse;
 
   TextEditingController _wordEditingController;
@@ -49,12 +55,33 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
   @override void initState() {
     super.initState();
 
-    setState(() {
-      _inverse  = false;
-      _filesList = files.join(',');
-      totalWordsCount = getTotalWordsCount();
-      _wordEditingController = new TextEditingController(text: '$totalWordsCount');
-    });
+    if (quiz != null) {
+      setState(() {
+
+        print('Id: ${quiz.id}, words count: ${quiz.settings.wordsCount}, inverse: ${quiz.settings.inverse}');
+
+        _inverse = quiz.settings.inverse;
+        _filesList = quiz.filenames.join(',');
+        _name = quiz.name;
+        _wordsCount = quiz.settings.wordsCount;
+        _optionsCount = quiz.settings.optionsCount;
+        _totalWordsCount = getTotalWordsCount();
+        _wordEditingController =
+          new TextEditingController(text: '${quiz.settings.wordsCount}');
+      });
+    }
+    else {
+
+      print('Quiz is null');
+
+      setState(() {
+        _inverse = false;
+        _filesList = files.join(',');
+        _totalWordsCount = getTotalWordsCount();
+        _wordEditingController =
+          new TextEditingController(text: '$_totalWordsCount');
+      });
+    }
   }
 
   @override
@@ -63,9 +90,12 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
 
     if (oldWidget.totalWordsCount != getTotalWordsCount()) {
       setState(() {
-        totalWordsCount = getTotalWordsCount();
+
+        print('Update');
+
+        _totalWordsCount = getTotalWordsCount();
         _wordEditingController =
-        new TextEditingController(text: '$totalWordsCount');
+          new TextEditingController(text: '$_totalWordsCount');
       });
     }
   }
@@ -139,8 +169,8 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
               if (v < 1) {
                 return WordStudyLocalizations.of(context).pleaseEnterANumberGreaterThan0;
               }
-              if (v > totalWordsCount) {
-                return WordStudyLocalizations.of(context).pleaseEnterANumberLessThan(totalWordsCount);
+              if (v > _totalWordsCount) {
+                return WordStudyLocalizations.of(context).pleaseEnterANumberLessThan(_totalWordsCount);
               }
             },
             onSaved: (value) {
@@ -153,7 +183,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
           leading: const Icon(Icons.grain),
           title: new TextFormField(
             keyboardType: TextInputType.number,
-            initialValue: '4',
+            initialValue: this.quiz == null ? '4' : '${this.quiz.settings.optionsCount}',
             decoration: new InputDecoration(
               labelText: WordStudyLocalizations.of(context).optionsCount,
               hintText: WordStudyLocalizations.of(context).optionsCount,
@@ -166,8 +196,8 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
               if (v < 1) {
                 return WordStudyLocalizations.of(context).pleaseEnterANumberGreaterThan0;
               }
-              if (v > totalWordsCount) {
-                return WordStudyLocalizations.of(context).pleaseEnterANumberLessThan(totalWordsCount);
+              if (v > _totalWordsCount) {
+                return WordStudyLocalizations.of(context).pleaseEnterANumberLessThan(_totalWordsCount);
               }
             },
             onSaved: (value) {
@@ -181,7 +211,12 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
           title: new Text(WordStudyLocalizations.of(context).inverse),
           trailing: new Checkbox(
               value: _inverse,
-              onChanged: (value) => setState(() {_inverse = value;})
+              onChanged: (value) => setState(() {
+                _inverse = value;
+                if (onEditQuiz != null) {
+                  onEditQuiz(new Quiz(settings: new QuizSettings(inverse: value)));
+                }
+              })
           ),
         ),
         const Divider(
@@ -191,7 +226,9 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
           width: screenSize.width - 20.0,
           child: new RaisedButton(
             child: new Text(
-                WordStudyLocalizations.of(context).create
+                quiz == null ?
+                    WordStudyLocalizations.of(context).create :
+                    WordStudyLocalizations.of(context).edit
             ),
             onPressed: () {
               if (_formKey.currentState.validate()) {
@@ -206,7 +243,7 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
                               .redAccent));
                 }
                 else {
-                  if (quizExists(_name)) {
+                  if (quiz == null && quizExists(_name)) {
                     Scaffold.of(context).showSnackBar(
                         new SnackBar(
                             content: new Text(
@@ -215,12 +252,14 @@ class QuizSettingsScreenState extends State<QuizSettingsForm> {
                                 .redAccent));
                   }
                   else {
-                    Quiz quiz = new Quiz(name: _name,
+                    Quiz quiz = new Quiz(
+                        id: this.quiz == null ? -1: this.quiz.id,
+                        name: _name,
                         filenames: files,
                         settings: new QuizSettings(wordsCount: _wordsCount,
                             optionsCount: _optionsCount,
                             inverse: _inverse));
-                    onSave(quiz);
+                    onSaveOrUpdate(quiz);
                     Navigator.of(context).pop();
                   }
                 }

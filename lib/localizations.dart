@@ -143,6 +143,14 @@ class WordStudyLocalizations {
     );
   }
 
+  String get edit {
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: 'Edit label',
+    );
+  }
+
   String get optionsCountMustBeLessThanWordsCount {
     return Intl.message(
       'Options count must be less than words count',

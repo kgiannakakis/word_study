@@ -25,8 +25,6 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
 
   final List<OptionWidget> _options = <OptionWidget>[];
 
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-
   WordStudyState(this.quizInstance, this.currentWord);
 
   @override
@@ -197,11 +195,11 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
         children: <Widget>[new ListView.builder(
           itemCount: (_quizWord.options.length + 1) * 2,
           itemBuilder: (BuildContext context, int position) {
-            if (position.isEven && position > 0) return new Divider();
+            if (position.isEven && position > 0) return new Divider(height: 0.0,);
 
             final int index = (position + 1) ~/ 2;
 
-            return _buildRow(index);
+            return _buildRow(context, index);
           }),
           new Align(
             alignment: new Alignment(0.0, 1.0),
@@ -227,7 +225,7 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildRow(int i) {
+  Widget _buildRow(BuildContext context, int i) {
 
     if (i == 0) {
       return new Container(
@@ -235,7 +233,10 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
         child: new Padding(
             padding: const EdgeInsets.all(16.0),
             child: new Center(
-                child: new Text(_quizWord.word, style: _biggerFont)
+                child: new Text(
+                    _quizWord.word,
+                    style: Theme.of(context).textTheme.title
+                )
             )
         ),
     );
