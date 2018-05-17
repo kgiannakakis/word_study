@@ -1,27 +1,18 @@
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:word_study/models/google_drive_file.dart';
-
-enum GoogleDriveServiceMessage {
-  starting,
-  failedToConnect,
-  folderFound,
-  folderNotFound,
-  folderEmpty,
-  loadingFiles,
-  error
-}
+import 'package:word_study/models/cloud_storage_file.dart';
+import 'package:word_study/models/cloud_storage_message.dart';
 
 class GoogleDriveState {
-  final GoogleDriveServiceMessage message;
-  final List<GoogleDriveFile> files;
+  final CloudStorageMessage message;
+  final List<CloudStorageFile> files;
   final GoogleSignInAccount currentUser;
 
-  const GoogleDriveState({this.message = GoogleDriveServiceMessage.starting,
+  const GoogleDriveState({this.message = CloudStorageMessage.starting,
                           this.files = const [],
                           this.currentUser});
 
-  GoogleDriveState copyWith({GoogleDriveServiceMessage message,
-    List<GoogleDriveFile> files,
+  GoogleDriveState copyWith({CloudStorageMessage message,
+    List<CloudStorageFile> files,
     GoogleSignInAccount currentUser}) {
       return new GoogleDriveState(
         message: message ?? this.message,

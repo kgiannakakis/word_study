@@ -1,0 +1,5 @@
+
+
+enum CloudStorageType {
+  GoogleDrive, DropBox
+}

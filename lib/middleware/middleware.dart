@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/app_state.dart';
-import 'package:word_study/models/google_drive_file.dart';
-import 'package:word_study/models/google_drive_state.dart';
+import 'package:word_study/models/cloud_storage_file.dart';
+import 'package:word_study/models/cloud_storage_message.dart';
+import 'package:word_study/models/cloud_storage_type.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/stored_file.dart';
+import 'package:word_study/services/dropbox_service.dart';
 import 'package:word_study/services/file_service.dart';
 import 'package:word_study/services/google_drive_service.dart';
-import 'package:word_study/services/dropbox_service.dart';
 import 'package:word_study/words/file_word_provider.dart';
 import 'package:word_study/words/quiz_provider.dart';
 
@@ -27,12 +28,11 @@ List<Middleware<AppState>> createMiddleware([
   final loadFiles = _createLoadFiles();
   final deleteFile = _deleteFile(fileService);
   final restoreFile = _restoreFile(fileService);
-  final googleDriveInit = _googleDriveInit(googleDriveService);
-  final googleDriveSignIn = _googleDriveSignIn(googleDriveService);
-  final googleDriveSignOut = _googleDriveSignOut(googleDriveService);
-  final googleDriveRefreshFiles = _googleDriveRefreshFiles(googleDriveService);
-  final googleDriveDownloadFile = _googleDriveDownloadFile(googleDriveService);
-  final dropBoxInit = _dropBoxInit();
+  final cloudStorageInit = _cloudStorageInit(googleDriveService);
+  final cloudStorageSignIn = _cloudStorageSignIn(googleDriveService);
+  final cloudStorageSignOut = _cloudStorageSignOut(googleDriveService);
+  final cloudStorageRefreshFiles = _cloudStorageRefreshFiles(googleDriveService);
+  final cloudStorageDownloadFile = _cloudStorageDownloadFile(googleDriveService);
 
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, LoadQuizzesAction>(loadQuizzes),
@@ -44,12 +44,11 @@ List<Middleware<AppState>> createMiddleware([
     new TypedMiddleware<AppState, LoadFilesAction>(loadFiles),
     new TypedMiddleware<AppState, DeleteFileAction>(deleteFile),
     new TypedMiddleware<AppState, RestoreFileAction>(restoreFile),
-    new TypedMiddleware<AppState, GoogleDriveInitAction>(googleDriveInit),
-    new TypedMiddleware<AppState, GoogleDriveSignInAction>(googleDriveSignIn),
-    new TypedMiddleware<AppState, GoogleDriveSignOutAction>(googleDriveSignOut),
-    new TypedMiddleware<AppState, GoogleDriveRefreshFilesAction>(googleDriveRefreshFiles),
-    new TypedMiddleware<AppState, GoogleDriveDownloadFileAction>(googleDriveDownloadFile),
-    new TypedMiddleware<AppState, DropBoxInitAction>(dropBoxInit),
+    new TypedMiddleware<AppState, CloudStorageInitAction>(cloudStorageInit),
+    new TypedMiddleware<AppState, CloudStorageSignInAction>(cloudStorageSignIn),
+    new TypedMiddleware<AppState, CloudStorageSignOutAction>(cloudStorageSignOut),
+    new TypedMiddleware<AppState, CloudStorageRefreshFilesAction>(cloudStorageRefreshFiles),
+    new TypedMiddleware<AppState, CloudStorageDownloadFileAction>(cloudStorageDownloadFile),
   ];
 }
 
@@ -205,84 +204,118 @@ Middleware<AppState> _restoreFile(FileService fileService) {
   };
 }
 
-Middleware<AppState> _googleDriveInit(GoogleDriveService googleDriveService) {
+Middleware<AppState> _cloudStorageInit(GoogleDriveService googleDriveService) {
   return (Store<AppState> store, action, NextDispatcher next) {
 
-    googleDriveService.onUpdateState = ({GoogleDriveServiceMessage msg,
-                                         List<GoogleDriveFile> files}) {
-      if (files != null) {
-        store.dispatch(new SetGoogleDriveFilesAction(files));
-      }
-      if (msg != null) {
-        store.dispatch(new SetGoogleDriveMessageAction(msg));
-      }
-    };
-    googleDriveService.onUpdateUser = (user) {
-      store.dispatch(new SetGoogleDriveUserAction(user));
-      if (user != null) {
+    var type = (action as CloudStorageInitAction).type;
+
+    switch(type) {
+      case CloudStorageType.GoogleDrive:
+        googleDriveService.onUpdateState = ({CloudStorageMessage msg,
+          List<CloudStorageFile> files}) {
+          if (files != null) {
+            store.dispatch(new SetCloudStorageFilesAction(type, files));
+          }
+          if (msg != null) {
+            store.dispatch(new SetCloudStorageMessageAction(type, msg));
+          }
+        };
+        googleDriveService.onUpdateUser = (user) {
+          store.dispatch(new SetCloudStorageUserAction(type, user));
+          if (user != null) {
+            googleDriveService.initGetFiles();
+          }
+        };
+        googleDriveService.init();
+        break;
+      case CloudStorageType.DropBox:
+        DropBoxService dropBoxService = new DropBoxService();
+
+        dropBoxService.init().then((_) => next(action));
+        break;
+    }
+
+    next(action);
+  };
+}
+
+Middleware<AppState> _cloudStorageSignIn(GoogleDriveService googleDriveService) {
+  return (Store<AppState> store, action, NextDispatcher next) {
+
+    var type = (action as CloudStorageSignInAction).type;
+
+    switch(type) {
+      case CloudStorageType.GoogleDrive:
+        googleDriveService.handleSignIn();
+        break;
+      case CloudStorageType.DropBox:
+        break;
+    }
+
+    next(action);
+  };
+}
+
+Middleware<AppState> _cloudStorageSignOut(GoogleDriveService googleDriveService) {
+  return (Store<AppState> store, action, NextDispatcher next) {
+
+    var type = (action as CloudStorageSignOutAction).type;
+
+    switch(type) {
+      case CloudStorageType.GoogleDrive:
+        googleDriveService.handleSignOut();
+        break;
+      case CloudStorageType.DropBox:
+        break;
+    }
+
+    next(action);
+  };
+}
+
+Middleware<AppState> _cloudStorageRefreshFiles(GoogleDriveService googleDriveService) {
+  return (Store<AppState> store, action, NextDispatcher next) {
+
+    var type = (action as CloudStorageRefreshFilesAction).type;
+
+    switch(type) {
+      case CloudStorageType.GoogleDrive:
         googleDriveService.initGetFiles();
-      }
-    };
-    googleDriveService.init();
+        break;
+      case CloudStorageType.DropBox:
+        break;
+    }
 
     next(action);
   };
 }
 
-Middleware<AppState> _googleDriveSignIn(GoogleDriveService googleDriveService) {
+Middleware<AppState> _cloudStorageDownloadFile(GoogleDriveService googleDriveService) {
   return (Store<AppState> store, action, NextDispatcher next) {
 
-    googleDriveService.handleSignIn();
+    var type = (action as CloudStorageDownloadFileAction).type;
+    var file = (action as CloudStorageDownloadFileAction).file;
+
+    switch(type) {
+      case CloudStorageType.GoogleDrive:
+        googleDriveService.downloadFile(file).then((ok) {
+          if (ok) {
+            (action as CloudStorageDownloadFileAction).onDownloaded();
+            store.dispatch(new AddFileAction(
+                new StoredFile(
+                    name: file.name,
+                    created: DateTime.now()
+                )
+            ));
+          } else {
+            (action as CloudStorageDownloadFileAction).onDownloadFailed();
+          }
+        });
+        break;
+      case CloudStorageType.DropBox:
+        break;
+    }
 
     next(action);
-  };
-}
-
-Middleware<AppState> _googleDriveSignOut(GoogleDriveService googleDriveService) {
-  return (Store<AppState> store, action, NextDispatcher next) {
-
-    googleDriveService.handleSignOut();
-
-    next(action);
-  };
-}
-
-Middleware<AppState> _googleDriveRefreshFiles(GoogleDriveService googleDriveService) {
-  return (Store<AppState> store, action, NextDispatcher next) {
-
-    googleDriveService.initGetFiles();
-
-    next(action);
-  };
-}
-
-Middleware<AppState> _googleDriveDownloadFile(GoogleDriveService googleDriveService) {
-  return (Store<AppState> store, action, NextDispatcher next) {
-
-    GoogleDriveFile file = (action as GoogleDriveDownloadFileAction).file;
-    googleDriveService.downloadFile(file).then((ok) {
-      if (ok) {
-        (action as GoogleDriveDownloadFileAction).onDownloaded();
-        store.dispatch(new AddFileAction(
-            new StoredFile(
-              name: file.name,
-              created: DateTime.now()
-            )
-        ));
-      } else {
-        (action as GoogleDriveDownloadFileAction).onDownloadFailed();
-      }
-    });
-
-    next(action);
-  };
-}
-
-Middleware<AppState> _dropBoxInit() {
-  return (Store<AppState> store, action, NextDispatcher next) {
-
-    DropBoxService dropBoxService = new DropBoxService();
-
-    dropBoxService.init().then((_) => next(action));
   };
 }

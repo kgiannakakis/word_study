@@ -3,19 +3,21 @@ import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/models/app_state.dart';
-import 'package:word_study/models/google_drive_file.dart';
+import 'package:word_study/models/cloud_storage_file.dart';
+import 'package:word_study/models/cloud_storage_message.dart';
+import 'package:word_study/models/cloud_storage_type.dart';
 import 'package:word_study/models/google_drive_state.dart';
 import 'package:word_study/models/stored_file.dart';
 
 class FileDownloaderViewModel {
   final Function(StoredFile) onAddFile;
-  final Function(GoogleDriveServiceMessage) onSetMessage;
-  final Function(List<GoogleDriveFile>) onSetFiles;
-  final Function(GoogleSignInAccount) onSetCurrentUser;
-  final Function onSignIn;
-  final Function onSignOut;
-  final Function onRefreshFiles;
-  final Function(GoogleDriveFile, Function, Function) onDownloadFile;
+  final Function(CloudStorageType, CloudStorageMessage) onSetMessage;
+  final Function(CloudStorageType, List<CloudStorageFile>) onSetFiles;
+  final Function(CloudStorageType, GoogleSignInAccount) onSetCurrentUser;
+  final Function(CloudStorageType) onSignIn;
+  final Function(CloudStorageType) onSignOut;
+  final Function(CloudStorageType) onRefreshFiles;
+  final Function(CloudStorageType, CloudStorageFile, Function, Function) onDownloadFile;
   final GoogleDriveState googleDriveState;
 
   FileDownloaderViewModel({
@@ -33,14 +35,14 @@ class FileDownloaderViewModel {
   static FileDownloaderViewModel fromStore(Store<AppState> store) {
     return new FileDownloaderViewModel(
         onAddFile: (file) => store.dispatch(new AddFileAction(file)),
-        onSetMessage: (msg) => store.dispatch(new SetGoogleDriveMessageAction(msg)),
-        onSetFiles: (files) => store.dispatch(new SetGoogleDriveFilesAction(files)),
-        onSetCurrentUser: (user) => store.dispatch(new SetGoogleDriveUserAction(user)),
-        onSignIn: () => store.dispatch(new GoogleDriveSignInAction()),
-        onSignOut: () => store.dispatch(new GoogleDriveSignOutAction()),
-        onRefreshFiles: () => store.dispatch(new GoogleDriveRefreshFilesAction()),
-        onDownloadFile: (file, onDownloaded, onDownloadFailed) =>
-            store.dispatch(new GoogleDriveDownloadFileAction(file, onDownloaded, onDownloadFailed)),
+        onSetMessage: (type, msg) => store.dispatch(new SetCloudStorageMessageAction(type, msg)),
+        onSetFiles: (type, files) => store.dispatch(new SetCloudStorageFilesAction(type, files)),
+        onSetCurrentUser: (type, user) => store.dispatch(new SetCloudStorageUserAction(type, user)),
+        onSignIn: (type) => store.dispatch(new CloudStorageSignInAction(type)),
+        onSignOut: (type) => store.dispatch(new CloudStorageSignOutAction(type)),
+        onRefreshFiles: (type) => store.dispatch(new CloudStorageRefreshFilesAction(type)),
+        onDownloadFile: (type, file, onDownloaded, onDownloadFailed) =>
+            store.dispatch(new CloudStorageDownloadFileAction(type, file, onDownloaded, onDownloadFailed)),
         googleDriveState: store.state.googleDriveState
     );
   }

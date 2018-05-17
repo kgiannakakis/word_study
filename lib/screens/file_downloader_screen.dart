@@ -5,9 +5,10 @@ import 'package:redux/redux.dart';
 import 'package:word_study/actions/actions.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/models/app_state.dart';
+import 'package:word_study/models/cloud_storage_type.dart';
+import 'package:word_study/screens/dropbox_downloader_widget.dart';
 import 'package:word_study/screens/file_downloader_view_model.dart';
 import 'package:word_study/screens/google_drive_downloader_widget.dart';
-import 'package:word_study/screens/dropbox_downloader_widget.dart';
 import 'package:word_study/screens/web_downloader_widget.dart';
 
 class FileDownloaderScreen extends StatelessWidget {
@@ -19,8 +20,8 @@ class FileDownloaderScreen extends StatelessWidget {
         return FileDownloaderViewModel.fromStore(store);
       },
       onInit: (store) {
-        store.dispatch(new GoogleDriveInitAction());
-        store.dispatch(new DropBoxInitAction());
+        store.dispatch(new CloudStorageInitAction(CloudStorageType.GoogleDrive));
+        //store.dispatch(new CloudStorageInitAction(CloudStorageType.DropBox));
       },
       builder: (BuildContext context, FileDownloaderViewModel viewModel) {
         return new DefaultTabController(

@@ -3,15 +3,15 @@ import 'dart:convert' show json;
 
 import 'package:google_sign_in/google_sign_in.dart';
 import "package:http/http.dart" as http;
-import 'package:word_study/models/google_drive_file.dart';
-import 'package:word_study/models/google_drive_state.dart';
+import 'package:word_study/models/cloud_storage_file.dart';
+import 'package:word_study/models/cloud_storage_message.dart';
 import 'package:word_study/services/file_service.dart';
 import 'package:word_study/words/web_wordprovider.dart';
 
 const String googleDriveAppFolderName = 'Word Study';
 
-typedef onGoogleDriveUpdateState = void Function({GoogleDriveServiceMessage msg,
-                                                  List<GoogleDriveFile> files});
+typedef onGoogleDriveUpdateState = void Function({CloudStorageMessage msg,
+                                                  List<CloudStorageFile> files});
 
 typedef onGoogleDriveUserUpdated = void Function(GoogleSignInAccount user);
 
@@ -26,6 +26,7 @@ class GoogleDriveService {
   onGoogleDriveUserUpdated onUpdateUser;
 
   void init() {
+
     if (!isInit) {
       _googleSignIn = new GoogleSignIn(
         scopes: <String>[
@@ -47,7 +48,7 @@ class GoogleDriveService {
   }
 
   Future<Null> initGetFiles() async {
-    onUpdateState(msg: GoogleDriveServiceMessage.loadingFiles, files: []);
+    onUpdateState(msg: CloudStorageMessage.loadingFiles, files: []);
 
     final String q = Uri.encodeComponent(
         'mimeType=\'application/vnd.google-apps.folder\' and name=\'Word Study\'');
@@ -56,14 +57,14 @@ class GoogleDriveService {
       headers: await _currentUser.authHeaders,
     );
     if (response.statusCode != 200) {
-      onUpdateState(msg: GoogleDriveServiceMessage.folderNotFound);
+      onUpdateState(msg: CloudStorageMessage.folderNotFound);
       print('Google Drive API ${response.statusCode} response: ${response.body}');
       return;
     }
     final Map<String, dynamic> data = json.decode(response.body);
 
     if (data['files'].length == 0) {
-      onUpdateState(msg: GoogleDriveServiceMessage.folderFound);
+      onUpdateState(msg: CloudStorageMessage.folderFound);
     }
     else {
       getFilesList(data);
@@ -74,9 +75,9 @@ class GoogleDriveService {
     final String appFolder = _pickFirstFile(data);
 
     if (appFolder != null) {
-      onUpdateState(msg: GoogleDriveServiceMessage.folderFound);
+      onUpdateState(msg: CloudStorageMessage.folderFound);
     } else {
-      onUpdateState(msg: GoogleDriveServiceMessage.folderNotFound);
+      onUpdateState(msg: CloudStorageMessage.folderNotFound);
     }
 
     final Map<String, dynamic> folder0 = data['files'][0];
@@ -89,15 +90,15 @@ class GoogleDriveService {
     final Map<String, dynamic> filesData = json.decode(response.body);
 
     if (filesData['files'] == null) {
-      onUpdateState(msg: GoogleDriveServiceMessage.error);
+      onUpdateState(msg: CloudStorageMessage.error);
     }
     else if (filesData['files'].length == 0) {
-      onUpdateState(msg: GoogleDriveServiceMessage.folderEmpty);
+      onUpdateState(msg: CloudStorageMessage.folderEmpty);
     }
     else {
-      var files = <GoogleDriveFile>[];
+      var files = <CloudStorageFile>[];
       for(int i=0; i<filesData['files'].length; i++) {
-        files.add(new GoogleDriveFile(filesData['files'][i]['name'],
+        files.add(new CloudStorageFile(filesData['files'][i]['name'],
             filesData['files'][i]['id']));
       }
       onUpdateState(files: files);
@@ -118,7 +119,7 @@ class GoogleDriveService {
     return null;
   }
 
-  Future<bool> downloadFile(GoogleDriveFile file) async {
+  Future<bool> downloadFile(CloudStorageFile file) async {
     final FileService fileService = new FileService();
 
     var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file.id}?alt=media';
@@ -134,6 +135,7 @@ class GoogleDriveService {
   }
 
   Future<Null> handleSignIn() async {
+
     try {
       await _googleSignIn.signIn();
     } catch (error) {
@@ -142,6 +144,7 @@ class GoogleDriveService {
   }
 
   Future<Null> handleSignOut() async {
+
     _googleSignIn.disconnect();
   }
 }

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:word_study/localizations.dart';
-import 'package:word_study/models/google_drive_file.dart';
-import 'package:word_study/models/google_drive_state.dart';
+import 'package:word_study/models/cloud_storage_file.dart';
+import 'package:word_study/models/cloud_storage_message.dart';
+import 'package:word_study/models/cloud_storage_type.dart';
 import 'package:word_study/screens/file_downloader_view_model.dart';
 import 'package:word_study/services/google_drive_service.dart';
 
@@ -14,46 +15,46 @@ class DropBoxDownloader extends StatelessWidget {
 
   DropBoxDownloader({@required this.viewModel});
 
-  void onUpdateState({GoogleDriveServiceMessage msg, List<GoogleDriveFile> files}) {
+  void onUpdateState({CloudStorageMessage msg, List<CloudStorageFile> files}) {
     if (msg != null) {
-      viewModel.onSetMessage(msg);
+      viewModel.onSetMessage(CloudStorageType.DropBox, msg);
     }
     if (files != null) {
-      viewModel.onSetFiles(files);
+      viewModel.onSetFiles(CloudStorageType.DropBox, files);
     }
   }
 
-  String _getMessageText(BuildContext context, GoogleDriveServiceMessage msg) {
+  String _getMessageText(BuildContext context, CloudStorageMessage msg) {
     String m = '';
     if (msg != null) {
       switch (msg) {
-        case GoogleDriveServiceMessage.starting:
+        case CloudStorageMessage.starting:
           m = '';
           break;
-        case GoogleDriveServiceMessage.failedToConnect:
+        case CloudStorageMessage.failedToConnect:
           m = WordStudyLocalizations
               .of(context)
               .failedToConnectToGoogleDrive;
           break;
-        case GoogleDriveServiceMessage.folderNotFound:
+        case CloudStorageMessage.folderNotFound:
           m = WordStudyLocalizations.of(context).folderFound(
               googleDriveAppFolderName);
           break;
-        case GoogleDriveServiceMessage.folderFound:
+        case CloudStorageMessage.folderFound:
           m = WordStudyLocalizations.of(context).folderFound(
               googleDriveAppFolderName);
           break;
-        case GoogleDriveServiceMessage.folderEmpty:
+        case CloudStorageMessage.folderEmpty:
           m = WordStudyLocalizations
               .of(context)
               .folderIsEmpty;
           break;
-        case GoogleDriveServiceMessage.loadingFiles:
+        case CloudStorageMessage.loadingFiles:
           m = WordStudyLocalizations
               .of(context)
               .loadingFiles;
           break;
-        case GoogleDriveServiceMessage.error:
+        case CloudStorageMessage.error:
           m = WordStudyLocalizations
               .of(context)
               .googleDriveError;
@@ -81,11 +82,11 @@ class DropBoxDownloader extends StatelessWidget {
           new Text(_getMessageText(context, viewModel.googleDriveState.message)),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).signOut),
-            onPressed: viewModel.onSignOut,
+            onPressed: () => viewModel.onSignOut(CloudStorageType.DropBox),
           ),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).refresh),
-            onPressed: viewModel.onRefreshFiles,
+            onPressed: () => viewModel.onRefreshFiles(CloudStorageType.DropBox),
           ),
         ],
       );
@@ -114,12 +115,12 @@ class DropBoxDownloader extends StatelessWidget {
                         child: new Row(
                           children: <Widget>[
                             new RaisedButton(
-                                onPressed: viewModel.onSignOut,
+                                onPressed: () => viewModel.onSignOut(CloudStorageType.DropBox),
                                 child: new Text(WordStudyLocalizations.of(context).signOut)
                             ),
                             new Expanded( child:  new Text("")),
                             new RaisedButton(
-                                onPressed: viewModel.onRefreshFiles,
+                                onPressed: () => viewModel.onRefreshFiles(CloudStorageType.DropBox),
                                 child: new Text(WordStudyLocalizations.of(context).refresh)
                             )
                           ],
@@ -142,7 +143,7 @@ class DropBoxDownloader extends StatelessWidget {
           new Text(WordStudyLocalizations.of(context).youAreNotCurrentlySignedIn),
           new RaisedButton(
             child: new Text(WordStudyLocalizations.of(context).signIn),
-            onPressed: viewModel.onSignIn,
+            onPressed: () => viewModel.onSignIn(CloudStorageType.DropBox),
           ),
         ],
       );
@@ -174,7 +175,8 @@ class DropBoxDownloader extends StatelessWidget {
         child: new ListTile(
             title: new Text(viewModel.googleDriveState.files[i].name, style: _biggerFont),
             onTap: () async {
-              viewModel.onDownloadFile(viewModel.googleDriveState.files[i],
+              viewModel.onDownloadFile(CloudStorageType.DropBox,
+                      viewModel.googleDriveState.files[i],
                       () => _onDownloaded(context),
                       () => _onDownloadFailed(context));
             }
