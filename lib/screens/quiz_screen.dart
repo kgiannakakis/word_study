@@ -195,7 +195,7 @@ class WordStudyState extends State<QuizScreen> with TickerProviderStateMixin {
         children: <Widget>[new ListView.builder(
           itemCount: (_quizWord.options.length + 1) * 2,
           itemBuilder: (BuildContext context, int position) {
-            if (position.isEven && position > 0) return new Divider();
+            if (position.isEven && position > 0) return new Divider(height: 0.0,);
 
             final int index = (position + 1) ~/ 2;
 
