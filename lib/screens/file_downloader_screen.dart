@@ -20,8 +20,8 @@ class FileDownloaderScreen extends StatelessWidget {
         return FileDownloaderViewModel.fromStore(store);
       },
       onInit: (store) {
-        store.dispatch(new CloudStorageInitAction(CloudStorageType.GoogleDrive));
-        //store.dispatch(new CloudStorageInitAction(CloudStorageType.DropBox));
+        //store.dispatch(new CloudStorageInitAction(CloudStorageType.GoogleDrive));
+        store.dispatch(new CloudStorageInitAction(CloudStorageType.DropBox));
       },
       builder: (BuildContext context, FileDownloaderViewModel viewModel) {
         return new DefaultTabController(
