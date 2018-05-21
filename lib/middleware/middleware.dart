@@ -31,9 +31,9 @@ List<Middleware<AppState>> createMiddleware([
   final restoreFile = _restoreFile(fileService);
   final cloudStorageInit = _cloudStorageInit(googleDriveService);
   final cloudStorageSignIn = _cloudStorageSignIn(googleDriveService, dropboxService);
-  final cloudStorageSignOut = _cloudStorageSignOut(googleDriveService);
-  final cloudStorageRefreshFiles = _cloudStorageRefreshFiles(googleDriveService);
-  final cloudStorageDownloadFile = _cloudStorageDownloadFile(googleDriveService);
+  final cloudStorageSignOut = _cloudStorageSignOut(googleDriveService, dropboxService);
+  final cloudStorageRefreshFiles = _cloudStorageRefreshFiles(googleDriveService, dropboxService);
+  final cloudStorageDownloadFile = _cloudStorageDownloadFile(googleDriveService, dropboxService);
 
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, LoadQuizzesAction>(loadQuizzes),
@@ -250,6 +250,26 @@ Middleware<AppState> _cloudStorageSignIn(GoogleDriveService googleDriveService,
       case CloudStorageType.Dropbox:
         dropboxService.signIn().then((user) {
           store.dispatch(new SetDropboxUserAction(user.email, user.displayName));
+          dropboxService.listFiles().then((files) {
+            if (files == null) {
+              store.dispatch(new SetCloudStorageMessageAction(
+                  CloudStorageType.Dropbox,
+                  CloudStorageMessage.error)
+              );
+            }
+            else if (files.length == 0) {
+              store.dispatch(new SetCloudStorageMessageAction(
+                  CloudStorageType.Dropbox,
+                  CloudStorageMessage.folderEmpty)
+              );
+            }
+            else {
+              store.dispatch(new SetCloudStorageFilesAction(
+                  CloudStorageType.Dropbox,
+                  files)
+              );
+            }
+          });
         });
         break;
     }
@@ -258,7 +278,8 @@ Middleware<AppState> _cloudStorageSignIn(GoogleDriveService googleDriveService,
   };
 }
 
-Middleware<AppState> _cloudStorageSignOut(GoogleDriveService googleDriveService) {
+Middleware<AppState> _cloudStorageSignOut(GoogleDriveService googleDriveService,
+    DropBoxService dropboxService) {
   return (Store<AppState> store, action, NextDispatcher next) {
 
     var type = (action as CloudStorageSignOutAction).type;
@@ -268,6 +289,7 @@ Middleware<AppState> _cloudStorageSignOut(GoogleDriveService googleDriveService)
         googleDriveService.handleSignOut();
         break;
       case CloudStorageType.Dropbox:
+        dropboxService.signOut();
         break;
     }
 
@@ -275,7 +297,8 @@ Middleware<AppState> _cloudStorageSignOut(GoogleDriveService googleDriveService)
   };
 }
 
-Middleware<AppState> _cloudStorageRefreshFiles(GoogleDriveService googleDriveService) {
+Middleware<AppState> _cloudStorageRefreshFiles(GoogleDriveService googleDriveService,
+    DropBoxService dropboxService) {
   return (Store<AppState> store, action, NextDispatcher next) {
 
     var type = (action as CloudStorageRefreshFilesAction).type;
@@ -285,6 +308,26 @@ Middleware<AppState> _cloudStorageRefreshFiles(GoogleDriveService googleDriveSer
         googleDriveService.initGetFiles();
         break;
       case CloudStorageType.Dropbox:
+        dropboxService.listFiles().then((files) {
+          if (files == null) {
+            store.dispatch(new SetCloudStorageMessageAction(
+                CloudStorageType.Dropbox,
+                CloudStorageMessage.error)
+            );
+          }
+          else if (files.length == 0) {
+            store.dispatch(new SetCloudStorageMessageAction(
+                CloudStorageType.Dropbox,
+                CloudStorageMessage.folderEmpty)
+            );
+          }
+          else {
+            store.dispatch(new SetCloudStorageFilesAction(
+                CloudStorageType.Dropbox,
+                files)
+            );
+          }
+        });
         break;
     }
 
@@ -292,7 +335,8 @@ Middleware<AppState> _cloudStorageRefreshFiles(GoogleDriveService googleDriveSer
   };
 }
 
-Middleware<AppState> _cloudStorageDownloadFile(GoogleDriveService googleDriveService) {
+Middleware<AppState> _cloudStorageDownloadFile(GoogleDriveService googleDriveService,
+    DropBoxService dropboxService) {
   return (Store<AppState> store, action, NextDispatcher next) {
 
     var type = (action as CloudStorageDownloadFileAction).type;
@@ -315,6 +359,19 @@ Middleware<AppState> _cloudStorageDownloadFile(GoogleDriveService googleDriveSer
         });
         break;
       case CloudStorageType.Dropbox:
+        dropboxService.downloadFile(file).then((ok) {
+          if (ok) {
+            (action as CloudStorageDownloadFileAction).onDownloaded();
+            store.dispatch(new AddFileAction(
+                new StoredFile(
+                    name: file.name,
+                    created: DateTime.now()
+                )
+            ));
+          } else {
+            (action as CloudStorageDownloadFileAction).onDownloadFailed();
+          }
+        });
         break;
     }
 

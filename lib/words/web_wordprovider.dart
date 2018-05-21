@@ -1,17 +1,19 @@
-import 'dart:io';
 import 'dart:async';
-import 'package:word_study/models/word.dart';
-import 'package:word_study/models/quiz_word.dart';
-import 'package:word_study/words/word_provider.dart';
+import 'dart:io';
+
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
+import 'package:word_study/models/quiz_word.dart';
+import 'package:word_study/models/word.dart';
+import 'package:word_study/words/word_provider.dart';
 
 class WebWordProvider extends WordProvider {
   final String url;
   final Map<String, String> headers;
+  final bool isPost;
 
   List<Word> _words = [];
 
-  WebWordProvider(this.url, this.headers);
+  WebWordProvider({this.url, this.headers, this.isPost});
 
   @override
   Future<bool> init() async {
@@ -20,7 +22,7 @@ class WebWordProvider extends WordProvider {
       return ok;
     }
     catch(ex) {
-      print(ex.toString());
+      print('Error reading excel file: ${ex.toString()}');
       return false;
     }
   }
@@ -29,7 +31,15 @@ class WebWordProvider extends WordProvider {
 
     var httpClient = new HttpClient();
     var uri = Uri.parse(url);
-    var request = await httpClient.getUrl(uri);
+    HttpClientRequest request;
+
+    if (isPost == null || isPost == false) {
+      request = await httpClient.getUrl(uri);
+    }
+    else {
+      request = await httpClient.postUrl(uri);
+    }
+
 
     if (headers != null) {
       headers.forEach((name, value) {
@@ -41,6 +51,7 @@ class WebWordProvider extends WordProvider {
 
     var builder = await response.fold(new BytesBuilder(), (builder, data) => builder..add(data));
     var data = builder.takeBytes();
+
     var decoder = new SpreadsheetDecoder.decodeBytes(data);
     var table = decoder.tables[decoder.tables.keys.first];
     for(int i=0; i<table.rows.length; i++) {

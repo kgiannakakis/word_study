@@ -1,10 +1,10 @@
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:validator/validator.dart';
-import 'package:word_study/models/stored_file.dart';
-import 'package:word_study/words/web_wordprovider.dart';
-import 'package:word_study/services/file_service.dart';
 import 'package:word_study/localizations.dart';
+import 'package:word_study/models/stored_file.dart';
+import 'package:word_study/services/file_service.dart';
+import 'package:word_study/words/web_wordprovider.dart';
 
 class WebDownloaderWidget extends StatefulWidget {
   @required final Function(StoredFile) onAddFile;
@@ -26,7 +26,7 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
   WebDownloaderState({@required this.onAddFile});
 
   _download() async {
-    var webWordProvider = new WebWordProvider(_fileUrl, null);
+    var webWordProvider = new WebWordProvider(url: _fileUrl);
     bool ok = await webWordProvider.init();
     if (ok) {
       final FileService fileService = new FileService();

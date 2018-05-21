@@ -125,7 +125,7 @@ class GoogleDriveService {
     var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file.id}?alt=media';
     var headers = await _currentUser.authHeaders;
 
-    var webWordProvider = new WebWordProvider(fileUrl, headers);
+    var webWordProvider = new WebWordProvider(url: fileUrl, headers: headers);
     bool ok = await webWordProvider.init();
     if (ok) {
       String filename = await fileService.getNewFilename(file.name);
