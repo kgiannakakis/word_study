@@ -104,6 +104,6 @@ class DropBoxService {
   }
 
   void signOut() {
-
+    _started = false;
   }
 }
