@@ -17,11 +17,17 @@ class SetCloudStorageFilesAction {
   SetCloudStorageFilesAction(this.type, this.files);
 }
 
-class SetCloudStorageUserAction {
-  final CloudStorageType type;
+class SetGoogleDriveUserAction {
   final GoogleSignInAccount currentUser;
 
-  SetCloudStorageUserAction(this.type, this.currentUser);
+  SetGoogleDriveUserAction(this.currentUser);
+}
+
+class SetDropboxUserAction {
+  final String email;
+  final String displayName;
+
+  SetDropboxUserAction(this.email, this.displayName);
 }
 
 class CloudStorageInitAction {

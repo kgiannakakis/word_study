@@ -43,7 +43,7 @@ class GoogleDriveService {
           initGetFiles();
         }
       });
-      _googleSignIn.signInSilently();
+      //_googleSignIn.signInSilently();
     }
   }
 

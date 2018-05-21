@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-05-14T09:48:07.353635",
+  "@@last_modified": "2018-05-21T10:48:37.961109",
   "title": "Word Study",
   "@title": {
     "description": "Title for Word Study application",
@@ -172,6 +172,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "failedToConnectToDropbox": "Failed to connect to Dropbox",
+  "@failedToConnectToDropbox": {
+    "description": "Failed to connect to Dropbox message",
+    "type": "text",
+    "placeholders": {}
+  },
   "folderNotFound": "'{folder}' folder not found!",
   "@folderNotFound": {
     "description": "Folder not found warning",
@@ -232,9 +238,23 @@
       "folder": {}
     }
   },
+  "dropboxInstructions": "Download files from your Dropbox. Authorize the application and then upload your files to '{folder}' folder to discover them.",
+  "@dropboxInstructions": {
+    "description": "Dropbox Instructions",
+    "type": "text",
+    "placeholders": {
+      "folder": {}
+    }
+  },
   "googleDriveError": "Failed to connect to Google Drive",
   "@googleDriveError": {
     "description": "Google Drive connection error",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dropboxError": "Dropbox connection error",
+  "@dropboxError": {
+    "description": "Dropbox connection error",
     "type": "text",
     "placeholders": {}
   },

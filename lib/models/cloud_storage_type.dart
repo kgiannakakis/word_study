@@ -1,5 +1,5 @@
 
 
 enum CloudStorageType {
-  GoogleDrive, DropBox
+  GoogleDrive, Dropbox
 }

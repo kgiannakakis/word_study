@@ -8,6 +8,7 @@ import 'package:word_study/middleware/middleware.dart';
 import 'package:word_study/models/app_state.dart';
 import 'package:word_study/reducers/app_state_reducer.dart';
 import 'package:word_study/screens/home_screen.dart';
+import 'package:word_study/services/dropbox_service.dart';
 import 'package:word_study/services/file_service.dart';
 import 'package:word_study/services/google_drive_service.dart';
 import 'package:word_study/words/quiz_provider.dart';
@@ -15,6 +16,7 @@ import 'package:word_study/words/quiz_provider.dart';
 void main() {
 
   GoogleDriveService googleDriveService = new GoogleDriveService();
+  DropBoxService dropBoxService = new DropBoxService();
 
   runApp(new WordStudyApp(new Store<AppState>(
       appReducer,
@@ -22,7 +24,8 @@ void main() {
       middleware: createMiddleware(
           const QuizProvider(const FileService()),
           const FileService(),
-          googleDriveService)
+          googleDriveService,
+          dropBoxService)
   )));
 }
 

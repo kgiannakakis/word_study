@@ -172,6 +172,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "failedToConnectToDropbox": "Αδυναμία σύνδεσης στο Dropbox",
+  "@failedToConnectToDropbox": {
+    "description": "Failed to connect to Dropbox message",
+    "type": "text",
+    "placeholders": {}
+  },
   "folderNotFound": "Ο φάκελος '{folder}' δε βρέθηκε!",
   "@folderNotFound": {
     "description": "Folder not found warning",
@@ -232,76 +238,90 @@
       "folder": {}
     }
   },
+  "dropboxInstructions": "Κατεβάστε αρχεία λέξεων από το  Dropbox. Δώστε άδεια στην εφαρμογή και μετά ανεβάστε τα αρχεία σας στο φάκελο '{folder}' για να τα ανακαλύψετε.",
+  "@dropboxInstructions": {
+    "description": "Dropbox Instructions",
+    "type": "text",
+    "placeholders": {
+      "folder": {}
+    }
+  },
   "googleDriveError": "Αποτυχία σύνδεσης στο Google Drive",
   "@googleDriveError": {
     "description": "Google Drive connection error",
     "type": "text",
     "placeholders": {}
   },
-    "questionNumber": "Ερώτηση {question} από {total}",
-    "@questionNumber": {
-      "description": "Question number label",
-      "type": "text",
-      "placeholders": {
-        "question": {},
-        "total": {}
-      }
-    },
-    "exitQuiz": "Έξοδος",
-    "@exitQuiz": {
-      "description": "Exit Quiz label",
-      "type": "text",
-      "placeholders": {}
-    },
-    "exitQuizWarning": "Είστε σίγουροι ότι θέλετε να τερματίσετε το τεστ;",
-    "@exitQuizWarning": {
-      "description": "Exit Quiz warning message",
-      "type": "text",
-      "placeholders": {}
-    },
-    "exit": "Έξοδος",
-    "@exit": {
-      "description": "Exit label",
-      "type": "text",
-      "placeholders": {}
-    },
-    "cancel": "Ακύρωση",
-    "@cancel": {
-      "description": "Cancel label",
-      "type": "text",
-      "placeholders": {}
-    },
-    "previous": "Προηγούμενο",
-    "@previous": {
-      "description": "Previous label",
-      "type": "text",
-      "placeholders": {}
-    },
-    "next": "Επόμενο",
-    "@next": {
-      "description": "Next label",
-      "type": "text",
-      "placeholders": {}
-    },
-    "results": "Αποτελέσματα",
-    "@results": {
-      "description": "Results label",
-      "type": "text",
-      "placeholders": {}
-    },
-    "resultsMessage": "Βρήκατε {correct} από τα {total}!",
-    "@resultsMessage": {
-      "description": "Results message",
-      "type": "text",
-      "placeholders": {
-        "correct": {},
-        "total": {}
-      }
-    },
-    "inverse": "Αντίστροφα",
-    "@inverse": {
-      "description": "Inverse label",
-      "type": "text",
-      "placeholders": {}
+  "dropboxError": "Αποτυχία σύνδεσης στο Dropbox",
+  "@dropboxError": {
+    "description": "Dropbox connection error",
+    "type": "text",
+    "placeholders": {}
+  },
+  "questionNumber": "Ερώτηση {question} από {total}",
+  "@questionNumber": {
+    "description": "Question number label",
+    "type": "text",
+    "placeholders": {
+      "question": {},
+      "total": {}
     }
+  },
+  "exitQuiz": "Έξοδος",
+  "@exitQuiz": {
+    "description": "Exit Quiz label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "exitQuizWarning": "Είστε σίγουροι ότι θέλετε να τερματίσετε το τεστ;",
+  "@exitQuizWarning": {
+    "description": "Exit Quiz warning message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "exit": "Έξοδος",
+  "@exit": {
+    "description": "Exit label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Ακύρωση",
+  "@cancel": {
+    "description": "Cancel label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "previous": "Προηγούμενο",
+  "@previous": {
+    "description": "Previous label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "next": "Επόμενο",
+  "@next": {
+    "description": "Next label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "results": "Αποτελέσματα",
+  "@results": {
+    "description": "Results label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resultsMessage": "Βρήκατε {correct} από τα {total}!",
+  "@resultsMessage": {
+    "description": "Results message",
+    "type": "text",
+    "placeholders": {
+      "correct": {},
+      "total": {}
+    }
+  },
+  "inverse": "Αντίστροφα",
+  "@inverse": {
+    "description": "Inverse label",
+    "type": "text",
+    "placeholders": {}
+  }
 }

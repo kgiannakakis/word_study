@@ -247,6 +247,14 @@ class WordStudyLocalizations {
     );
   }
 
+  String get failedToConnectToDropbox {
+    return Intl.message(
+      'Failed to connect to Dropbox',
+      name: 'failedToConnectToDropbox',
+      desc: 'Failed to connect to Dropbox message',
+    );
+  }
+
   String folderNotFound(String folder) {
     return Intl.message(
       '\'$folder\' folder not found!',
@@ -324,6 +332,17 @@ class WordStudyLocalizations {
     );
   }
 
+  String dropboxInstructions(String folder) {
+    return Intl.message(
+      'Download files from your Dropbox. '
+          'Authorize the application and then upload your files to \'$folder\' '
+          'folder to discover them.',
+      name: 'dropboxInstructions',
+      args: [folder],
+      desc: 'Dropbox Instructions',
+    );
+  }
+
   String get googleDriveError {
     return Intl.message(
       'Failed to connect to Google Drive',
@@ -331,6 +350,15 @@ class WordStudyLocalizations {
       desc: 'Google Drive connection error',
     );
   }
+
+  String get dropboxError {
+    return Intl.message(
+      'Dropbox connection error',
+      name: 'dropboxError',
+      desc: 'Dropbox connection error',
+    );
+  }
+
 
   String questionNumber(int question, int total) {
     return Intl.message(
