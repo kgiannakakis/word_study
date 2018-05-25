@@ -6,13 +6,14 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:word_study/const/const.dart';
 import 'package:word_study/models/quiz.dart';
 import 'package:word_study/models/quiz_settings.dart';
 import 'package:word_study/services/file_service.dart';
 import 'package:word_study/words/word_provider.dart';
 
 class QuizProvider {
-  final String builtinFilename = '__builtin';
+
   final String _quizzesKey = 'quizzes';
   final String _quizzesDb = 'quizzes.db';
 
@@ -41,13 +42,13 @@ class QuizProvider {
 
     if (list.length == 0) {
       final directory = await fileService.localPath;
-      File file = new File('$directory/$builtinFilename');
+      File file = new File('$directory/${Const.builtinFilename}');
       bool exists = await file.exists();
 
       if (!exists) {
         WordProvider wordProvider = new WordProvider();
         await wordProvider.init();
-        await wordProvider.store(builtinFilename);
+        await wordProvider.store(Const.builtinFilename);
       }
 
       return <Quiz>[_getDemoQuiz()];
@@ -69,36 +70,6 @@ class QuizProvider {
       });
       return quizzes;
     }
-
-
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    String storedQuizzesStr = prefs.getString(_quizzesKey);
-//
-//    if (storedQuizzesStr == null) {
-//      final directory = await fileService.localPath;
-//      File file = new File('$directory/$builtinFilename');
-//      bool exists = await file.exists();
-//
-//      if (!exists) {
-//        WordProvider wordProvider = new WordProvider();
-//        await wordProvider.init();
-//        await wordProvider.store(builtinFilename);
-//      }
-//
-//      return <Quiz>[_getDemoQuiz()];
-//    }
-//    else {
-//      List<Quiz> quizzes = new List<Quiz>();
-//      try {
-//        List<dynamic> ql = json.decode(storedQuizzesStr);
-//        ql.forEach((q) {
-//          quizzes.add(Quiz.fromJson(q));
-//        });
-//      } catch(error) {
-//        print(error);
-//      }
-//      return quizzes;
-//    }
   }
 
   Quiz _getDemoQuiz() {
@@ -108,7 +79,7 @@ class QuizProvider {
     QuizSettings quizSettings = new QuizSettings(
         wordsCount: wordsCount, optionsCount: optionsCount, inverse: inverse);
     Quiz builtin = new Quiz(
-        name: "Demo", settings: quizSettings, filenames: [builtinFilename]);
+        name: "Demo", settings: quizSettings, filenames: [Const.builtinFilename]);
     return builtin;
   }
 

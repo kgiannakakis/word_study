@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:word_study/const/const.dart';
 import 'package:word_study/models/stored_file.dart';
 
 class FileService {
@@ -50,7 +51,10 @@ class FileService {
       var f = fileSystemEntities[i];
       var stat = await f.stat();
       var match = regexp.firstMatch(f.path);
-      files.add(new StoredFile(name: match[0], created: stat.modified));
+      var name = match[0];
+      if (name != Const.builtinFilename) {
+        files.add(new StoredFile(name: name, created: stat.modified));
+      }
     }
     return files;
   }
