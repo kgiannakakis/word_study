@@ -68,17 +68,46 @@ class FileService {
 
     var allFiles = await listFiles();
     var allFilenames = allFiles.map<String>((wordFile) => wordFile.name);
-    var files = allFilenames.where((f) => f.startsWith(name));
+    return getNewFilenameFromFilelist(allFilenames, name);
+  }
+
+  String getNewFilenameFromFilelist(List<String> allFilenames, String name) {
+    RegExp extRegexp = new RegExp('\\.([^\\.]+)\$');
+    var extension = '';
+    if (extRegexp.hasMatch(name)){
+      var match = extRegexp.firstMatch(name);
+      extension = match[1];
+    }
+
+    var basename = extension.length > 0 ?
+      name.substring(0, name.length - 1 - extension.length) : name;
 
     RegExp regexp = new RegExp('-(\\d)+\$');
-    int max = 0;
+    int currentNumber = 0;
+    if (regexp.hasMatch(basename)) {
+      var match = regexp.firstMatch(basename);
+      currentNumber = int.parse(match[1]);
+      basename = basename.substring(0, basename.length - 1 - match[1].length);
+    }
+
+    var files = allFilenames.where((f) =>
+      f.startsWith(basename) &&
+          (extension.length == 0 || f.endsWith('.$extension')));
+
+    int max = currentNumber;
     files.forEach((f) {
+      if (extension.length > 0) {
+        f = f.substring(0, f.length - 1 - extension.length);
+      }
       if (regexp.hasMatch(f)) {
         var match = regexp.firstMatch(f);
         max = int.parse(match[1]);
       }
     });
-
+    if (extension.length > 0) {
+      
+      return '$basename-${max + 1}.$extension';
+    }
     return '$name-${max + 1}';
   }
 
