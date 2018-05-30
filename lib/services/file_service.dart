@@ -116,7 +116,6 @@ class FileService {
     final directory = await localPath;
     final tempDirectory = await tempPath;
 
-    print('$directory/$filename');
     File file = new File('$directory/$filename');
     if ((await file.exists())) {
       File tempFile = await file.copy('$tempDirectory/$filename');

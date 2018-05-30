@@ -119,7 +119,7 @@ class GoogleDriveService {
     return null;
   }
 
-  Future<bool> downloadFile(CloudStorageFile file) async {
+  Future<String> downloadFile(CloudStorageFile file) async {
     final FileService fileService = new FileService();
 
     var fileUrl = 'https://www.googleapis.com/drive/v3/files/${file.id}?alt=media';
@@ -127,11 +127,12 @@ class GoogleDriveService {
 
     var webWordProvider = new WebWordProvider(url: fileUrl, headers: headers);
     bool ok = await webWordProvider.init();
+    String filename;
     if (ok) {
-      String filename = await fileService.getNewFilename(file.name);
+      filename = await fileService.getNewFilename(file.name);
       await webWordProvider.store(filename);
     }
-    return ok;
+    return filename;
   }
 
   Future<Null> handleSignIn() async {

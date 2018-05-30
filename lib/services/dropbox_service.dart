@@ -82,7 +82,7 @@ class DropBoxService {
     return files;
   }
 
-  Future<bool> downloadFile(CloudStorageFile file) async {
+  Future<String> downloadFile(CloudStorageFile file) async {
     final FileService fileService = new FileService();
 
     var fileUrl = 'https://content.dropboxapi.com/2/files/download';
@@ -91,16 +91,14 @@ class DropBoxService {
       'Dropbox-API-Arg': '{"path": "${file.id}"}'
     };
 
-    print(headers);
-
     var webWordProvider = new WebWordProvider(url: fileUrl, headers: headers, isPost: true);
     bool ok = await webWordProvider.init();
+    String filename;
     if (ok) {
-      String filename = await fileService.getNewFilename(file.name);
-      print(filename);
+      filename = await fileService.getNewFilename(file.name);
       await webWordProvider.store(filename);
     }
-    return ok;
+    return filename;
   }
 
   void signOut() {

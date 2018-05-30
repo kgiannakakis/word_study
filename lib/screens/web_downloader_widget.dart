@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:validator/validator.dart';
@@ -25,18 +27,19 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
 
   WebDownloaderState({@required this.onAddFile});
 
-  _download() async {
+  Future<String> _download() async {
+    String filename;
     var webWordProvider = new WebWordProvider(url: _fileUrl);
     bool ok = await webWordProvider.init();
     if (ok) {
       final FileService fileService = new FileService();
-      String filename = await fileService.getNewFilename(_fileName);
+      filename = await fileService.getNewFilename(_fileName);
       await webWordProvider.store(filename);
     }
     setState(() {
       _isLoading = false;
     });
-    return ok;
+    return filename;
   }
 
   @override
@@ -99,8 +102,8 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
                     setState(() {
                       _isLoading = true;
                     });
-                    bool ok = await _download();
-                    if (!ok) {
+                    String filename = await _download();
+                    if (filename == null) {
                       Scaffold.of(context).showSnackBar(
                           new SnackBar(
                               content: new Text(
@@ -108,7 +111,7 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
                               backgroundColor: Colors.redAccent));
                     }
                     else {
-                      onAddFile(new StoredFile(name: _fileName, created: DateTime.now()));
+                      onAddFile(new StoredFile(name: filename, created: DateTime.now()));
                       Navigator.of(context).pop();
                     }
                   }

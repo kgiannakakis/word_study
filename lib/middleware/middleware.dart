@@ -344,12 +344,12 @@ Middleware<AppState> _cloudStorageDownloadFile(GoogleDriveService googleDriveSer
 
     switch(type) {
       case CloudStorageType.GoogleDrive:
-        googleDriveService.downloadFile(file).then((ok) {
-          if (ok) {
+        googleDriveService.downloadFile(file).then((filename) {
+          if (filename != null) {
             (action as CloudStorageDownloadFileAction).onDownloaded();
             store.dispatch(new AddFileAction(
                 new StoredFile(
-                    name: file.name,
+                    name: filename,
                     created: DateTime.now()
                 )
             ));
@@ -359,12 +359,12 @@ Middleware<AppState> _cloudStorageDownloadFile(GoogleDriveService googleDriveSer
         });
         break;
       case CloudStorageType.Dropbox:
-        dropboxService.downloadFile(file).then((ok) {
-          if (ok) {
+        dropboxService.downloadFile(file).then((filename) {
+          if (filename != null) {
             (action as CloudStorageDownloadFileAction).onDownloaded();
             store.dispatch(new AddFileAction(
                 new StoredFile(
-                    name: file.name,
+                    name: filename,
                     created: DateTime.now()
                 )
             ));
