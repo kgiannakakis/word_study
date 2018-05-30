@@ -33,6 +33,9 @@ class MainActivity(): FlutterActivity() {
           Auth.startOAuth2Authentication(this@MainActivity, getString(R.string.app_key))
         }
       }
+      else if (call.method == "signOutDropBoxAuth") {
+          result.success("OK")
+      }
     }
   }
 

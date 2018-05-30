@@ -101,7 +101,14 @@ class DropBoxService {
     return filename;
   }
 
-  void signOut() {
+  Future<bool> signOut() async {
     _started = false;
+    try {
+      await platform.invokeMethod('signOutDropBoxAuth');
+      return true;
+    } on PlatformException catch (e) {
+      print('Failed to sign out from dropbox: ${e.message}.');
+      return false;
+    }
   }
 }
