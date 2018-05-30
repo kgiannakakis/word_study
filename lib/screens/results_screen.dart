@@ -14,16 +14,18 @@ class ResultsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    print('$correctCount $wordsCount');
+
     List<charts.Series<_QuizResults, int>> seriesList = [
       new charts.Series<_QuizResults, int>(
         id: 'Results',
         domainFn: (_QuizResults results, _) => results.category,
         measureFn: (_QuizResults results, _) => results.count,
-        //colorFn: (QuizResults results, _) => results.category == 1 ?
-        //  charts.Color.fromHex(code: '#00C853') : charts.Color.fromHex(code: '#FF1744'),
+        colorFn: (_QuizResults results, _) => results.category == 1 ?
+          charts.Color.fromHex(code: '#FF1744') : charts.Color.fromHex(code: '#00C853'),
         data: <_QuizResults>[
-          new _QuizResults(0, correctCount),
-          new _QuizResults(1, wordsCount - correctCount)],
+          new _QuizResults(0, 1.0*correctCount + 0.000001),
+          new _QuizResults(1, wordsCount - correctCount + 0.00001)],
       )
     ];
 
@@ -46,8 +48,8 @@ class ResultsScreen extends StatelessWidget {
       ),
       body: new Stack(
         children: <Widget>[
-          new charts.PieChart<_QuizResults, int>(seriesList,
-            animate: true,
+          new charts.PieChart(seriesList,
+            //animate: true,
             defaultRenderer: new charts.ArcRendererConfig(arcWidth: 60)
           ),
           new Center(child: new Text('$percent%')),
@@ -66,7 +68,7 @@ class ResultsScreen extends StatelessWidget {
 
 class _QuizResults {
   final int category;
-  final int count;
+  final double count;
 
   _QuizResults(this.category, this.count);
 }
