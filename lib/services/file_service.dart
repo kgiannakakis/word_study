@@ -67,8 +67,9 @@ class FileService {
     }
 
     var allFiles = await listFiles();
-    var allFilenames = allFiles.map<String>((wordFile) => wordFile.name);
-    return getNewFilenameFromFilelist(allFilenames, name);
+    var allFilenames = allFiles.map<String>((wordFile) => wordFile.name).toList();
+    String newName = getNewFilenameFromFilelist(allFilenames, name);
+    return newName;
   }
 
   String getNewFilenameFromFilelist(List<String> allFilenames, String name) {
