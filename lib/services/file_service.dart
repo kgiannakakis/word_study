@@ -11,8 +11,14 @@ class FileService {
 
   Future<String> get localPath async {
     final directory = await getApplicationDocumentsDirectory();
+    final String localPath = '${directory.path}/wordfiles';
 
-    return '${directory.path}/wordfiles';
+    Directory dir = new Directory(localPath);
+    if (!(await dir.exists())) {
+      await dir.create();
+    }
+
+    return localPath;
   }
 
   Future<String> get tempPath async {
@@ -37,10 +43,6 @@ class FileService {
     final directory = await localPath;
     Directory dir = new Directory(directory);
 
-    if (!(await dir.exists())) {
-      await dir.create();
-    }
-
     var fileSystemEntities = await _dirContents(dir);
 
     RegExp regexp = new RegExp('[^\/]+\$');
@@ -52,6 +54,7 @@ class FileService {
       var stat = await f.stat();
       var match = regexp.firstMatch(f.path);
       var name = match[0];
+      print(name);
       if (name != Const.builtinFilename) {
         files.add(new StoredFile(name: name, created: stat.modified));
       }

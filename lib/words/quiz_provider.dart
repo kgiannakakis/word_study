@@ -45,13 +45,15 @@ class QuizProvider {
       File file = new File('$directory/${Const.builtinFilename}');
       bool exists = await file.exists();
 
+      Quiz demoQuiz = _getDemoQuiz();
       if (!exists) {
         WordProvider wordProvider = new WordProvider();
         await wordProvider.init();
         await wordProvider.store(Const.builtinFilename);
-      }
 
-      return <Quiz>[_getDemoQuiz()];
+        await addQuiz(demoQuiz);
+      }
+      return <Quiz>[demoQuiz];
     }
     else {
       List<Quiz> quizzes = new List<Quiz>();

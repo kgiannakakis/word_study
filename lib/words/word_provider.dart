@@ -1,9 +1,10 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:io';
-import 'package:word_study/models/word.dart';
-import 'package:word_study/models/quiz_word.dart';
+import 'dart:math';
+
 import 'package:word_study/models/quiz_option.dart';
+import 'package:word_study/models/quiz_word.dart';
+import 'package:word_study/models/word.dart';
 import 'package:word_study/services/file_service.dart';
 
 class WordProvider {
@@ -94,6 +95,9 @@ class WordProvider {
   Future<void> storeWords (List<Word> words, String filename) async {
     final path = await _fileService.localPath;
     File file =  new File('$path/$filename');
+
+    print('Storing $path/$filename');
+
     String content = '';
     words.forEach((word) {
       String line = '${word.word}\t${word.meaning}\n';
