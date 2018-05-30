@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToConnectToGoogleDrive" : MessageLookupByLibrary.simpleMessage("Failed to connect to Google Drive"),
     "failedToStartQuiz" : MessageLookupByLibrary.simpleMessage("Failed to start quiz"),
     "fileDownload" : MessageLookupByLibrary.simpleMessage("File Download"),
+    "fileInUse" : MessageLookupByLibrary.simpleMessage("File is in use and can\'t be deleted"),
     "files" : MessageLookupByLibrary.simpleMessage("Files"),
     "folderFound" : m2,
     "folderIsEmpty" : MessageLookupByLibrary.simpleMessage("Folder is empty"),

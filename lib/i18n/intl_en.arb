@@ -323,5 +323,11 @@
     "description": "Inverse label",
     "type": "text",
     "placeholders": {}
+  },
+  "fileInUse": "File is in use and can't be deleted",
+  "@fileInUse": {
+    "description": "Warning when file in use is deleted",
+    "type": "text",
+    "placeholders": {}
   }
 }

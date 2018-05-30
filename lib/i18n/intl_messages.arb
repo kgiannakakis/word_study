@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-05-21T10:48:37.961109",
+  "@@last_modified": "2018-05-30T16:14:35.833325",
   "title": "Word Study",
   "@title": {
     "description": "Title for Word Study application",
@@ -321,6 +321,12 @@
   "inverse": "Inverse",
   "@inverse": {
     "description": "Inverse label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "fileInUse": "File is in use and can't be deleted",
+  "@fileInUse": {
+    "description": "Warning when file in use is deleted",
     "type": "text",
     "placeholders": {}
   }

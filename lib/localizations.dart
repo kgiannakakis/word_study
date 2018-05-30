@@ -441,6 +441,14 @@ class WordStudyLocalizations {
       desc: 'Inverse label',
     );
   }
+
+  String get fileInUse {
+    return Intl.message(
+      'File is in use and can\'t be deleted',
+      name: 'fileInUse',
+      desc: 'Warning when file in use is deleted',
+    );
+  }
 }
 
 class WordStudyLocalizationsDelegate extends LocalizationsDelegate<WordStudyLocalizations> {

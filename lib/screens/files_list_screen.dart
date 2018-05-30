@@ -35,21 +35,37 @@ class FilesListScreen extends StatelessWidget {
         key: new ObjectKey('quiz_$i'),
         onDismissed: (direction) {
           StoredFile deletedFile = vm.files[i];
-          vm.onRemove(vm.files[i]);
+          bool canBeDeleted = vm.onRemove(vm.files[i]);
 
-          Scaffold.of(context).showSnackBar(
-              new SnackBar(
-                content: new Text(
-                  WordStudyLocalizations.of(context).dismissed(vm.files[i].name)
-                ),
-                duration: new Duration(seconds: 5),
-                action: new SnackBarAction(
-                    label: WordStudyLocalizations.of(context).undo,
-                    onPressed: () {
-                      vm.onUndoRemove(deletedFile);
-                    }),
-              )
-          );
+          if (canBeDeleted) {
+            Scaffold.of(context).showSnackBar(
+                new SnackBar(
+                  content: new Text(
+                      WordStudyLocalizations.of(context).dismissed(
+                          vm.files[i].name)
+                  ),
+                  duration: new Duration(seconds: 5),
+                  action: new SnackBarAction(
+                      label: WordStudyLocalizations
+                          .of(context)
+                          .undo,
+                      onPressed: () {
+                        vm.onUndoRemove(deletedFile);
+                      }),
+                )
+            );
+          }
+          else {
+            Scaffold.of(context).showSnackBar(
+                new SnackBar(
+                  content: new Text(
+                      WordStudyLocalizations.of(context).fileInUse
+                  ),
+                  duration: new Duration(seconds: 3)
+                )
+            );
+            vm.reload();
+          }
         },
         child: new Padding(
             padding: const EdgeInsets.all(16.0),
@@ -137,9 +153,10 @@ class _ViewModel {
   final List<StoredFile> files;
   final bool isLoading;
   final Function(String) onAddSelectedFile;
-  final Function(StoredFile) onRemove;
+  final bool Function(StoredFile) onRemove;
   final Function(StoredFile) onUndoRemove;
   final Function(Quiz) onEditQuiz;
+  final Function reload;
   final bool isEditing;
 
   _ViewModel({
@@ -149,7 +166,8 @@ class _ViewModel {
     @required this.onRemove,
     @required this.onUndoRemove,
     @required this.isEditing,
-    @required this.onEditQuiz
+    @required this.onEditQuiz,
+    @required this.reload
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -163,13 +181,23 @@ class _ViewModel {
         store.dispatch(new CalculateTotalWordsCountAction());
       },
       onRemove: (file) {
+        var filenames = store.state.quizzes.expand((q) => q.filenames);
+        for(String f in filenames) {
+          if (f == file.name) {
+            return false;
+          }
+        }
         store.dispatch(new DeleteFileAction(file.name));
+        return true;
       },
       onUndoRemove: (file) {
         store.dispatch(new RestoreFileAction(file));
       },
       onEditQuiz: (quiz) {
         store.dispatch(new EditQuizAction(quiz));
+      },
+      reload: () {
+        store.dispatch(new LoadFilesAction());
       }
     );
   }

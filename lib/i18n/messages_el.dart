@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToConnectToGoogleDrive" : MessageLookupByLibrary.simpleMessage("Αδυναμία σύνδεσης στο Google Drive"),
     "failedToStartQuiz" : MessageLookupByLibrary.simpleMessage("Δεν μπορεί να ξεκινήσει το τεστ"),
     "fileDownload" : MessageLookupByLibrary.simpleMessage("Λήψη αρχείου"),
+    "fileInUse" : MessageLookupByLibrary.simpleMessage("Το αρχείο χρησιμοποιείται και δεν μπορεί να διαγραφεί"),
     "files" : MessageLookupByLibrary.simpleMessage("Αρχεία"),
     "folderFound" : m2,
     "folderIsEmpty" : MessageLookupByLibrary.simpleMessage("Ο φάκελος είναι άδειος"),
