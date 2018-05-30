@@ -329,5 +329,11 @@
     "description": "Warning when file in use is deleted",
     "type": "text",
     "placeholders": {}
+  },
+  "noFilesMessage": "Δεν υπάρχουν διαθέσιμα αρχεία. Πατήστε το + για να συνδεθείτε στα αποθετήριά σας στο cloud και να προσθέσετε αρχεία.",
+  "@noFilesMessage": {
+    "description": "Instructions, when no files are available",
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -449,6 +449,16 @@ class WordStudyLocalizations {
       desc: 'Warning when file in use is deleted',
     );
   }
+
+  String get noFilesMessage {
+    return Intl.message(
+      'There are no available files.'
+      'Touch the + button to connect to your cloud storage repositories '
+      'and add files.',
+      name: 'noFilesMessage',
+      desc: 'Instructions, when no files are available',
+    );
+  }
 }
 
 class WordStudyLocalizationsDelegate extends LocalizationsDelegate<WordStudyLocalizations> {

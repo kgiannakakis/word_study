@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-05-30T16:14:35.833325",
+  "@@last_modified": "2018-05-30T21:10:32.040643",
   "title": "Word Study",
   "@title": {
     "description": "Title for Word Study application",
@@ -327,6 +327,12 @@
   "fileInUse": "File is in use and can't be deleted",
   "@fileInUse": {
     "description": "Warning when file in use is deleted",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noFilesMessage": "There are no available files.Touch the + button to connect to your cloud storage repositories and add files.",
+  "@noFilesMessage": {
+    "description": "Instructions, when no files are available",
     "type": "text",
     "placeholders": {}
   }

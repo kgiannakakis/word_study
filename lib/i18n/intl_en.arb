@@ -329,5 +329,11 @@
     "description": "Warning when file in use is deleted",
     "type": "text",
     "placeholders": {}
+  },
+  "noFilesMessage": "There are no available files.Touch the + button to connect to your cloud storage repositories and add files.",
+  "@noFilesMessage": {
+    "description": "Instructions, when no files are available",
+    "type": "text",
+    "placeholders": {}
   }
 }

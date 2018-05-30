@@ -62,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loadingFiles" : MessageLookupByLibrary.simpleMessage("Loading files..."),
     "name" : MessageLookupByLibrary.simpleMessage("Name"),
     "next" : MessageLookupByLibrary.simpleMessage("Next"),
+    "noFilesMessage" : MessageLookupByLibrary.simpleMessage("There are no available files.Touch the + button to connect to your cloud storage repositories and add files."),
     "optionsCount" : MessageLookupByLibrary.simpleMessage("Options Count"),
     "optionsCountMustBeLessThanWordsCount" : MessageLookupByLibrary.simpleMessage("Options count must be less than words count"),
     "pleaseEnterANumber" : MessageLookupByLibrary.simpleMessage("Please enter a number"),

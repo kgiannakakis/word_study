@@ -13,13 +13,12 @@ import 'package:word_study/screens/file_downloader_screen.dart';
 import 'package:word_study/screens/list_item_text_style.dart';
 
 class FilesListScreen extends StatelessWidget {
-
   Widget _buildRow(BuildContext context, _ViewModel vm, int i) {
     return new Dismissible(
         background: new Container(
           color: Colors.redAccent,
           padding: const EdgeInsets.all(12.0),
-          child:new Align(
+          child: new Align(
             child: new Icon(Icons.delete, color: Colors.white),
             alignment: Alignment.centerLeft,
           ),
@@ -38,32 +37,21 @@ class FilesListScreen extends StatelessWidget {
           bool canBeDeleted = vm.onRemove(vm.files[i]);
 
           if (canBeDeleted) {
-            Scaffold.of(context).showSnackBar(
-                new SnackBar(
-                  content: new Text(
-                      WordStudyLocalizations.of(context).dismissed(
-                          vm.files[i].name)
-                  ),
+            Scaffold.of(context).showSnackBar(new SnackBar(
+                  content: new Text(WordStudyLocalizations
+                      .of(context)
+                      .dismissed(vm.files[i].name)),
                   duration: new Duration(seconds: 5),
                   action: new SnackBarAction(
-                      label: WordStudyLocalizations
-                          .of(context)
-                          .undo,
+                      label: WordStudyLocalizations.of(context).undo,
                       onPressed: () {
                         vm.onUndoRemove(deletedFile);
                       }),
-                )
-            );
-          }
-          else {
-            Scaffold.of(context).showSnackBar(
-                new SnackBar(
-                  content: new Text(
-                      WordStudyLocalizations.of(context).fileInUse
-                  ),
-                  duration: new Duration(seconds: 3)
-                )
-            );
+                ));
+          } else {
+            Scaffold.of(context).showSnackBar(new SnackBar(
+                content: new Text(WordStudyLocalizations.of(context).fileInUse),
+                duration: new Duration(seconds: 3)));
             vm.reload();
           }
         },
@@ -76,76 +64,97 @@ class FilesListScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).pushReplacement(
-                      new MaterialPageRoute(
-                          builder: (context) {
-                            if (vm.isEditing) {
-                              vm.onEditQuiz(new Quiz(filenames: <String>[vm.files[i].name]));
-                              return new EditQuiz();
-                            }
-                            return new CreateQuiz();
-                          }
-                      )
-                  );
+                      new MaterialPageRoute(builder: (context) {
+                    if (vm.isEditing) {
+                      vm.onEditQuiz(
+                          new Quiz(filenames: <String>[vm.files[i].name]));
+                      return new EditQuiz();
+                    }
+                    return new CreateQuiz();
+                  }));
                   vm.onAddSelectedFile(vm.files[i].name);
-                }
-            )
-        )
-    );
+                })));
   }
 
   @override
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, _ViewModel>(
-      converter: _ViewModel.fromStore,
-      onInit: (store) {
-        //TODO: Remove this, when multi-file select is supported
-        store.dispatch(new ClearSelectedFilesAction());
+        converter: _ViewModel.fromStore,
+        onInit: (store) {
+          //TODO: Remove this, when multi-file select is supported
+          store.dispatch(new ClearSelectedFilesAction());
 
-        store.dispatch(new LoadFilesAction());
-      },
-      builder: (context, vm) {
-        if (vm.isLoading) {
+          store.dispatch(new LoadFilesAction());
+        },
+        builder: (context, vm) {
+          if (vm.isLoading) {
+            return new Scaffold(
+                appBar: new AppBar(
+                  title:
+                      new Text(WordStudyLocalizations.of(context).savedFiles),
+                ),
+                body: new Column(
+                  children: <Widget>[
+                    new Expanded(
+                        child: new Align(
+                      alignment: Alignment.center,
+                      child: new CircularProgressIndicator(),
+                    ))
+                  ],
+                ));
+          }
+
+          if (vm.files.length == 0) {
+            return new Scaffold(
+                appBar: new AppBar(
+                  title:
+                      new Text(WordStudyLocalizations.of(context).savedFiles),
+                ),
+                body: new Column(
+                  children: <Widget>[
+                    new Expanded(
+                        child: new Align(
+                      alignment: Alignment.center,
+                      child: new Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: new Text(WordStudyLocalizations
+                              .of(context)
+                              .noFilesMessage)),
+                    ))
+                  ],
+                ),
+                floatingActionButton: new FloatingActionButton(
+                    heroTag: '__AddFileTag__',
+                    onPressed: () {
+                      Navigator.of(context).push(new MaterialPageRoute(
+                          builder: (context) => new FileDownloaderScreen()));
+                    },
+                    child: new Icon(Icons.add)));
+          }
+
           return new Scaffold(
             appBar: new AppBar(
               title: new Text(WordStudyLocalizations.of(context).savedFiles),
             ),
-            body: new Column(children: <Widget>[
-              new Expanded(
-                child: new Align(
-                  alignment: Alignment.center,
-                  child: new CircularProgressIndicator() ,
-                ))
-            ],)
+            body: new ListView.builder(
+                padding: const EdgeInsets.all(16.0),
+                itemCount: 2 * vm.files.length,
+                itemBuilder: (BuildContext context, int position) {
+                  if (position.isOdd) return new Divider();
+
+                  final index = position ~/ 2;
+
+                  return _buildRow(context, vm, index);
+                }),
+            floatingActionButton: new FloatingActionButton(
+                heroTag: '__AddFileTag__',
+                onPressed: () {
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (context) => new FileDownloaderScreen()));
+                },
+                child: new Icon(Icons.add)),
           );
-        }
-
-        return new Scaffold(
-          appBar: new AppBar(
-          title: new Text(WordStudyLocalizations.of(context).savedFiles),
-          ),
-          body: new ListView.builder(
-            padding: const EdgeInsets.all(16.0),
-            itemCount: 2*vm.files.length,
-            itemBuilder: (BuildContext context, int position) {
-            if (position.isOdd) return new Divider();
-
-            final index = position ~/ 2;
-
-            return _buildRow(context, vm, index);
-          }),
-          floatingActionButton: new FloatingActionButton(
-            heroTag: '__AddFileTag__',
-            onPressed: () {
-              Navigator.of(context).push(
-                  new MaterialPageRoute(
-                      builder: (context) => new FileDownloaderScreen()
-                  )
-              );
-            },
-             child: new Icon(Icons.add)),
-        );
-      }
-  );
+        });
   }
 }
 
@@ -159,46 +168,44 @@ class _ViewModel {
   final Function reload;
   final bool isEditing;
 
-  _ViewModel({
-    @required this.files,
-    @required this.isLoading,
-    @required this.onAddSelectedFile,
-    @required this.onRemove,
-    @required this.onUndoRemove,
-    @required this.isEditing,
-    @required this.onEditQuiz,
-    @required this.reload
-  });
+  _ViewModel(
+      {@required this.files,
+      @required this.isLoading,
+      @required this.onAddSelectedFile,
+      @required this.onRemove,
+      @required this.onUndoRemove,
+      @required this.isEditing,
+      @required this.onEditQuiz,
+      @required this.reload});
 
   static _ViewModel fromStore(Store<AppState> store) {
     return new _ViewModel(
-      files: store.state.files,
-      isLoading: store.state.isLoading,
-      isEditing: store.state.selectedQuiz >= 0,
-      onAddSelectedFile: (file) {
-        print('adding ${file}');
-        store.dispatch(new AddSelectedFileAction(file));
-        store.dispatch(new CalculateTotalWordsCountAction());
-      },
-      onRemove: (file) {
-        var filenames = store.state.quizzes.expand((q) => q.filenames);
-        for(String f in filenames) {
-          if (f == file.name) {
-            return false;
+        files: store.state.files,
+        isLoading: store.state.isLoading,
+        isEditing: store.state.selectedQuiz >= 0,
+        onAddSelectedFile: (file) {
+          print('adding ${file}');
+          store.dispatch(new AddSelectedFileAction(file));
+          store.dispatch(new CalculateTotalWordsCountAction());
+        },
+        onRemove: (file) {
+          var filenames = store.state.quizzes.expand((q) => q.filenames);
+          for (String f in filenames) {
+            if (f == file.name) {
+              return false;
+            }
           }
-        }
-        store.dispatch(new DeleteFileAction(file.name));
-        return true;
-      },
-      onUndoRemove: (file) {
-        store.dispatch(new RestoreFileAction(file));
-      },
-      onEditQuiz: (quiz) {
-        store.dispatch(new EditQuizAction(quiz));
-      },
-      reload: () {
-        store.dispatch(new LoadFilesAction());
-      }
-    );
+          store.dispatch(new DeleteFileAction(file.name));
+          return true;
+        },
+        onUndoRemove: (file) {
+          store.dispatch(new RestoreFileAction(file));
+        },
+        onEditQuiz: (quiz) {
+          store.dispatch(new EditQuizAction(quiz));
+        },
+        reload: () {
+          store.dispatch(new LoadFilesAction());
+        });
   }
 }

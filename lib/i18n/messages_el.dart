@@ -62,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loadingFiles" : MessageLookupByLibrary.simpleMessage("Φόρτωση αρχείων..."),
     "name" : MessageLookupByLibrary.simpleMessage("\'Ονομα"),
     "next" : MessageLookupByLibrary.simpleMessage("Επόμενο"),
+    "noFilesMessage" : MessageLookupByLibrary.simpleMessage("Δεν υπάρχουν διαθέσιμα αρχεία. Πατήστε το + για να συνδεθείτε στα αποθετήριά σας στο cloud και να προσθέσετε αρχεία."),
     "optionsCount" : MessageLookupByLibrary.simpleMessage("Αριθμός επιλογών"),
     "optionsCountMustBeLessThanWordsCount" : MessageLookupByLibrary.simpleMessage("Ο αριθμός των επιλογών πρέπει να είναι μικρότερος από τον αριθμό των λέξεων"),
     "pleaseEnterANumber" : MessageLookupByLibrary.simpleMessage("Εισάγετε έναν αριθμό"),
