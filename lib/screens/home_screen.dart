@@ -11,6 +11,7 @@ import 'package:word_study/models/quiz.dart';
 import 'package:word_study/screens/list_item_text_style.dart';
 import 'package:word_study/screens/quiz_screen.dart';
 import 'package:word_study/words/quiz_instance.dart';
+import 'package:word_study/words/quiz_provider.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -96,7 +97,10 @@ class HomeScreen extends StatelessWidget {
                     if (vm.selectedQuiz == i) {
                       vm.onSelectQuiz(-1);
                     } else {
-                      vm.onSelectQuiz(i);
+                      var quiz = vm.quizzes[i];
+                      if (!QuizProvider.isDemoQuiz(quiz)) {
+                        vm.onSelectQuiz(i);
+                      }
                     }
                   },
                 ))));

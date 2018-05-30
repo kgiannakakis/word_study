@@ -83,6 +83,10 @@ class QuizProvider {
     return builtin;
   }
 
+  static bool isDemoQuiz(Quiz quiz) {
+    return quiz.filenames[0] == Const.builtinFilename;
+  }
+
   Future<int> addQuiz(Quiz quiz) async {
     Database database = await _openDatabase();
     int id = await database.rawInsert(
