@@ -34,7 +34,9 @@ class MainActivity(): FlutterActivity() {
         }
       }
       else if (call.method == "signOutDropBoxAuth") {
-          result.success("OK")
+        val prefs = getSharedPreferences(DROPBOX_PREF_FILE, Context.MODE_PRIVATE)
+        prefs.edit().remove(ACCESS_TOKEN_KEY).apply()
+        result.success("OK")
       }
     }
   }

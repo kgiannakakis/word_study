@@ -31,7 +31,11 @@ import SwiftyDropbox
                                                                 UIApplication.shared.openURL(url)
                 })
             }
-        } else {
+        } else if ("signOutDropBoxAuth" == call.method) {
+            DropboxClientsManager.unlinkClients();
+            result("OK");
+        }
+        else {
             result(FlutterMethodNotImplemented);
         }
     });
