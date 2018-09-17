@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:validator/validator.dart';
+//import 'package:validator/validator.dart';
 import 'package:word_study/localizations.dart';
 import 'package:word_study/models/stored_file.dart';
 import 'package:word_study/services/file_service.dart';
@@ -65,9 +65,10 @@ class WebDownloaderState extends State<WebDownloaderWidget> {
                   if (value.isEmpty) {
                     return WordStudyLocalizations.of(context).pleaseEnterTheFileUrl;
                   }
-                  if (!isURL(value)) {
-                    return WordStudyLocalizations.of(context).pleaseEnterAValidUrl;
-                  }
+                  // TODO: Fix this
+//                  if (!isURL(value)) {
+//                    return WordStudyLocalizations.of(context).pleaseEnterAValidUrl;
+//                  }
                 },
                 onFieldSubmitted: (value) => _fileUrl = value,
                 onSaved: (value) => _fileUrl = value,
